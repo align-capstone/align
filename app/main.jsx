@@ -39,7 +39,7 @@ auth.onAuthStateChanged(user => user || auth.signInAnonymously())
 
 // Our root App component just renders a little frame with a nav
 // and whatever children the router gave us.
-const App = ({children}) =>
+const App = ({children}) => {
   <div>
     <nav>
       {/* WhoAmI takes a firebase auth API and renders either a
@@ -49,7 +49,10 @@ const App = ({children}) =>
     </nav>
     {/* Render our children (whatever the router gives us) */}
     {children}
+    <h4>Hello, I'm in App</h4>
+
   </div>
+
 
 render(
   <Router history={browserHistory}>
