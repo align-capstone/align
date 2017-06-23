@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import firebase from 'firebase';
-import FileUploader from 'react-firebase-file-uploader';
+import React, { Component } from 'react'
+import firebase from 'firebase'
+import FileUploader from 'react-firebase-file-uploader'
 
 /*
 
@@ -20,12 +20,12 @@ class Upload extends Component {
   handleUploadStart = () => this.setState({isUploading: true, progress: 0});
   handleProgress = (progress) => this.setState({progress});
   handleUploadError = (error) => {
-    this.setState({isUploading: false});
-    console.error(error);
+    this.setState({isUploading: false})
+    console.error(error)
   }
   handleUploadSuccess = (filename) => {
-    this.setState({image: filename, progress: 100, isUploading: false});
-    firebase.storage().ref('images').child(filename).getDownloadURL().then(url => this.setState({imageURL: url}));
+    this.setState({image: filename, progress: 100, isUploading: false})
+    firebase.storage().ref('images').child(filename).getDownloadURL().then(url => this.setState({imageURL: url}))
   };
 
   render() {
@@ -51,8 +51,8 @@ class Upload extends Component {
           />
         </form>
       </div>
-    );
+    )
   }
 }
 
-export default Upload;
+export default Upload
