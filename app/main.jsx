@@ -49,7 +49,6 @@ const App = ({children}) => {
     </nav>
     {/* Render our children (whatever the router gives us) */}
     {children}
-    <h4>Hello, I'm in App</h4>
 
   </div>
 
