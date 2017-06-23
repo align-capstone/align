@@ -2,12 +2,12 @@ const firebase = require('firebase')
 
 // -- // -- // -- // Firebase Config // -- // -- // -- //
 const config = {
-  apiKey: "AIzaSyAv8u4ojMJxzEykV47bgeL4U2dIKBu5x0o",
-  authDomain: "align-a0b08.firebaseapp.com",
-  databaseURL: "https://align-a0b08.firebaseio.com",
-  projectId: "align-a0b08",
-  storageBucket: "align-a0b08.appspot.com",
-  messagingSenderId: "578906705389"
+  apiKey: 'AIzaSyAv8u4ojMJxzEykV47bgeL4U2dIKBu5x0o',
+  authDomain: 'align-a0b08.firebaseapp.com',
+  databaseURL: 'https://align-a0b08.firebaseio.com',
+  projectId: 'align-a0b08',
+  storageBucket: 'align-a0b08.appspot.com',
+  messagingSenderId: '578906705389'
 }
 // -- // -- // -- // -- // -- // -- // -- // -- // -- //
 
