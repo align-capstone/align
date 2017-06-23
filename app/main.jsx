@@ -49,7 +49,9 @@ const App = ({children}) =>
     </nav>
     {/* Render our children (whatever the router gives us) */}
     {children}
+
   </div>
+
 
 render(
   <Router history={browserHistory}>
