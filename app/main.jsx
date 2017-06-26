@@ -9,8 +9,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import FlatButton from 'material-ui/FlatButton'
 
 // import theme from '../src/material_ui_raw_theme_file'
-// import injectTapEventPlugin from 'react-tap-event-plugin'
-// injectTapEventPlugin();
+import injectTapEventPlugin from 'react-tap-event-plugin'
+injectTapEventPlugin()
 
 import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
