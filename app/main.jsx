@@ -6,7 +6,8 @@ import {render} from 'react-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import FlatButton from 'material-ui/FlatButton'
+// import FlatButton from 'material-ui/FlatButton'
+import {AppBar, FlatButton} from 'material-ui'
 
 // import theme from '../src/material_ui_raw_theme_file'
 // import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -49,12 +50,12 @@ auth.onAuthStateChanged(user => user || auth.signInAnonymously())
 const App = ({children}) =>
   <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
     <div>
-      <nav>
+      <AppBar title="align">
         {/* WhoAmI takes a firebase auth API and renders either a
             greeting and a logout button, or sign in buttons, depending
             on if anyone's logged in */}
         <WhoAmI auth={auth}/>
-      </nav>
+      </AppBar>
       {/* In theory you can use MUI components in this and its children? http://www.material-ui.com/#/components */}
       {/* Render our children (whatever the router gives us) */}
       {children}
