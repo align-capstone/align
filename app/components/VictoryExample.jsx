@@ -1,6 +1,6 @@
 import React from 'react'
 import firebase from 'APP/fire'
-import { VictoryAxis, VictoryChart, VictoryLine, VictoryBrushContainer, VictoryZoomContainer } from 'victory'
+import { VictoryAxis, VictoryChart, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter } from 'victory'
 const db = firebase.database()
 
 export default class extends React.Component {
@@ -63,6 +63,24 @@ export default class extends React.Component {
               x="a"
               y="b"
             />
+
+            <VictoryScatter
+              style={{
+                data: { stroke: "tomato", strokeWidth:3, fill: "white" }
+              }}
+              data={[
+                {a: new Date(1993, 1, 1), b: 3},
+                {a: new Date(1997, 1, 1), b: 3},
+                {a: new Date(2001, 1, 1), b: 3},
+                {a: new Date(2005, 1, 1), b: 3},
+                {a: new Date(2011, 1, 1), b: 3},
+                {a: new Date(2017, 1, 1), b: 3}
+              ]}
+              x="a"
+              y="b"
+            />
+
+
 
           </VictoryChart>
           <VictoryChart
