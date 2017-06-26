@@ -15,7 +15,6 @@ import FlatButton from 'material-ui/FlatButton'
 import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
 
-import SophiaExperimenting from './components/SophiaExperimenting'
 import Upload from './components/Upload.jsx'
 import KladkyContainer from './components/KladkyContainer'
 
@@ -68,8 +67,7 @@ const App = ({children}) =>
 render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRedirect to="/sophia" />
-      <Route path="/sophia" component={SophiaExperimenting} />
+      <IndexRedirect to="/kladky/7" />
       <Route path="/kladky/:id" component={KladkyContainer}/>
       <Route path="/upload" component={Upload} />
     </Route>
