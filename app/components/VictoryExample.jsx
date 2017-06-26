@@ -18,11 +18,11 @@ export default class extends React.Component {
   }
 
   render() {
-    const chartStyle = { parent: {minWidth: "50%", maxWidth: "80%", marginLeft: "10%"}};
+    const chartStyle = { parent: {minWidth: "50%", maxWidth: "80%", marginLeft: "10%", cursor: "pointer"}};
     return (
       <div>
         <VictoryChart width={600} height={400} scale={{x: "time"}} style={chartStyle}
-          containerComponent={
+          domain={{y: [0, 10]}} containerComponent={
             <VictoryZoomContainer
               dimension="x"
               zoomDomain={this.state.zoomDomain}
@@ -53,14 +53,12 @@ export default class extends React.Component {
                 data: {stroke: "tomato"}
               }}
               data={[
-                {a: new Date(1982, 1, 1), b: 3},
-                {a: new Date(1987, 1, 1), b: 3},
                 {a: new Date(1993, 1, 1), b: 3},
                 {a: new Date(1997, 1, 1), b: 3},
                 {a: new Date(2001, 1, 1), b: 3},
                 {a: new Date(2005, 1, 1), b: 3},
                 {a: new Date(2011, 1, 1), b: 3},
-                {a: new Date(2015, 1, 1), b: 3}
+                {a: new Date(2017, 1, 1), b: 3}
               ]}
               x="a"
               y="b"
