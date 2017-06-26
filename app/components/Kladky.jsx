@@ -1,7 +1,13 @@
 import React from 'react'
-import firebase from 'APP/fire'
-const db = firebase.database()
 let nameRef, descriptionRef, isOpenRef
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import TextField from 'material-ui/TextField'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+import DatePicker from 'material-ui/DatePicker'
 
 export default class extends React.Component {
   constructor(props) {
@@ -84,41 +90,48 @@ export default class extends React.Component {
   }
 
   render() {
+    // Rendering form with material UI - still need to hook up start/end date selectors
     return (
-      <div>
-        <div className="form-group">
-          <label>Name:</label>
-          <input
-            id='name'
-            rows={10}
-            cols={120}
-            value={this.state.name}
-            onChange={this.write}
-          />
-        </div>
-        <div className="form-group">
-          <label>Description:</label>
-          <textarea
-            id='description'
-            rows={10}
-            cols={120}
-            value={this.state.description}
-            onChange={this.write}
-          />
-        </div>
-        <div className="form-group">
-          <label>Is this goal achieved?</label>
-          <select
-            id='isOpen'
-            type='text'
-            onChange={this.write}
-            value={this.state.isOpen}
+      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+        <div>
+          <h1>Edit page for goal: <span id='goalName'>{this.state.name}</span></h1>
+          <div className='form-group'>
+            <TextField
+              hintText='Your goal name'
+              floatingLabelText='Name'
+              value={this.state.name}
+              onChange={this.write}
+              id='name'
+            />
+          </div>
+          <div className='form-group'>
+            <TextField
+              hintText='What do you want to do?'
+              floatingLabelText='Description'
+              value={this.state.description}
+              onChange={this.write}
+              id='description'
+            />
+          </div>
+          <div className='form-group'>
+            <SelectField
+              floatingLabelText='Is this goal achieved?'
+              value={this.state.isOpen}
+              onChange={this.write}
+              id='isOpen'
             >
-            <option value='false'>Yes!</option>
-            <option value='true'>Not yet...</option>
-          </select>
+              <MenuItem value={false} primaryText='Yes!' />
+              <MenuItem value={true} primaryText='Not yet...' />
+            </SelectField>
+          </div>
+          <div className='form-group'>
+            <DatePicker floatingLabelText='When will you start working on your goal?' />
+          </div>
+          <div className='form-group'>
+            <DatePicker floatingLabelText='When do you plan to achieve your goal?' />
+          </div>
         </div>
-      </div>
+      </MuiThemeProvider>
     )
   }
 }

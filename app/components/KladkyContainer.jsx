@@ -6,15 +6,12 @@ import {getGoalRefs} from 'APP/fire/refs'
 import Kladky from './Kladky'
 
 export default ({params: {id}}) => {
+  // call goalRefs function with the current id to generate reference paths
+  // to all the values for the current goal in firebase
   const goalRefs = getGoalRefs(id)
   return (
     <div>
-      <h1>Edit page for goal ID: {id}</h1>
-      {/* hopefully modify our test goal? */}
-      <Kladky
-        fireRef={goalRefs}
-        id={id}
-      />
+      <Kladky fireRef={goalRefs} />
     </div>
   )
 }
