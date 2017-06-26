@@ -1,13 +1,13 @@
-/*QUESTION FOR KLADKY:
-Is the flow here that we're writing to DB, and then the state is getting its value from DB?
-(that's what i'm seeing, based on my understanding of lines 42-49);
-OR are we setting state, and then state syncs to DB?
-*/
-
 import React from 'react'
-import firebase from 'APP/fire'
-const db = firebase.database()
 let nameRef, descriptionRef, isOpenRef
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import TextField from 'material-ui/TextField'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+import DatePicker from 'material-ui/DatePicker'
 
 export default class extends React.Component {
   constructor(props) {
@@ -40,9 +40,9 @@ export default class extends React.Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
-    nameRef = db.ref('goals').child(this.props.id).child('name')
-    descriptionRef = db.ref('goals').child(this.props.id).child('description')
-    isOpenRef = db.ref('goals').child(this.props.id).child('isOpen')
+    nameRef = fireRef.nameRef
+    descriptionRef = fireRef.descriptionRef
+    isOpenRef = fireRef.isOpenRef
 
     // Whenever our ref's value changes, set {value} on our state.
     // const listener = fireRef.on('value', snapshot =>
@@ -53,12 +53,11 @@ export default class extends React.Component {
 
     const descriptionListener = descriptionRef.on('value', snapshot => {
       this.setState({ description: snapshot.val() })
-      console.log("CHECK OUT THE STATE AFTER DESCRIPTION EDITING: ", this.state)
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {
+      if (snapshot.val() === null) isOpenRef.set(true)
       this.setState({ isOpen: snapshot.val() })
-      console.log("SETTING STATE OF ISOPEN. NEW STATE: ", this.state.isOpen)
     })
 
     // Set unsubscribe to be a function that detaches the listener.
@@ -85,43 +84,54 @@ export default class extends React.Component {
     }
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
     if (event.target.id === 'isOpen') {
-      if (event.target.value === "Yes!") isOpenRef.set(false)
+      if (event.target.value === 'false') isOpenRef.set(false)
       else isOpenRef.set(true)
     }
   }
 
   render() {
+    // Rendering form with material UI - still need to hook up start/end date selectors
     return (
-      <div>
+      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
-          <label>Name:</label>
-          <input
-            id="name"
-            rows={10}
-            cols={120}
-            value={this.state.name}
-            onChange={this.write}
-          />
+          <h1>Edit page for goal: <span id='goalName'>{this.state.name}</span></h1>
+          <div className='form-group'>
+            <TextField
+              hintText='Your goal name'
+              floatingLabelText='Name'
+              value={this.state.name}
+              onChange={this.write}
+              id='name'
+            />
+          </div>
+          <div className='form-group'>
+            <TextField
+              hintText='What do you want to do?'
+              floatingLabelText='Description'
+              value={this.state.description}
+              onChange={this.write}
+              id='description'
+            />
+          </div>
+          <div className='form-group'>
+            <SelectField
+              floatingLabelText='Is this goal achieved?'
+              value={this.state.isOpen}
+              onChange={this.write}
+              id='isOpen'
+            >
+              <MenuItem value={false} primaryText='Yes!' />
+              <MenuItem value={true} primaryText='Not yet...' />
+            </SelectField>
+          </div>
+          <div className='form-group'>
+            <DatePicker floatingLabelText='When will you start working on your goal?' />
+          </div>
+          <div className='form-group'>
+            <DatePicker floatingLabelText='When do you plan to achieve your goal?' />
+          </div>
         </div>
-        <div>
-          <label>Description:</label>
-          <textarea
-            id="description"
-            rows={10}
-            cols={120}
-            value={this.state.description}
-            onChange={this.write}
-          />
-        </div>
-        <div>
-          <label>Achieved?</label>
-          <select id="isOpen" type="text" onChange={this.write}> {/* I was going to put value={this.state.isOpen}, but isOpen is a true/false, so it didn't really work*/}
-            <option></option>
-            <option>Yes!</option>
-            <option>Not Yet</option>
-          </select>
-        </div>
-      </div>
+      </MuiThemeProvider>
     )
   }
 }
