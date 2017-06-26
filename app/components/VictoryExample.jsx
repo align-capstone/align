@@ -22,7 +22,17 @@ export default class extends React.Component {
     return (
       <div>
         <VictoryChart width={600} height={400} scale={{x: "time"}} style={chartStyle}
-          domain={{y: [0, 10]}} containerComponent={
+          domain={{y: [0, 10]}}
+          // events={[{
+          //   childName: ['line-1', 'line-2'],
+          //   target: "data",
+          //   eventHandlers: {
+          //     onClick: (event) => {
+          //       console.log("clicked the line!")
+          //     }
+          //   }
+          // }]}
+          containerComponent={
             <VictoryZoomContainer
               dimension="x"
               zoomDomain={this.state.zoomDomain}
@@ -31,9 +41,18 @@ export default class extends React.Component {
           }
         >
             <VictoryLine
+              name="line-1"
               style={{
-                data: {stroke: "tomato"}
+                data: {stroke: "teal"}
               }}
+              events={[{
+                target: "data",
+                eventHandlers: {
+                  onClick: (event) => {
+                    console.log("clicked the teal line!")
+                  }
+                }
+              }]}
               data={[
                 {a: new Date(1982, 1, 1), b: 2},
                 {a: new Date(1987, 1, 1), b: 2},
@@ -49,9 +68,18 @@ export default class extends React.Component {
             />
 
             <VictoryLine
+              name="line-2"
               style={{
                 data: {stroke: "tomato"}
               }}
+              events={[{
+                target: "data",
+                eventHandlers: {
+                  onClick: (event) => {
+                    console.log("clicked the tomato line!")
+                  }
+                }
+              }]}
               data={[
                 {a: new Date(1993, 1, 1), b: 3},
                 {a: new Date(1997, 1, 1), b: 3},
@@ -68,6 +96,15 @@ export default class extends React.Component {
               style={{
                 data: { stroke: "tomato", strokeWidth:3, fill: "white" }
               }}
+              events={[{
+                // childName: ['line-1', 'line-2'],
+                target: "data",
+                eventHandlers: {
+                  onClick: (event) => {
+                    console.log("clicked the data point!")
+                  }
+                }
+              }]}
               data={[
                 {a: new Date(1993, 1, 1), b: 3},
                 {a: new Date(1997, 1, 1), b: 3},
