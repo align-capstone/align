@@ -15,6 +15,10 @@ import FlatButton from 'material-ui/FlatButton'
 import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
 
+import SophiaExperimenting from './components/SophiaExperimenting'
+import Upload from './components/Upload.jsx'
+import KladkyContainer from './components/KladkyContainer'
+
 import firebase from 'APP/fire'
 
 // Get the auth API from Firebase.
@@ -64,6 +68,10 @@ const App = ({children}) =>
 render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
+      <IndexRedirect to="/sophia" />
+      <Route path="/sophia" component={SophiaExperimenting} />
+      <Route path="/kladky/:id" component={KladkyContainer}/>
+      <Route path="/upload" component={Upload} />
     </Route>
     <Route path='*' component={NotFound}/>
   </Router>,
