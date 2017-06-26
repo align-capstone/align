@@ -1,9 +1,3 @@
-/*QUESTION FOR KLADKY:
-Is the flow here that we're writing to DB, and then the state is getting its value from DB?
-(that's what i'm seeing, based on my understanding of lines 42-49);
-OR are we setting state, and then state syncs to DB?
-*/
-
 import React from 'react'
 import firebase from 'APP/fire'
 const db = firebase.database()
@@ -40,9 +34,9 @@ export default class extends React.Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
-    nameRef = db.ref('goals').child(this.props.id).child('name')
-    descriptionRef = db.ref('goals').child(this.props.id).child('description')
-    isOpenRef = db.ref('goals').child(this.props.id).child('isOpen')
+    nameRef = fireRef.nameRef
+    descriptionRef = fireRef.descriptionRef
+    isOpenRef = fireRef.isOpenRef
 
     // Whenever our ref's value changes, set {value} on our state.
     // const listener = fireRef.on('value', snapshot =>
@@ -53,12 +47,11 @@ export default class extends React.Component {
 
     const descriptionListener = descriptionRef.on('value', snapshot => {
       this.setState({ description: snapshot.val() })
-      console.log("CHECK OUT THE STATE AFTER DESCRIPTION EDITING: ", this.state)
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {
+      if (snapshot.val() === null) isOpenRef.set(true)
       this.setState({ isOpen: snapshot.val() })
-      console.log("SETTING STATE OF ISOPEN. NEW STATE: ", this.state.isOpen)
     })
 
     // Set unsubscribe to be a function that detaches the listener.
@@ -85,7 +78,7 @@ export default class extends React.Component {
     }
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
     if (event.target.id === 'isOpen') {
-      if (event.target.value === "Yes!") isOpenRef.set(false)
+      if (event.target.value === 'false') isOpenRef.set(false)
       else isOpenRef.set(true)
     }
   }
@@ -93,32 +86,36 @@ export default class extends React.Component {
   render() {
     return (
       <div>
-        <div>
+        <div className="form-group">
           <label>Name:</label>
           <input
-            id="name"
+            id='name'
             rows={10}
             cols={120}
             value={this.state.name}
             onChange={this.write}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Description:</label>
           <textarea
-            id="description"
+            id='description'
             rows={10}
             cols={120}
             value={this.state.description}
             onChange={this.write}
           />
         </div>
-        <div>
-          <label>Achieved?</label>
-          <select id="isOpen" type="text" onChange={this.write}> {/* I was going to put value={this.state.isOpen}, but isOpen is a true/false, so it didn't really work*/}
-            <option></option>
-            <option>Yes!</option>
-            <option>Not Yet</option>
+        <div className="form-group">
+          <label>Is this goal achieved?</label>
+          <select
+            id='isOpen'
+            type='text'
+            onChange={this.write}
+            value={this.state.isOpen}
+            >
+            <option value='false'>Yes!</option>
+            <option value='true'>Not yet...</option>
           </select>
         </div>
       </div>
