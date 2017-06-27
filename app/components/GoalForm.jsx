@@ -1,10 +1,5 @@
-/*
-WHERE WE LEFT OFF:::
-(1) 'Is this goal achieved?'/isOpen -- getting event.target to work in 'write' function
-(2) need to do end-goal like start-goal to get timestamp into firebase
-*/
 import React from 'react'
-let nameRef, descriptionRef, isOpenRef, startRef, endRef
+let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -22,6 +17,9 @@ export default class extends React.Component {
       name: '',
       description: '',
       isOpen: true,
+      startDate: 0,
+      endDate: 0,
+      color: '#000',
     }
   }
 
@@ -51,8 +49,10 @@ export default class extends React.Component {
     isOpenRef = fireRef.isOpenRef
     startRef = fireRef.startRef
     endRef = fireRef.endRef
+    colorRef = fireRef.colorRef
 
-    // Whenever our ref's value changes, set {value} on our state.
+    // LISTENERS TO DATEBASE:
+    // Whenever our ref's value changes in Firebase, set {value} on our state.
     // const listener = fireRef.on('value', snapshot =>
     //   this.setState({value: snapshot.val()}))
 
@@ -68,11 +68,29 @@ export default class extends React.Component {
       this.setState({ isOpen: snapshot.val() })
     })
 
+    const startDateListener = startRef.on('value', snapshot => {
+      if (snapshot.val() === null) startRef.set(true)
+      this.setState({ startDate: snapshot.val() })
+    })
+
+    const endDateListener = endRef.on('value', snapshot => {
+      if (snapshot.val() === null) endRef.set(true)
+      this.setState({ endDate: snapshot.val() })
+    })
+
+    const colorListener = colorRef.on('value', snapshot => {
+      if (snapshot.val() === null) colorRef.set(true)
+      this.setState({ color: snapshot.val() })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
       descriptionRef.off('value', descriptionListener)
       isOpenRef.off('value', isOpenListener)
+      startRef.off('value', startDateListener)
+      endRef.off('value', endDateListener)
+      colorRef.off('value', colorListener)
     }
   }
 
@@ -91,10 +109,10 @@ export default class extends React.Component {
       descriptionRef.set(event.target.value)
     }
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
-    if (id === 0 ) {
+    if (id === 0) {
       isOpenRef.set(false)
     }
-    if (id === 1 ) {
+    if (id === 1) {
       isOpenRef.set(true)
     }
   }
@@ -107,7 +125,14 @@ export default class extends React.Component {
     endRef.set(date.getTime())
   }
 
+  handleColorChange = (color, event) => {
+    colorRef.set(color)
+    console.log("IN HANDLE COLOR CHANGE. what is state? ", this.state)
+  }
+
   render() {
+    //color array, for color pallette
+    const colorArray = ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b"]
     // Rendering form with material UI
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
@@ -146,6 +171,10 @@ export default class extends React.Component {
           </div>
           <div className='form-group'>
             <DatePicker id='endDate' onChange={this.writeEndDate} floatingLabelText='When do you plan to achieve your goal?' />
+          </div>
+          <div>
+            <h3>Choose Color:</h3>
+            <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
           </div>
         </div>
       </MuiThemeProvider>
