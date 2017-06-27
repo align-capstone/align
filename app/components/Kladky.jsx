@@ -1,5 +1,10 @@
+/*
+WHERE WE LEFT OFF:::
+(1) 'Is this goal achieved?'/isOpen -- getting event.target to work in 'write' function
+(2) need to do end-goal like start-goal to get timestamp into firebase
+*/
 import React from 'react'
-let nameRef, descriptionRef, isOpenRef
+let nameRef, descriptionRef, isOpenRef, startRef, endRef
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -43,6 +48,8 @@ export default class extends React.Component {
     nameRef = fireRef.nameRef
     descriptionRef = fireRef.descriptionRef
     isOpenRef = fireRef.isOpenRef
+    startRef = fireRef.startRef
+    endRef = fireRef.endRef
 
     // Whenever our ref's value changes, set {value} on our state.
     // const listener = fireRef.on('value', snapshot =>
@@ -75,7 +82,7 @@ export default class extends React.Component {
   //
   // in the constructor. Incidentally, this means that write
   // is always bound to this.
-  write = event => {
+  write = (event, id) => {
     if (event.target.id === 'name') {
       nameRef.set(event.target.value)
     }
@@ -83,10 +90,20 @@ export default class extends React.Component {
       descriptionRef.set(event.target.value)
     }
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
-    if (event.target.id === 'isOpen') {
-      if (event.target.value === 'false') isOpenRef.set(false)
-      else isOpenRef.set(true)
+    if (id === 0 ) {
+      isOpenRef.set(false)
     }
+    if (id === 1 ) {
+      isOpenRef.set(true)
+    }
+  }
+
+  writeStartDate = (event, date) => {
+    startRef.set(date.getTime())
+  }
+
+  writeEndDate = (event, date) => {
+    endRef.set(date.getTime())
   }
 
   render() {
@@ -118,17 +135,16 @@ export default class extends React.Component {
               floatingLabelText='Is this goal achieved?'
               value={this.state.isOpen}
               onChange={this.write}
-              id='isOpen'
             >
-              <MenuItem value={false} primaryText='Yes!' />
-              <MenuItem value={true} primaryText='Not yet...' />
+              <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
+              <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
             </SelectField>
           </div>
           <div className='form-group'>
-            <DatePicker floatingLabelText='When will you start working on your goal?' />
+            <DatePicker id='startDate' onChange={this.writeStartDate} floatingLabelText='When will you start working on your goal?' />
           </div>
           <div className='form-group'>
-            <DatePicker floatingLabelText='When do you plan to achieve your goal?' />
+            <DatePicker id='endDate' onChange={this.writeEndDate} floatingLabelText='When do you plan to achieve your goal?' />
           </div>
         </div>
       </MuiThemeProvider>
