@@ -3,6 +3,8 @@ import firebase from 'APP/fire'
 const db = firebase.database()
 let goalsRef = db.ref('goals')
 
+import SingleTimeline from './SingleTimeline'
+
 // ignore for now
 // import {getGoalRefs} from 'APP/fire/refs'
 // const goalRefs = getGoalRefs(7)
@@ -17,6 +19,23 @@ let goalsRef = db.ref('goals')
   // to get all the values for the current goal in firebase
 
 
+/*
+
+Input: array of goals
+for each:
+  pull out stat + end date
+
+Needed output for each goal:
+[{date: new Date(x), }, { }]
+
+need helper function that makes a dates array
+
+this is a container for eventual timeline component
+that we pass the info for each timeline down to as props
+
+*/
+
+
 export default class extends Component {
   constructor(props) {
     super()
@@ -26,17 +45,24 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    goalsRef.on("value", function(snapshot) {
-      console.log(snapshot.val());
-    }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
+    goalsRef.on("value", (snapshot) => {
+      this.setState({goals: Object.entries(snapshot.val())})
+    }, (errorObject) => {
+      console.log("The read failed o no!!!!!!!! " + errorObject.code);
     })
+
+
   }
 
   render() {
-    // Rendering form with material UI - still need to hook up start/end date selectors
     return (
-      <div> <h3>???</h3> </div>
+      <div>
+        {
+          this.state.goals && this.state.goals.map((goal, index) => (
+            <SingleTimeline key={index} goalData={goal} yAxis={index} />
+          ))
+        }
+      </div>
     )
   }
 }
