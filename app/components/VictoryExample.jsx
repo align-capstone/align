@@ -70,13 +70,13 @@ export default class extends React.Component {
             <VictoryLine
               name='line-2'
               style={{
-                data: {stroke: 'tomato'}
+                data: {stroke: 'goldenrod'}
               }}
               events={[{
                 target: 'data',
                 eventHandlers: {
                   onClick: (event) => {
-                    console.log('clicked the tomato line!')
+                    console.log('clicked the goldenrod line!')
                   }
                 }
               }]}
@@ -94,7 +94,7 @@ export default class extends React.Component {
 
             <VictoryScatter
               style={{
-                data: { stroke: 'tomato', strokeWidth: 3, fill: 'white' }
+                data: { stroke: 'goldenrod', strokeWidth: 3, fill: 'white' }
               }}
               events={[{
                 // childName: ['line-1', 'line-2'],
@@ -134,7 +134,7 @@ export default class extends React.Component {
             />
             <VictoryLine
               style={{
-                data: {stroke: 'tomato'}
+                data: {stroke: 'goldenrod'}
               }}
               data={[
                 {key: new Date(1982, 1, 1), b: 125},
