@@ -3,38 +3,14 @@ import firebase from 'APP/fire'
 const db = firebase.database()
 let goalsRef = db.ref('goals')
 
-import SingleTimeline from './SingleTimeline'
+import { VictoryAxis, VictoryChart, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter } from 'victory'
 
-// ignore for now
+// ignore for now; need to update:
 // import {getGoalRefs} from 'APP/fire/refs'
-// const goalRefs = getGoalRefs(7)
-// hard coded for now; eventually will need to get all goals by current user ID
+// call goalRefs function with the current id to generate reference paths
+// to get all the values for the current goal in firebase
 
 // go back and add milestones, click handlers, etc.
-// "data" ??
-// dates: we're storing dates in Firebase as timestamps (#)
-// to get it back into date format, do new Date(timestamp)
-
-  // call goalRefs function with the current id to generate reference paths
-  // to get all the values for the current goal in firebase
-
-
-/*
-
-Input: array of goals
-for each:
-  pull out stat + end date
-
-Needed output for each goal:
-[{date: new Date(x), }, { }]
-
-need helper function that makes a dates array
-
-this is a container for eventual timeline component
-that we pass the info for each timeline down to as props
-
-*/
-
 
 export default class extends Component {
   constructor(props) {
@@ -42,6 +18,14 @@ export default class extends Component {
     this.state = {
       goals: []
     }
+  }
+
+  handleZoom(domain) {
+    this.setState({selectedDomain: domain})
+  }
+
+  handleBrush(domain) {
+    this.setState({zoomDomain: domain})
   }
 
   componentDidMount() {
@@ -55,13 +39,101 @@ export default class extends Component {
   }
 
   render() {
+    const chartStyle = { parent: {minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer'} }
     return (
       <div>
-        {
-          this.state.goals && this.state.goals.map((goal, index) => (
-            <SingleTimeline key={index} goalData={goal} yAxis={index} />
-          ))
-        }
+        <VictoryChart width={600} height={400} scale={{x: 'time'}} style={chartStyle}
+          domain={{y: [0, this.state.goals.length+1]}}
+          containerComponent={
+            <VictoryZoomContainer
+              dimension='x'
+              zoomDomain={this.state.zoomDomain}
+              onDomainChange={this.handleZoom.bind(this)}
+            />
+          }
+        >
+          {
+            this.state.goals && this.state.goals.map((goal, index) => {
+              //set up var to get info out of goal array - index 1 is id and index 2 is all other data
+              let goalInfo = goal[1]
+              return (
+                <VictoryLine
+                  key={index}
+                  style={{
+                    data: {stroke: goalInfo.color}
+                  }}
+                  data={[
+                    {a: new Date(goalInfo.startDate), b: index+1},
+                    {a: new Date(goalInfo.endDate), b: index+1}
+                  ]}
+                  x='a'
+                  y='b'
+                />
+              )
+            })
+          }{
+            this.state.goals && this.state.goals.map((goal, index) => {
+              let goalInfo = goal[1]
+              return (
+                <VictoryScatter
+                  key={index}
+                  style={{
+                    data: { stroke: goalInfo.color, strokeWidth: 3, fill: 'white' }
+                  }}
+                  events={[{
+                    target: 'data',
+                    eventHandlers: {
+                      onClick: (event) => {
+                        console.log('clicked the data point!')
+                      }
+                    }
+                  }]}
+                  data={[
+                    {a: new Date(goalInfo.startDate), b: index+1},
+                    {a: new Date(goalInfo.endDate), b: index+1}
+                  ]}
+                  x='a'
+                  y='b'
+                />
+              )
+            })
+          }
+        </VictoryChart>
+        <VictoryChart
+            padding={{top: 0, left: 50, right: 50, bottom: 30}}
+            width={600} height={50} scale={{x: 'time'}}
+            containerComponent={
+              <VictoryBrushContainer
+                dimension='x'
+                selectedDomain={this.state.selectedDomain}
+                onDomainChange={this.handleBrush.bind(this)}
+              />
+            }
+          >
+            <VictoryAxis
+              tickFormat={(x) => new Date(x).getFullYear()}
+            />
+            {
+              this.state.goals && this.state.goals.map((goal, index) => {
+                //set up var to get info out of goal array - index 1 is id and index 2 is all other data
+                let goalInfo = goal[1]
+                return (
+                  <VictoryLine
+                    key={index}
+                    style={{
+                      data: {stroke: goalInfo.color}
+                    }}
+                    data={[
+                      {a: new Date(goalInfo.startDate), b: index+1},
+                      {a: new Date(goalInfo.endDate), b: index+1}
+                    ]}
+                    x='a'
+                    y='b'
+                  />
+                )
+              })
+            }
+        </VictoryChart>
       </div>
     )
   }
