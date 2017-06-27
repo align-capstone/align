@@ -23,15 +23,6 @@ export default class extends React.Component {
       <div>
         <VictoryChart width={600} height={400} scale={{x: 'time'}} style={chartStyle}
           domain={{y: [0, 10]}}
-          // events={[{
-          //   childName: ['line-1', 'line-2'],
-          //   target: 'data',
-          //   eventHandlers: {
-          //     onClick: (event) => {
-          //       console.log('clicked the line!')
-          //     }
-          //   }
-          // }]}
           containerComponent={
             <VictoryZoomContainer
               dimension='x'
@@ -97,7 +88,6 @@ export default class extends React.Component {
                 data: { stroke: 'goldenrod', strokeWidth: 3, fill: 'white' }
               }}
               events={[{
-                // childName: ['line-1', 'line-2'],
                 target: 'data',
                 eventHandlers: {
                   onClick: (event) => {
