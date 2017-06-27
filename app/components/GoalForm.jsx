@@ -13,6 +13,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
+import { CirclePicker } from 'react-color'
 
 export default class extends React.Component {
   constructor(props) {
