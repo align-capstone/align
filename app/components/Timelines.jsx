@@ -29,13 +29,9 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    goalsRef.on("value", (snapshot) => {
+    goalsRef.on('value', (snapshot) => {
       this.setState({goals: Object.entries(snapshot.val())})
-    }, (errorObject) => {
-      console.log("The read failed o no!!!!!!!! " + errorObject.code);
     })
-
-
   }
 
   render() {
@@ -43,7 +39,13 @@ export default class extends Component {
     return (
       <div>
         <VictoryChart width={600} height={400} scale={{x: 'time'}} style={chartStyle}
-          domain={{y: [0, this.state.goals.length+1]}}
+          domain={{
+            // MPM: eventually, manipulate this time span using moment library
+            // for now, though, just starting the view at the beginning of 2017
+            x: [new Date(2017, 0, 1), Date.now()],
+            y: [0, this.state.goals.length+1]
+          }}
+          // MPM: add domainPadding?
           containerComponent={
             <VictoryZoomContainer
               dimension='x'
@@ -54,13 +56,13 @@ export default class extends Component {
         >
           {
             this.state.goals && this.state.goals.map((goal, index) => {
-              //set up var to get info out of goal array - index 1 is id and index 2 is all other data
+              // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
               let goalInfo = goal[1]
               return (
                 <VictoryLine
                   key={index}
                   style={{
-                    data: {stroke: goalInfo.color}
+                    data: {stroke: goalInfo.color.hex}
                   }}
                   data={[
                     {a: new Date(goalInfo.startDate), b: index+1},
@@ -78,7 +80,7 @@ export default class extends Component {
                 <VictoryScatter
                   key={index}
                   style={{
-                    data: { stroke: goalInfo.color, strokeWidth: 3, fill: 'white' }
+                    data: { stroke: goalInfo.color.hex, strokeWidth: 3, fill: 'white' }
                   }}
                   events={[{
                     target: 'data',
@@ -99,6 +101,7 @@ export default class extends Component {
             })
           }
         </VictoryChart>
+
         <VictoryChart
             padding={{top: 0, left: 50, right: 50, bottom: 30}}
             width={600} height={50} scale={{x: 'time'}}
@@ -115,13 +118,12 @@ export default class extends Component {
             />
             {
               this.state.goals && this.state.goals.map((goal, index) => {
-                //set up var to get info out of goal array - index 1 is id and index 2 is all other data
                 let goalInfo = goal[1]
                 return (
                   <VictoryLine
                     key={index}
                     style={{
-                      data: {stroke: goalInfo.color}
+                      data: {stroke: goalInfo.color.hex}
                     }}
                     data={[
                       {a: new Date(goalInfo.startDate), b: index+1},
