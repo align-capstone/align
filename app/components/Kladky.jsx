@@ -82,8 +82,7 @@ export default class extends React.Component {
   //
   // in the constructor. Incidentally, this means that write
   // is always bound to this.
-  write = (event, date) => {
-
+  write = (event, id) => {
     if (event.target.id === 'name') {
       nameRef.set(event.target.value)
     }
@@ -91,18 +90,20 @@ export default class extends React.Component {
       descriptionRef.set(event.target.value)
     }
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
-    if (event.target === '<div>Yes!</div>' || event.target === '<div>Not yet...</div>') {
-      console.log('event.target.value:::', event.target.value)
-      if (event.target.value === 'false') isOpenRef.set(false)
-      else isOpenRef.set(true)
+    if (id === 0 ) {
+      isOpenRef.set(false)
     }
-    // if (event.target.id === 'endDate') {
-    //   endRef.set(event.target.value)
-    // }
+    if (id === 1 ) {
+      isOpenRef.set(true)
+    }
   }
 
   writeStartDate = (event, date) => {
     startRef.set(date.getTime())
+  }
+
+  writeEndDate = (event, date) => {
+    endRef.set(date.getTime())
   }
 
   render() {
@@ -135,15 +136,15 @@ export default class extends React.Component {
               value={this.state.isOpen}
               onChange={this.write}
             >
-              <MenuItem value={false} id='isOpenFalse' primaryText='Yes!' />
-              <MenuItem value={true} id='isOpenTrue' primaryText='Not yet...' />
+              <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
+              <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
             </SelectField>
           </div>
           <div className='form-group'>
             <DatePicker id='startDate' onChange={this.writeStartDate} floatingLabelText='When will you start working on your goal?' />
           </div>
           <div className='form-group'>
-            <DatePicker id='endDate' onChange={this.write} floatingLabelText='When do you plan to achieve your goal?' />
+            <DatePicker id='endDate' onChange={this.writeEndDate} floatingLabelText='When do you plan to achieve your goal?' />
           </div>
         </div>
       </MuiThemeProvider>
