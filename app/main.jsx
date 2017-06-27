@@ -19,6 +19,7 @@ import NotFound from './components/NotFound'
 import Upload from './components/Upload.jsx'
 import KladkyContainer from './components/KladkyContainer'
 import VictoryExample from './components/VictoryExample'
+import Timelines from './components/Timelines'
 
 import firebase from 'APP/fire'
 
@@ -70,11 +71,13 @@ render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRedirect to="/kladky/7" />
-      <Route path="/kladky/:id" component={KladkyContainer}/>
-      <Route path="/victory-example" component={VictoryExample}/>
+      <Route path="/kladky/:id" component={KladkyContainer} />
+      <Route path="/victory-example" component={VictoryExample} />
+      <Route path="/timelines" component={Timelines} />
+      {/* <Route path="/timelines/:id" component={Timelines} /> */}
       <Route path="/upload" component={Upload} />
     </Route>
-    <Route path='*' component={NotFound}/>
+    <Route path='*' component={NotFound} />
   </Router>,
   document.getElementById('main')
 )
