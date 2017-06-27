@@ -3,7 +3,7 @@ import {Route} from 'react-router'
 
 import {getGoalRefs} from 'APP/fire/refs'
 
-import Kladky from './Kladky'
+import GoalForm from './GoalForm'
 
 export default ({params: {id}}) => {
   // call goalRefs function with the current id to generate reference paths
@@ -11,7 +11,7 @@ export default ({params: {id}}) => {
   const goalRefs = getGoalRefs(id)
   return (
     <div>
-      <Kladky fireRef={goalRefs} />
+      <GoalForm fireRef={goalRefs} />
     </div>
   )
 }

@@ -17,8 +17,9 @@ import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
 
 import Upload from './components/Upload.jsx'
-import KladkyContainer from './components/KladkyContainer'
+import GoalFormContainer from './components/GoalFormContainer'
 import VictoryExample from './components/VictoryExample'
+import Timelines from './components/Timelines'
 
 import firebase from 'APP/fire'
 
@@ -69,12 +70,14 @@ const App = ({children}) =>
 render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRedirect to="/kladky/7" />
-      <Route path="/kladky/:id" component={KladkyContainer}/>
-      <Route path="/victory-example" component={VictoryExample}/>
+      <IndexRedirect to="/goalform/7" />
+      <Route path="/goalform/:id" component={GoalFormContainer} />
+      <Route path="/victory-example" component={VictoryExample} />
+      <Route path="/timelines" component={Timelines} />
+      {/* <Route path="/timelines/:id" component={Timelines} /> */}
       <Route path="/upload" component={Upload} />
     </Route>
-    <Route path='*' component={NotFound}/>
+    <Route path='*' component={NotFound} />
   </Router>,
   document.getElementById('main')
 )

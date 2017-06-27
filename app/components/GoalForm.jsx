@@ -107,7 +107,7 @@ export default class extends React.Component {
   }
 
   render() {
-    // Rendering form with material UI - still need to hook up start/end date selectors
+    // Rendering form with material UI
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
