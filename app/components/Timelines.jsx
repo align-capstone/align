@@ -37,7 +37,8 @@ export default class extends Component {
 
 
   }
-
+/* Unsubscribing in a ComponentWillMount is best practice, so do it!*/
+/* Consider modularizing into smaller render functions. Check out Moment library for time -Ashi */
   render() {
     const chartStyle = { parent: {minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer'} }
     return (

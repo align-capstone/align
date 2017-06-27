@@ -23,7 +23,7 @@ export default class extends React.Component {
       isOpen: true,
     }
   }
-
+/* You could abtract away some of this subscsribing business with Ashi's ignite function from Firebones, if you want to. */
   componentDidMount() {
     // When the component mounts, start listening to the fireRef
     // we were given.
@@ -82,6 +82,8 @@ export default class extends React.Component {
   //
   // in the constructor. Incidentally, this means that write
   // is always bound to this.
+
+/* Separate writeName and writeDescription functions, or make write a higher order function that takes a reference of name or desc and returns a function that takes an event -Ashi */
   write = (event, id) => {
     if (event.target.id === 'name') {
       nameRef.set(event.target.value)
@@ -97,7 +99,7 @@ export default class extends React.Component {
       isOpenRef.set(true)
     }
   }
-
+/* Another place where Moment might help */
   writeStartDate = (event, date) => {
     startRef.set(date.getTime())
   }
