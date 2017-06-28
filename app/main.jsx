@@ -19,6 +19,7 @@ import NotFound from './components/NotFound'
 import Upload from './components/Upload'
 import GoalFormContainer from './components/GoalFormContainer'
 import MilestoneFormContainer from './components/MilestoneFormContainer'
+import CheckInFormContainer from './components/CheckInFormContainer'
 import VictoryExample from './components/VictoryExample'
 import Timelines from './components/Timelines'
 import Login from './components/Login'
@@ -72,6 +73,7 @@ render(
       <IndexRedirect to="timelines" />
       <Route path="goal/:id" component={GoalFormContainer} />
       <Route path="milestone/:id/:mid" component={MilestoneFormContainer} />
+      <Route path="checkin/:id/:cid" component={CheckInFormContainer} />
       <Route path="/victory-example" component={VictoryExample} />
       <Route path="/timelines" component={Timelines} />
       {/* <Route path="/timelines/:id" component={Timelines} /> */}

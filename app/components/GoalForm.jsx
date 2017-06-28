@@ -1,6 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router';
-let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef
+import { Link } from 'react-router'
+let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef
+
+import uuidv1 from 'uuid/v1'
+let newMilestonePath, newCheckInPath
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -12,6 +15,7 @@ import DatePicker from 'material-ui/DatePicker'
 import { CirclePicker } from 'react-color'
 import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
+import Add from 'material-ui/svg-icons/content/add'
 
 export default class extends React.Component {
   constructor(props) {
@@ -20,10 +24,11 @@ export default class extends React.Component {
       name: '',
       description: '',
       isOpen: true,
-      startDate: 0,
-      endDate: 0,
+      startDate: new Date().getTime(),
+      endDate: new Date().getTime(),
       color: '#000',
-      milestones: []
+      milestones: [],
+      checkIns: []
     }
   }
 
@@ -31,6 +36,8 @@ export default class extends React.Component {
     // When the component mounts, start listening to the fireRef
     // we were given.
     this.listenTo(this.props.fireRef)
+    newMilestonePath = `/milestone/${this.props.id}/${uuidv1()}`
+    newCheckInPath = `/checkin/${this.props.id}/${uuidv1()}`
   }
 
   componentWillUnmount() {
@@ -55,6 +62,7 @@ export default class extends React.Component {
     endRef = fireRef.endRef
     colorRef = fireRef.colorRef
     milestonesRef = fireRef.milestonesRef
+    checkInsRef = fireRef.checkInsRef
 
     // LISTENERS TO DATEBASE:
     // Whenever our ref's value changes in Firebase, set {value} on our state.
@@ -75,10 +83,12 @@ export default class extends React.Component {
 
     const startDateListener = startRef.on('value', snapshot => {
       this.setState({ startDate: snapshot.val() })
+      if (snapshot.val() === null) startRef.set(new Date().getTime())
     })
 
     const endDateListener = endRef.on('value', snapshot => {
       this.setState({ endDate: snapshot.val() })
+      if (snapshot.val() === null) endRef.set(new Date().getTime())
     })
 
     const colorListener = colorRef.on('value', snapshot => {
@@ -90,6 +100,10 @@ export default class extends React.Component {
       this.setState({ milestones: Object.entries(snapshot.val()) })
     })
 
+    const checkInsListener = checkInsRef.on('value', snapshot => {
+      this.setState({ checkIns: Object.entries(snapshot.val()) })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
@@ -99,6 +113,7 @@ export default class extends React.Component {
       endRef.off('value', endDateListener)
       colorRef.off('value', colorListener)
       milestonesRef.off('value', milestonesListener)
+      checkInsRef.off('value', checkInsListener)
     }
   }
 
@@ -109,13 +124,16 @@ export default class extends React.Component {
   //
   // in the constructor. Incidentally, this means that write
   // is always bound to this.
-  write = (event, id) => {
-    if (event.target.id === 'name') {
-      nameRef.set(event.target.value)
-    }
-    if (event.target.id === 'description') {
-      descriptionRef.set(event.target.value)
-    }
+
+  writeName = (event) => {
+    nameRef.set(event.target.value)
+  }
+
+  writeDescription = (event) => {
+    descriptionRef.set(event.target.value)
+  }
+
+  writeIsOpen = (event, id) => {
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
     if (id === 0) {
       isOpenRef.set(false)
@@ -137,10 +155,6 @@ export default class extends React.Component {
     colorRef.set(color)
   }
 
-  milestoneLink = (event) => {
-    console.log("YR EVENT IS: ", event.target)
-  }
-
   render() {
     //color array, for color pallette
     const colorArray = ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b"]
@@ -154,7 +168,7 @@ export default class extends React.Component {
               hintText='Your goal name'
               floatingLabelText='Name'
               value={this.state.name}
-              onChange={this.write}
+              onChange={this.writeName}
               id='name'
             />
           </div>
@@ -163,7 +177,7 @@ export default class extends React.Component {
               hintText='What do you want to do?'
               floatingLabelText='Description'
               value={this.state.description}
-              onChange={this.write}
+              onChange={this.writeDescription}
               id='description'
             />
           </div>
@@ -171,7 +185,7 @@ export default class extends React.Component {
             <SelectField
               floatingLabelText='Is this goal achieved?'
               value={this.state.isOpen}
-              onChange={this.write}
+              onChange={this.writeIsOpen}
             >
               <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
               <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
@@ -195,10 +209,25 @@ export default class extends React.Component {
                 this.state.milestones && this.state.milestones.map((milestone, index) => {
                   let milestonePath = `/milestone/${this.props.id}/${milestone[0]}`
                   return (
-                    <ListItem key={index} primaryText={milestone[1].description} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} >{milestone[1].name}</ListItem>
+                    <ListItem key={index} primaryText={milestone[1].name} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} ></ListItem>
                   )
                 })
               }
+              <ListItem leftIcon={<Add />} containerElement={<Link to={newMilestonePath} />} >Add new</ListItem>
+            </List>
+          </div>
+          <div>
+            <h3>Check Ins:</h3>
+            <List>
+              {
+                this.state.checkIns && this.state.checkIns.map((checkin, index) => {
+                  let checkinPath = `/checkin/${this.props.id}/${checkin[0]}`
+                  return (
+                    <ListItem key={index} primaryText={checkin[1].name} leftIcon={<Edit />} containerElement={<Link to={checkinPath} />} ></ListItem>
+                  )
+                })
+              }
+              <ListItem leftIcon={<Add />} containerElement={<Link to={newCheckInPath} />} >Add new</ListItem>
             </List>
           </div>
         </div>

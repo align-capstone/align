@@ -64,10 +64,9 @@ export default class extends React.Component {
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {
-      if (snapshot.val() === null) isOpenRef.set(true)
       this.setState({ isOpen: snapshot.val() })
+      if (snapshot.val() === null) isOpenRef.set(true)
     })
-
     const dateListener = dateRef.on('value', snapshot => {
       this.setState({ date: snapshot.val() })
       if (snapshot.val() === null) dateRef.set(new Date().getTime())
@@ -117,10 +116,10 @@ export default class extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
           <Link to={`/goal/${this.props.goalId}`}>Back to goal</Link>
-          <h1>Edit page for milestone: <span id='milestoneName'>{this.state.name}</span></h1>
+          <h1>Edit page for check in: <span id='checkInName'>{this.state.name}</span></h1>
           <div className='form-group'>
             <TextField
-              hintText='Your milestone name'
+              hintText='Your check in name'
               floatingLabelText='Name'
               value={this.state.name}
               onChange={this.writeName}
@@ -138,7 +137,7 @@ export default class extends React.Component {
           </div>
           <div className='form-group'>
             <SelectField
-              floatingLabelText='Is this milestone achieved?'
+              floatingLabelText='Is this check in achieved?'
               value={this.state.isOpen}
               onChange={this.writeIsOpen}
             >
@@ -147,7 +146,7 @@ export default class extends React.Component {
             </SelectField>
           </div>
           <div className='form-group'>
-            <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this milestone?' />
+            <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this check in?' />
           </div>
         </div>
       </MuiThemeProvider>
