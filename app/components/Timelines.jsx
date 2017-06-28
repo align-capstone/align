@@ -21,53 +21,23 @@ export default class extends Component {
     }
   }
 
-  // MPM adding this getData function ugh ugh
-  // we want our shit to look like:
-  /*
-  [
-    {a: new Date(goalInfo.startDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex},
-    {a: new Date(goalInfo.endDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex}
-  ]
-  */
-  // push startDate, push endDate, and then push each thing in the milestones array
-
-  /*
-  this.state.goals && this.state.goals.map((goal, index) => {
-              // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
-              let goalInfo = goal[1]
-              return (
-                <VictoryLine
-                  key={index}
-                  style={{
-                    data: {stroke: goalInfo.color.hex}
-                  }}
-                  events={[{
-                    target: 'data',
-                    eventHandlers: {
-                      onClick: (event) => {
-                        console.log('clicked line #', index)
-                      }
-                    }
-                  }]}
-                  data={[
-                    {a: new Date(goalInfo.startDate), b: index+1},
-                    {a: new Date(goalInfo.endDate), b: index+1}
-                  ]}
-                  x='a'
-                  y='b'
-                />
-              )
-            })
-  */
-  // use arrow notation here to bind?
-  getData(goal, index) {
-    let data = []
-    console.log('in getData, getting goal info and index:', index, goal.name)
+  // MPM adding this helper function ugh I hate everything
+  getScatterData(goal, index) {
+    var data = []
+    console.log('in getScatterData, getting goal info and index:', index, goal.name)
     // push start and end dates to data array
+    // maybe make end date of completed goals into a star??
     data.push({x: new Date(goal.startDate), y: index, symbol: 'circle', fill: goal.color.hex})
     data.push({x: new Date(goal.endDate), y: index, symbol: 'circle', fill: goal.color.hex})
-    // then map over the array of milestones and push each
-      // something like... new Date(goalInfo.milestone.displayDate) idk
+    // then iterate over the milestones object and push each date to the array
+    if (goal.milestones) {
+      // console.log('ugh idk milestones?', goal.milestones)
+      for (var id in goal.milestones) {
+        // console.log(goal.milestones[id].name)
+        var milestone = goal.milestones[id]
+        data.push({x: new Date(milestone.displayDate), y: index, symbol: 'square', fill: 'white'})
+      }
+    }
     return data
   }
 
@@ -96,9 +66,9 @@ export default class extends Component {
         <VictoryChart width={600} height={400} scale={{x: 'time'}} style={chartStyle}
           domain={{
             // MPM: eventually, manipulate this time span using moment library
-            // for now, though, just starting the view at the beginning of 2017
-            x: [new Date(2017, 0, 1), Date.now()],
-            y: [0, this.state.goals.length]
+            // for now, though, just start the view at the beginning of 2017??
+            // x: [new Date(2017, 0, 1), Date.now()],
+            y: [-1, this.state.goals.length]
           }}
           containerComponent={
             <VictoryZoomContainer
@@ -108,6 +78,16 @@ export default class extends Component {
             />
           }
         >
+          <VictoryAxis
+              style={{
+                axis: {
+                  stroke: 'none'
+                },
+                tickLabels: {
+                  angle: -45
+                }
+              }}
+            />
           {
             this.state.goals && this.state.goals.map((goal, index) => {
               // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
@@ -116,7 +96,10 @@ export default class extends Component {
                 <VictoryLine
                   key={index}
                   style={{
-                    data: {stroke: goalInfo.color.hex}
+                    data: {
+                      stroke: goalInfo.color.hex,
+                      strokeWidth: 4
+                    }
                   }}
                   events={[{
                     target: 'data',
@@ -126,13 +109,10 @@ export default class extends Component {
                       }
                     }
                   }]}
-                  // data={[
-                  //   {a: new Date(goalInfo.startDate), b: index},
-                  //   {a: new Date(goalInfo.endDate), b: index}
-                  // ]}
-                  // x='a'
-                  // y='b'
-                  data={this.getData(goalInfo, index)}
+                  data={[
+                    {x: new Date(goalInfo.startDate), y: index},
+                    {x: new Date(goalInfo.endDate), y: index}
+                  ]}
                 />
               )
             })
@@ -158,13 +138,7 @@ export default class extends Component {
                       }
                     }
                   }]}
-                  // data={[
-                  //   {a: new Date(goalInfo.startDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex},
-                  //   {a: new Date(goalInfo.endDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex}
-                  // ]}
-                  // x='a'
-                  // y='b'
-                  data={this.getData(goalInfo, index)}
+                  data={this.getScatterData(goalInfo, index)}
                 />
               )
             })
@@ -172,8 +146,10 @@ export default class extends Component {
         </VictoryChart>
 
         <VictoryChart
+            // eventually, we want this size to be responsive / relative to # of goals?
             padding={{top: 0, left: 50, right: 50, bottom: 30}}
             width={600} height={50} scale={{x: 'time'}} style={chartStyle}
+            domain={{y: [-1, this.state.goals.length]}}
             containerComponent={
               <VictoryBrushContainer
                 dimension='x'
@@ -198,15 +174,15 @@ export default class extends Component {
                   <VictoryLine
                     key={index}
                     style={{
-                      data: {stroke: goalInfo.color.hex}
+                      data: {
+                        stroke: goalInfo.color.hex,
+                        strokeWidth: 3
+                      }
                     }}
-                    // data={[
-                    //   {a: new Date(goalInfo.startDate), b: index},
-                    //   {a: new Date(goalInfo.endDate), b: index}
-                    // ]}
-                    // x='a'
-                    // y='b'
-                    data={this.getData(goalInfo, index)}
+                    data={[
+                      {x: new Date(goalInfo.startDate), y: index},
+                      {x: new Date(goalInfo.endDate), y: index}
+                    ]}
                   />
                 )
               })
