@@ -9,18 +9,18 @@ export default class extends React.Component {
     this.state = {
       email: '',
       password: '',
-      showInvalidAlert: false
+      showInvalidAlert: false,
+      errorMessage: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  //this isn't working yet; we need to debug so that if user enters incorrect login info, it gives a nice alert rather than an ugly red TypeError
-  handleFailedLogin() {
+  handleFailedLogin(message) {
     return (
-      <div>
-        <h4>Email and/or password is invalid.</h4>
+      <div style={{color:'red'}}>
+        <h4>{message}</h4>
       </div>
     )
   }
@@ -38,9 +38,11 @@ export default class extends React.Component {
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       // redirect to timeline on successful log in
       .then(() => browserHistory.push('/timelines'))
-      .catch(error => {
+      .catch(error => { //THIS ISN'T QUITE RIGHT -- right now, it's showing an "Invalid Login and Password" message when the error is actually a different error on our end
+        const errorMessage = error.message;
         this.setState({
-        showInvalidAlert: true,
+          errorMessage: errorMessage,
+          showInvalidAlert: true,
         })
         console.error(error)
       })
@@ -55,7 +57,7 @@ export default class extends React.Component {
           <input type="submit" value="Login" />
         </form>
 
-        {this.state.showInvalidAlert ? this.handleFailedLogin() : null}
+        {this.state.showInvalidAlert ? this.handleFailedLogin(this.state.errorMessage) : null}
       </div>
     )
   }
