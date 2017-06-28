@@ -2,6 +2,9 @@ import React from 'react'
 import { Link } from 'react-router'
 let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef
 
+import uuidv1 from 'uuid/v1'
+let newMilestonePath, newCheckInPath
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
@@ -12,6 +15,7 @@ import DatePicker from 'material-ui/DatePicker'
 import { CirclePicker } from 'react-color'
 import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
+import Add from 'material-ui/svg-icons/content/add'
 
 export default class extends React.Component {
   constructor(props) {
@@ -32,6 +36,8 @@ export default class extends React.Component {
     // When the component mounts, start listening to the fireRef
     // we were given.
     this.listenTo(this.props.fireRef)
+    newMilestonePath = `/milestone/${this.props.id}/${uuidv1()}`
+    newCheckInPath = `/checkin/${this.props.id}/${uuidv1()}`
   }
 
   componentWillUnmount() {
@@ -204,6 +210,7 @@ export default class extends React.Component {
                   )
                 })
               }
+              <ListItem leftIcon={<Add />} containerElement={<Link to={newMilestonePath} />} >Add new</ListItem>
             </List>
           </div>
           <div>
@@ -217,6 +224,7 @@ export default class extends React.Component {
                   )
                 })
               }
+              <ListItem leftIcon={<Add />} containerElement={<Link to={newCheckInPath} />} >Add new</ListItem>
             </List>
           </div>
         </div>
