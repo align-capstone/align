@@ -3,7 +3,7 @@ import firebase from 'APP/fire'
 const db = firebase.database()
 let goalsRef = db.ref('goals')
 
-import { VictoryAxis, VictoryChart, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter } from 'victory'
+import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter, VictoryTooltip } from 'victory'
 
 // ignore for now; need to update:
 // import {getGoalRefs} from 'APP/fire/refs'
@@ -89,6 +89,7 @@ export default class extends Component {
                 }
               }}
             />
+
           {
             this.state.goals && this.state.goals.map((goal, index) => {
               // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
@@ -99,7 +100,7 @@ export default class extends Component {
                   style={{
                     data: {
                       stroke: goalInfo.color.hex,
-                      strokeWidth: 4
+                      strokeWidth: 4,
                     }
                   }}
                   events={[{
@@ -129,7 +130,6 @@ export default class extends Component {
                       strokeWidth: 3,
                       fill: 'white'
                     }
-                    // MPM add labels
                   }}
                   events={[{
                     target: 'data',
