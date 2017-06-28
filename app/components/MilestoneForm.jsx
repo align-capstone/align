@@ -1,8 +1,3 @@
-/*
-WHERE WE LEFT OFF:::
-(1) 'Is this goal achieved?'/isOpen -- getting event.target to work in 'write' function
-(2) need to do end-goal like start-goal to get timestamp into firebase
-*/
 import React from 'react'
 import { Link } from 'react-router'
 let nameRef, descriptionRef, isOpenRef, dateRef
