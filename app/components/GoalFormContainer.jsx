@@ -11,7 +11,7 @@ export default ({params: {id}}) => {
   const goalRefs = getGoalRefs(id)
   return (
     <div>
-      <GoalForm fireRef={goalRefs} />
+      <GoalForm fireRef={goalRefs} id={id} />
     </div>
   )
 }
