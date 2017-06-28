@@ -3,7 +3,7 @@ import firebase from 'APP/fire'
 const db = firebase.database()
 let goalsRef = db.ref('goals')
 
-import { VictoryAxis, VictoryChart, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter } from 'victory'
+import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter, VictoryTooltip } from 'victory'
 
 // ignore for now; need to update:
 // import {getGoalRefs} from 'APP/fire/refs'
@@ -11,6 +11,7 @@ import { VictoryAxis, VictoryChart, VictoryLine, VictoryBrushContainer, VictoryZ
 // to get all the values for the current goal in firebase
 
 // go back and add milestones, click handlers, etc.
+// eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
 
 export default class extends Component {
   constructor(props) {
@@ -18,6 +19,26 @@ export default class extends Component {
     this.state = {
       goals: []
     }
+  }
+
+  // MPM adding this helper function ugh I hate everything
+  getScatterData(goal, index) {
+    var data = []
+    console.log('in getScatterData, getting goal info and index:', index, goal.name)
+    // push start and end dates to data array
+    // maybe make end date of completed goals into a star??
+    data.push({x: new Date(goal.startDate), y: index, label: 'start date: \n' + new Date(goal.startDate).toDateString(), symbol: 'circle', fill: goal.color.hex})
+    data.push({x: new Date(goal.endDate), y: index, label: 'end date: \n' + new Date(goal.endDate).toDateString(), symbol: 'circle', fill: goal.color.hex})
+    // then iterate over the milestones object and push each date to the array
+    if (goal.milestones) {
+      // console.log('ugh idk milestones?', goal.milestones)
+      for (var id in goal.milestones) {
+        // console.log(goal.milestones[id].name)
+        var milestone = goal.milestones[id]
+        data.push({x: new Date(milestone.displayDate), y: index, label: milestone.name, symbol: 'square', fill: 'white'})
+      }
+    }
+    return data
   }
 
   handleZoom(domain) {
@@ -30,9 +51,13 @@ export default class extends Component {
 
   componentDidMount() {
     goalsRef.on('value', (snapshot) => {
+      // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
+      // do we want to go back to just using Object.keys or a for-in loop?
       this.setState({goals: Object.entries(snapshot.val())})
     })
   }
+
+  // MPM: add componentWillUnmount
 
   render() {
     const chartStyle = { parent: {minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer'} }
@@ -41,9 +66,9 @@ export default class extends Component {
         <VictoryChart width={600} height={400} scale={{x: 'time'}} style={chartStyle}
           domain={{
             // MPM: eventually, manipulate this time span using moment library
-            // for now, though, just starting the view at the beginning of 2017
-            x: [new Date(2017, 0, 1), Date.now()],
-            y: [0, this.state.goals.length+1]
+            // for now, though, just start the view at the beginning of 2017??
+            // x: [new Date(2017, 0, 1), Date.now()],
+            y: [-1, this.state.goals.length]
           }}
           // MPM: add domainPadding?
           containerComponent={
@@ -54,6 +79,17 @@ export default class extends Component {
             />
           }
         >
+          <VictoryAxis
+              style={{
+                axis: {
+                  stroke: 'none'
+                },
+                tickLabels: {
+                  angle: -45
+                }
+              }}
+            />
+
           {
             this.state.goals && this.state.goals.map((goal, index) => {
               // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
@@ -62,14 +98,23 @@ export default class extends Component {
                 <VictoryLine
                   key={index}
                   style={{
-                    data: {stroke: goalInfo.color.hex}
+                    data: {
+                      stroke: goalInfo.color.hex,
+                      strokeWidth: 4,
+                    }
                   }}
+                  events={[{
+                    target: 'data',
+                    eventHandlers: {
+                      onClick: (event) => {
+                        console.log('clicked line #', index)
+                      }
+                    }
+                  }]}
                   data={[
-                    {a: new Date(goalInfo.startDate), b: index+1},
-                    {a: new Date(goalInfo.endDate), b: index+1}
+                    {x: new Date(goalInfo.startDate), y: index},
+                    {x: new Date(goalInfo.endDate), y: index}
                   ]}
-                  x='a'
-                  y='b'
                 />
               )
             })
@@ -80,7 +125,11 @@ export default class extends Component {
                 <VictoryScatter
                   key={index}
                   style={{
-                    data: { stroke: goalInfo.color.hex, strokeWidth: 3, fill: 'white' }
+                    data: {
+                      stroke: goalInfo.color.hex,
+                      strokeWidth: 3,
+                      fill: 'white'
+                    }
                   }}
                   events={[{
                     target: 'data',
@@ -90,12 +139,8 @@ export default class extends Component {
                       }
                     }
                   }]}
-                  data={[
-                    {a: new Date(goalInfo.startDate), b: index+1},
-                    {a: new Date(goalInfo.endDate), b: index+1}
-                  ]}
-                  x='a'
-                  y='b'
+                  data={this.getScatterData(goalInfo, index)}
+                  labelComponent={<VictoryTooltip/>}
                 />
               )
             })
@@ -103,8 +148,10 @@ export default class extends Component {
         </VictoryChart>
 
         <VictoryChart
+            // eventually, we want this size to be responsive / relative to # of goals?
             padding={{top: 0, left: 50, right: 50, bottom: 30}}
-            width={600} height={50} scale={{x: 'time'}}
+            width={600} height={50} scale={{x: 'time'}} style={chartStyle}
+            domain={{y: [-1, this.state.goals.length]}}
             containerComponent={
               <VictoryBrushContainer
                 dimension='x'
@@ -114,7 +161,13 @@ export default class extends Component {
             }
           >
             <VictoryAxis
-              tickFormat={(x) => new Date(x).getFullYear()}
+              // tickFormat={(x) => new Date(x).getFullYear()}
+              tickValues={[]}
+              style={{
+                axis: {
+                  stroke: 'none'
+                }
+              }}
             />
             {
               this.state.goals && this.state.goals.map((goal, index) => {
@@ -123,14 +176,15 @@ export default class extends Component {
                   <VictoryLine
                     key={index}
                     style={{
-                      data: {stroke: goalInfo.color.hex}
+                      data: {
+                        stroke: goalInfo.color.hex,
+                        strokeWidth: 3
+                      }
                     }}
                     data={[
-                      {a: new Date(goalInfo.startDate), b: index+1},
-                      {a: new Date(goalInfo.endDate), b: index+1}
+                      {x: new Date(goalInfo.startDate), y: index},
+                      {x: new Date(goalInfo.endDate), y: index}
                     ]}
-                    x='a'
-                    y='b'
                   />
                 )
               })
