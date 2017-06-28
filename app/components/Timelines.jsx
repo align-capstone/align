@@ -21,6 +21,56 @@ export default class extends Component {
     }
   }
 
+  // MPM adding this getData function ugh ugh
+  // we want our shit to look like:
+  /*
+  [
+    {a: new Date(goalInfo.startDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex},
+    {a: new Date(goalInfo.endDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex}
+  ]
+  */
+  // push startDate, push endDate, and then push each thing in the milestones array
+
+  /*
+  this.state.goals && this.state.goals.map((goal, index) => {
+              // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
+              let goalInfo = goal[1]
+              return (
+                <VictoryLine
+                  key={index}
+                  style={{
+                    data: {stroke: goalInfo.color.hex}
+                  }}
+                  events={[{
+                    target: 'data',
+                    eventHandlers: {
+                      onClick: (event) => {
+                        console.log('clicked line #', index)
+                      }
+                    }
+                  }]}
+                  data={[
+                    {a: new Date(goalInfo.startDate), b: index+1},
+                    {a: new Date(goalInfo.endDate), b: index+1}
+                  ]}
+                  x='a'
+                  y='b'
+                />
+              )
+            })
+  */
+  // use arrow notation here to bind?
+  getData(goal, index) {
+    let data = []
+    console.log('in getData, getting goal info and index:', index, goal.name)
+    // push start and end dates to data array
+    data.push({x: new Date(goal.startDate), y: index, symbol: 'circle', fill: goal.color.hex})
+    data.push({x: new Date(goal.endDate), y: index, symbol: 'circle', fill: goal.color.hex})
+    // then map over the array of milestones and push each
+      // something like... new Date(goalInfo.milestone.displayDate) idk
+    return data
+  }
+
   handleZoom(domain) {
     this.setState({selectedDomain: domain})
   }
@@ -32,7 +82,7 @@ export default class extends Component {
   componentDidMount() {
     goalsRef.on('value', (snapshot) => {
       // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
-      // do we want to go back to just using Object.keys?
+      // do we want to go back to just using Object.keys or a for-in loop?
       this.setState({goals: Object.entries(snapshot.val())})
     })
   }
@@ -48,9 +98,8 @@ export default class extends Component {
             // MPM: eventually, manipulate this time span using moment library
             // for now, though, just starting the view at the beginning of 2017
             x: [new Date(2017, 0, 1), Date.now()],
-            y: [0, this.state.goals.length+1]
+            y: [0, this.state.goals.length]
           }}
-          // MPM: add domainPadding?
           containerComponent={
             <VictoryZoomContainer
               dimension='x'
@@ -77,12 +126,13 @@ export default class extends Component {
                       }
                     }
                   }]}
-                  data={[
-                    {a: new Date(goalInfo.startDate), b: index+1},
-                    {a: new Date(goalInfo.endDate), b: index+1}
-                  ]}
-                  x='a'
-                  y='b'
+                  // data={[
+                  //   {a: new Date(goalInfo.startDate), b: index},
+                  //   {a: new Date(goalInfo.endDate), b: index}
+                  // ]}
+                  // x='a'
+                  // y='b'
+                  data={this.getData(goalInfo, index)}
                 />
               )
             })
@@ -108,12 +158,13 @@ export default class extends Component {
                       }
                     }
                   }]}
-                  data={[
-                    {a: new Date(goalInfo.startDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex},
-                    {a: new Date(goalInfo.endDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex}
-                  ]}
-                  x='a'
-                  y='b'
+                  // data={[
+                  //   {a: new Date(goalInfo.startDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex},
+                  //   {a: new Date(goalInfo.endDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex}
+                  // ]}
+                  // x='a'
+                  // y='b'
+                  data={this.getData(goalInfo, index)}
                 />
               )
             })
@@ -132,7 +183,13 @@ export default class extends Component {
             }
           >
             <VictoryAxis
-              tickFormat={(x) => new Date(x).getFullYear()}
+              // tickFormat={(x) => new Date(x).getFullYear()}
+              tickValues={[]}
+              style={{
+                axis: {
+                  stroke: 'none'
+                }
+              }}
             />
             {
               this.state.goals && this.state.goals.map((goal, index) => {
@@ -143,12 +200,13 @@ export default class extends Component {
                     style={{
                       data: {stroke: goalInfo.color.hex}
                     }}
-                    data={[
-                      {a: new Date(goalInfo.startDate), b: index+1},
-                      {a: new Date(goalInfo.endDate), b: index+1}
-                    ]}
-                    x='a'
-                    y='b'
+                    // data={[
+                    //   {a: new Date(goalInfo.startDate), b: index},
+                    //   {a: new Date(goalInfo.endDate), b: index}
+                    // ]}
+                    // x='a'
+                    // y='b'
+                    data={this.getData(goalInfo, index)}
                   />
                 )
               })
