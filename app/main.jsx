@@ -16,10 +16,12 @@ injectTapEventPlugin()
 import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
 
-import Upload from './components/Upload.jsx'
+import Upload from './components/Upload'
 import GoalFormContainer from './components/GoalFormContainer'
 import VictoryExample from './components/VictoryExample'
 import Timelines from './components/Timelines'
+import Login from './components/Login'
+import Navbar from './components/Navbar'
 
 import firebase from 'APP/fire'
 
@@ -55,12 +57,7 @@ auth.onAuthStateChanged(user => user || auth.signInAnonymously())
 const App = ({children}) =>
   <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
     <div>
-      <AppBar title="align">
-        {/* WhoAmI takes a firebase auth API and renders either a
-            greeting and a logout button, or sign in buttons, depending
-            on if anyone's logged in */}
-        <WhoAmI auth={auth}/>
-      </AppBar>
+      <Navbar />
       {/* In theory you can use MUI components in this and its children? http://www.material-ui.com/#/components */}
       {/* Render our children (whatever the router gives us) */}
       {children}
@@ -76,6 +73,7 @@ render(
       <Route path="/timelines" component={Timelines} />
       {/* <Route path="/timelines/:id" component={Timelines} /> */}
       <Route path="/upload" component={Upload} />
+      <Route path="/login" component={Login} />
     </Route>
     <Route path='*' component={NotFound} />
   </Router>,
