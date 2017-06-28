@@ -38,7 +38,7 @@ export default class extends React.Component {
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       // redirect to timeline on successful log in
       .then(() => browserHistory.push('/timelines'))
-      .catch(error => { //THIS ISN'T QUITE RIGHT -- right now, it's showing an "Invalid Login and Password" message when the error is actually a different error on our end
+      .catch(error => {
         const errorMessage = error.message;
         this.setState({
           errorMessage: errorMessage,
