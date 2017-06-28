@@ -1,24 +1,21 @@
 import React from 'react'
 import firebase from 'APP/fire'
+import {browserHistory} from 'react-router'
 const auth = firebase.auth()
-
-import Login from './Login'
 
 export const name = user => {
   if (!user) return 'Nobody'
-  if (user.isAnonymous) return 'Anonymous'
   return user.displayName || user.email
 }
 
 export const WhoAmI = ({user, auth}) =>
   <div className="whoami">
-    <span className="whoami-user-name">Hello, {name(user)}</span>
-    { // If nobody is logged in, or the current user is anonymous,
-      !user ?
-      // ...then show signin links...
-      <Login auth={auth}/>
-      /// ...otherwise, show a logout button.
-      : <button className='logout' onClick={() => auth.signOut()}>logout</button> }
+    <span>Hello, {name(user)}</span>
+    { <button className='logout' onClick={() => {
+      auth.signOut()
+      .then(() => { //after logging out, redirect to login/landing page
+        browserHistory.push('/login')})
+    }}>logout</button> }
   </div>
 
 export default class extends React.Component {

@@ -1,8 +1,9 @@
 import React from 'react'
-
 import firebase from 'APP/fire'
 
-const google = new firebase.auth.GoogleAuthProvider()
+import LocalSignin from './LocalSignin'
+
+// const google = new firebase.auth.GoogleAuthProvider()
 
 // Firebase has several built in auth providers:
 // const facebook = new firebase.auth.FacebookAuthProvider()
@@ -25,10 +26,25 @@ const google = new firebase.auth.GoogleAuthProvider()
 //
 // google.addScope('https://mail.google.com/')
 
-export default ({ auth }) =>
-  // signInWithPopup will try to open a login popup, and if it's blocked, it'll
-  // redirect. If you prefer, you can signInWithRedirect, which always
-  // redirects.
+export default ({ auth }) => {
 
-  <button className='google login'
-          onClick={() => auth.signInWithPopup(google)}>Login with Google</button>
+  // <button className='google login'
+  //         onClick={() => auth.signInWithPopup(google)}>Login with Google</button>
+
+  return (
+    <div>
+      <div>
+        <h3>Signup:</h3>
+      </div>
+      <div>
+        <h3>Login Locally:</h3>
+        <LocalSignin />
+      </div>
+      <div>
+        <h3>Login with Google:</h3>
+      </div>
+    </div>
+  )
+
+}
+

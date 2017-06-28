@@ -57,7 +57,7 @@ auth.onAuthStateChanged(user => user || auth.signInAnonymously())
 const App = ({children}) =>
   <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
     <div>
-      <Navbar />
+      <Navbar auth={auth}/>
       {/* In theory you can use MUI components in this and its children? http://www.material-ui.com/#/components */}
       {/* Render our children (whatever the router gives us) */}
       {children}
