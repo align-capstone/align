@@ -124,13 +124,16 @@ export default class extends React.Component {
   //
   // in the constructor. Incidentally, this means that write
   // is always bound to this.
-  write = (event, id) => {
-    if (event.target.id === 'name') {
-      nameRef.set(event.target.value)
-    }
-    if (event.target.id === 'description') {
-      descriptionRef.set(event.target.value)
-    }
+
+  writeName = (event) => {
+    nameRef.set(event.target.value)
+  }
+
+  writeDescription = (event) => {
+    descriptionRef.set(event.target.value)
+  }
+
+  writeIsOpen = (event, id) => {
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
     if (id === 0) {
       isOpenRef.set(false)
@@ -165,7 +168,7 @@ export default class extends React.Component {
               hintText='Your goal name'
               floatingLabelText='Name'
               value={this.state.name}
-              onChange={this.write}
+              onChange={this.writeName}
               id='name'
             />
           </div>
@@ -174,7 +177,7 @@ export default class extends React.Component {
               hintText='What do you want to do?'
               floatingLabelText='Description'
               value={this.state.description}
-              onChange={this.write}
+              onChange={this.writeDescription}
               id='description'
             />
           </div>
@@ -182,7 +185,7 @@ export default class extends React.Component {
             <SelectField
               floatingLabelText='Is this goal achieved?'
               value={this.state.isOpen}
-              onChange={this.write}
+              onChange={this.writeIsOpen}
             >
               <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
               <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
@@ -206,7 +209,7 @@ export default class extends React.Component {
                 this.state.milestones && this.state.milestones.map((milestone, index) => {
                   let milestonePath = `/milestone/${this.props.id}/${milestone[0]}`
                   return (
-                    <ListItem key={index} primaryText={milestone[1].description} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} >{milestone[1].name}</ListItem>
+                    <ListItem key={index} primaryText={milestone[1].name} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} ></ListItem>
                   )
                 })
               }
@@ -220,7 +223,7 @@ export default class extends React.Component {
                 this.state.checkIns && this.state.checkIns.map((checkin, index) => {
                   let checkinPath = `/checkin/${this.props.id}/${checkin[0]}`
                   return (
-                    <ListItem key={index} primaryText={checkin[1].description} leftIcon={<Edit />} containerElement={<Link to={checkinPath} />} >{checkin[1].name}</ListItem>
+                    <ListItem key={index} primaryText={checkin[1].name} leftIcon={<Edit />} containerElement={<Link to={checkinPath} />} ></ListItem>
                   )
                 })
               }

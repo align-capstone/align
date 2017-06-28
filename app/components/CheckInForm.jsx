@@ -88,18 +88,20 @@ export default class extends React.Component {
   //
   // in the constructor. Incidentally, this means that write
   // is always bound to this.
-  write = (event, id) => {
-    if (event.target.id === 'name') {
-      nameRef.set(event.target.value)
-    }
-    if (event.target.id === 'description') {
-      descriptionRef.set(event.target.value)
-    }
+  writeName = (event) => {
+    nameRef.set(event.target.value)
+  }
+
+  writeDescription = (event) => {
+    descriptionRef.set(event.target.value)
+  }
+
+  writeIsOpen = (event, id) => {
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
-    if (id === 0 ) {
+    if (id === 0) {
       isOpenRef.set(false)
     }
-    if (id === 1 ) {
+    if (id === 1) {
       isOpenRef.set(true)
     }
   }
@@ -120,7 +122,7 @@ export default class extends React.Component {
               hintText='Your check in name'
               floatingLabelText='Name'
               value={this.state.name}
-              onChange={this.write}
+              onChange={this.writeName}
               id='name'
             />
           </div>
@@ -129,7 +131,7 @@ export default class extends React.Component {
               hintText='What do you want to do?'
               floatingLabelText='Description'
               value={this.state.description}
-              onChange={this.write}
+              onChange={this.writeDescription}
               id='description'
             />
           </div>
@@ -137,7 +139,7 @@ export default class extends React.Component {
             <SelectField
               floatingLabelText='Is this check in achieved?'
               value={this.state.isOpen}
-              onChange={this.write}
+              onChange={this.writeIsOpen}
             >
               <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
               <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
