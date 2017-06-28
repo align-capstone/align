@@ -27,15 +27,15 @@ export default class extends Component {
     console.log('in getScatterData, getting goal info and index:', index, goal.name)
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
-    data.push({x: new Date(goal.startDate), y: index, symbol: 'circle', fill: goal.color.hex})
-    data.push({x: new Date(goal.endDate), y: index, symbol: 'circle', fill: goal.color.hex})
+    data.push({x: new Date(goal.startDate), y: index, label: 'start date: \n' + new Date(goal.startDate).toDateString(), symbol: 'circle', fill: goal.color.hex})
+    data.push({x: new Date(goal.endDate), y: index, label: 'end date: \n' + new Date(goal.endDate).toDateString(), symbol: 'circle', fill: goal.color.hex})
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       // console.log('ugh idk milestones?', goal.milestones)
       for (var id in goal.milestones) {
         // console.log(goal.milestones[id].name)
         var milestone = goal.milestones[id]
-        data.push({x: new Date(milestone.displayDate), y: index, symbol: 'square', fill: 'white'})
+        data.push({x: new Date(milestone.displayDate), y: index, label: milestone.name, symbol: 'square', fill: 'white'})
       }
     }
     return data
@@ -140,6 +140,7 @@ export default class extends Component {
                     }
                   }]}
                   data={this.getScatterData(goalInfo, index)}
+                  labelComponent={<VictoryTooltip/>}
                 />
               )
             })
