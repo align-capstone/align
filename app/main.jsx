@@ -18,6 +18,7 @@ import NotFound from './components/NotFound'
 
 import Upload from './components/Upload'
 import GoalFormContainer from './components/GoalFormContainer'
+import MilestoneFormContainer from './components/MilestoneFormContainer'
 import VictoryExample from './components/VictoryExample'
 import Timelines from './components/Timelines'
 import Login from './components/Login'
@@ -67,8 +68,9 @@ const App = ({children}) =>
 render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRedirect to="/goalform/7" />
-      <Route path="/goalform/:id" component={GoalFormContainer} />
+      <IndexRedirect to="goal/7" />
+      <Route path="goal/:id" component={GoalFormContainer} />
+      <Route path="milestone/:id/:mid" component={MilestoneFormContainer} />
       <Route path="/victory-example" component={VictoryExample} />
       <Route path="/timelines" component={Timelines} />
       {/* <Route path="/timelines/:id" component={Timelines} /> */}
