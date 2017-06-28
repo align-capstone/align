@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router';
+import { Link } from 'react-router'
 let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'

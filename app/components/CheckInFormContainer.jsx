@@ -9,7 +9,7 @@ export default ({params: {id, cid}}) => {
   const checkInRefs = getCheckInRefs(id, cid)
   return (
     <div>
-      <CheckInForm fireRef={checkInRefs} />
+      <CheckInForm fireRef={checkInRefs} goalId={id} />
     </div>
   )
 }

@@ -4,6 +4,7 @@ WHERE WE LEFT OFF:::
 (2) need to do end-goal like start-goal to get timestamp into firebase
 */
 import React from 'react'
+import { Link } from 'react-router'
 let nameRef, descriptionRef, isOpenRef, dateRef
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -113,6 +114,7 @@ export default class extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
+          <Link to={`/goal/${this.props.goalId}`}>Back to goal</Link>
           <h1>Edit page for milestone: <span id='milestoneName'>{this.state.name}</span></h1>
           <div className='form-group'>
             <TextField
