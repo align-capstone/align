@@ -178,10 +178,10 @@ export default class extends React.Component {
             </SelectField>
           </div>
           <div className='form-group'>
-            <DatePicker id='startDate' onChange={this.writeStartDate} floatingLabelText='When will you start working on your goal?' />
+            <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start working on your goal?' />
           </div>
           <div className='form-group'>
-            <DatePicker id='endDate' onChange={this.writeEndDate} floatingLabelText='When do you plan to achieve your goal?' />
+            <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText='When do you plan to achieve your goal?' />
           </div>
           <div>
             <h3>Choose Color:</h3>
