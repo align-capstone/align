@@ -1,8 +1,3 @@
-/*
-WHERE WE LEFT OFF:::
-(1) 'Is this goal achieved?'/isOpen -- getting event.target to work in 'write' function
-(2) need to do end-goal like start-goal to get timestamp into firebase
-*/
 import React from 'react'
 import { Link } from 'react-router'
 let nameRef, descriptionRef, isOpenRef, dateRef
@@ -47,14 +42,13 @@ export default class extends React.Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
+    // Set up aliases for our Firebase references:
     nameRef = fireRef.nameRef
     descriptionRef = fireRef.descriptionRef
     isOpenRef = fireRef.isOpenRef
     dateRef = fireRef.dateRef
 
-    // Whenever our ref's value changes, set {value} on our state.
-    // const listener = fireRef.on('value', snapshot =>
-    //   this.setState({value: snapshot.val()}))
+    // Whenever a ref's value changes, set {value} on our state:
 
     const nameListener = nameRef.on('value', snapshot =>
       this.setState({ name: snapshot.val() }))
@@ -98,6 +92,7 @@ export default class extends React.Component {
 
   writeIsOpen = (event, id) => {
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
+    // the id is the index of the select option clicked
     if (id === 0) {
       isOpenRef.set(false)
     }
@@ -107,6 +102,7 @@ export default class extends React.Component {
   }
 
   writeDate = (event, date) => {
+    // get time converts regular date format to timestamp
     dateRef.set(date.getTime())
   }
 

@@ -55,6 +55,7 @@ export default class extends React.Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
+    // Set up aliases for our Firebase references:
     nameRef = fireRef.nameRef
     descriptionRef = fireRef.descriptionRef
     isOpenRef = fireRef.isOpenRef
@@ -65,9 +66,7 @@ export default class extends React.Component {
     checkInsRef = fireRef.checkInsRef
 
     // LISTENERS TO DATEBASE:
-    // Whenever our ref's value changes in Firebase, set {value} on our state.
-    // const listener = fireRef.on('value', snapshot =>
-    //   this.setState({value: snapshot.val()}))
+    // Whenever a ref's value changes in Firebase, set {value} on our state.
 
     const nameListener = nameRef.on('value', snapshot =>
       this.setState({ name: snapshot.val() }))
