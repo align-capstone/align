@@ -11,6 +11,7 @@ import { VictoryAxis, VictoryChart, VictoryLine, VictoryBrushContainer, VictoryZ
 // to get all the values for the current goal in firebase
 
 // go back and add milestones, click handlers, etc.
+// eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
 
 export default class extends Component {
   constructor(props) {
@@ -30,9 +31,13 @@ export default class extends Component {
 
   componentDidMount() {
     goalsRef.on('value', (snapshot) => {
+      // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
+      // do we want to go back to just using Object.keys?
       this.setState({goals: Object.entries(snapshot.val())})
     })
   }
+
+  // MPM: add componentWillUnmount
 
   render() {
     const chartStyle = { parent: {minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer'} }
@@ -64,6 +69,14 @@ export default class extends Component {
                   style={{
                     data: {stroke: goalInfo.color.hex}
                   }}
+                  events={[{
+                    target: 'data',
+                    eventHandlers: {
+                      onClick: (event) => {
+                        console.log('clicked line #', index)
+                      }
+                    }
+                  }]}
                   data={[
                     {a: new Date(goalInfo.startDate), b: index+1},
                     {a: new Date(goalInfo.endDate), b: index+1}
@@ -80,7 +93,12 @@ export default class extends Component {
                 <VictoryScatter
                   key={index}
                   style={{
-                    data: { stroke: goalInfo.color.hex, strokeWidth: 3, fill: 'white' }
+                    data: {
+                      stroke: goalInfo.color.hex,
+                      strokeWidth: 3,
+                      fill: 'white'
+                    }
+                    // MPM add labels
                   }}
                   events={[{
                     target: 'data',
@@ -91,8 +109,8 @@ export default class extends Component {
                     }
                   }]}
                   data={[
-                    {a: new Date(goalInfo.startDate), b: index+1},
-                    {a: new Date(goalInfo.endDate), b: index+1}
+                    {a: new Date(goalInfo.startDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex},
+                    {a: new Date(goalInfo.endDate), b: index+1, symbol: 'circle', fill: goalInfo.color.hex}
                   ]}
                   x='a'
                   y='b'
@@ -104,7 +122,7 @@ export default class extends Component {
 
         <VictoryChart
             padding={{top: 0, left: 50, right: 50, bottom: 30}}
-            width={600} height={50} scale={{x: 'time'}}
+            width={600} height={50} scale={{x: 'time'}} style={chartStyle}
             containerComponent={
               <VictoryBrushContainer
                 dimension='x'
