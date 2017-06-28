@@ -4,7 +4,9 @@ import {browserHistory} from 'react-router'
 const auth = firebase.auth()
 
 export const name = user => {
-  if (!user) return 'Nobody'
+  if (!user) {
+    return 'Nobody'
+  }
   return user.displayName || user.email
 }
 
