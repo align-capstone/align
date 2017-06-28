@@ -20,8 +20,8 @@ export default class extends React.Component {
       name: '',
       description: '',
       isOpen: true,
-      startDate: 0,
-      endDate: 0,
+      startDate: new Date().getTime(),
+      endDate: new Date().getTime(),
       color: '#000',
       milestones: [],
       checkIns: []
@@ -71,16 +71,18 @@ export default class extends React.Component {
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {
-      if (snapshot.val() === null) isOpenRef.set(true)
       this.setState({ isOpen: snapshot.val() })
+      if (snapshot.val() === null) isOpenRef.set(true)
     })
 
     const startDateListener = startRef.on('value', snapshot => {
       this.setState({ startDate: snapshot.val() })
+      if (snapshot.val() === null) startRef.set(new Date().getTime())
     })
 
     const endDateListener = endRef.on('value', snapshot => {
       this.setState({ endDate: snapshot.val() })
+      if (snapshot.val() === null) endRef.set(new Date().getTime())
     })
 
     const colorListener = colorRef.on('value', snapshot => {

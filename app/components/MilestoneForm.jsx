@@ -21,7 +21,7 @@ export default class extends React.Component {
       name: '',
       description: '',
       isOpen: true,
-      date: 0
+      date: new Date().getTime()
     }
   }
 
@@ -63,13 +63,13 @@ export default class extends React.Component {
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {
-      if (snapshot.val() === null) isOpenRef.set(true)
       this.setState({ isOpen: snapshot.val() })
+      if (snapshot.val() === null) isOpenRef.set(true)
     })
 
     const dateListener = dateRef.on('value', snapshot => {
       this.setState({ date: snapshot.val() })
-      console.log("New date new state: ", new Date(this.state.date))
+      if (snapshot.val() === null) dateRef.set(new Date().getTime())
     })
 
     // Set unsubscribe to be a function that detaches the listener.
@@ -105,7 +105,6 @@ export default class extends React.Component {
   }
 
   writeDate = (event, date) => {
-    console.log("Looks like you picked: ", date)
     dateRef.set(date.getTime())
   }
 
