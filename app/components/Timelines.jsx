@@ -70,6 +70,7 @@ export default class extends Component {
             // x: [new Date(2017, 0, 1), Date.now()],
             y: [-1, this.state.goals.length]
           }}
+          // MPM: add domainPadding?
           containerComponent={
             <VictoryZoomContainer
               dimension='x'

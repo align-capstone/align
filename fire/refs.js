@@ -7,5 +7,6 @@ exports.getGoalRefs = id => ({
   descriptionRef: db.ref('goals').child(id).child('description'),
   isOpenRef: db.ref('goals').child(id).child('isOpen'),
   startRef: db.ref('goals').child(id).child('startDate'),
-  endRef: db.ref('goals').child(id).child('endDate')
+  endRef: db.ref('goals').child(id).child('endDate'),
+  colorRef: db.ref('goals').child(id).child('color'),
 })
