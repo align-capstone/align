@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router';
-let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef
+let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -23,7 +23,8 @@ export default class extends React.Component {
       startDate: 0,
       endDate: 0,
       color: '#000',
-      milestones: []
+      milestones: [],
+      checkIns: []
     }
   }
 
@@ -55,6 +56,7 @@ export default class extends React.Component {
     endRef = fireRef.endRef
     colorRef = fireRef.colorRef
     milestonesRef = fireRef.milestonesRef
+    checkInsRef = fireRef.checkInsRef
 
     // LISTENERS TO DATEBASE:
     // Whenever our ref's value changes in Firebase, set {value} on our state.
@@ -90,6 +92,10 @@ export default class extends React.Component {
       this.setState({ milestones: Object.entries(snapshot.val()) })
     })
 
+    const checkInsListener = checkInsRef.on('value', snapshot => {
+      this.setState({ checkIns: Object.entries(snapshot.val()) })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
@@ -99,6 +105,7 @@ export default class extends React.Component {
       endRef.off('value', endDateListener)
       colorRef.off('value', colorListener)
       milestonesRef.off('value', milestonesListener)
+      checkInsRef.off('value', checkInsListener)
     }
   }
 
@@ -135,10 +142,6 @@ export default class extends React.Component {
 
   handleColorChange = (color, event) => {
     colorRef.set(color)
-  }
-
-  milestoneLink = (event) => {
-    console.log("YR EVENT IS: ", event.target)
   }
 
   render() {
@@ -196,6 +199,19 @@ export default class extends React.Component {
                   let milestonePath = `/milestone/${this.props.id}/${milestone[0]}`
                   return (
                     <ListItem key={index} primaryText={milestone[1].description} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} >{milestone[1].name}</ListItem>
+                  )
+                })
+              }
+            </List>
+          </div>
+          <div>
+            <h3>Check Ins:</h3>
+            <List>
+              {
+                this.state.checkIns && this.state.checkIns.map((checkin, index) => {
+                  let checkinPath = `/checkin/${this.props.id}/${checkin[0]}`
+                  return (
+                    <ListItem key={index} primaryText={checkin[1].description} leftIcon={<Edit />} containerElement={<Link to={checkinPath} />} >{checkin[1].name}</ListItem>
                   )
                 })
               }
