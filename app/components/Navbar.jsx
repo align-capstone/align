@@ -14,6 +14,7 @@ import firebase from 'APP/fire'
 
 // Get the auth API from Firebase.
 const auth = firebase.auth()
+console.log("what is 'auth'??? : ", auth)
 
 auth.onAuthStateChanged(user => user || auth.signInAnonymously())
 
@@ -21,6 +22,7 @@ export default function Navbar(props) {
   return (
     <AppBar title="align">
       <WhoAmI auth={auth}/>
+      <h1>HELLO</h1>
     </AppBar>
   )
 }
