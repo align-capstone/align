@@ -23,6 +23,7 @@ import VictoryExample from './components/VictoryExample'
 import Timelines from './components/Timelines'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
+import Resource from './components/Resource'
 
 import firebase from 'APP/fire'
 
@@ -74,6 +75,7 @@ render(
       <Route path="/victory-example" component={VictoryExample} />
       <Route path="/timelines" component={Timelines} />
       {/* <Route path="/timelines/:id" component={Timelines} /> */}
+      <Route path="/resource" component={Resource} />
       <Route path="/upload" component={Upload} />
       <Route path="/login" component={Login} />
     </Route>

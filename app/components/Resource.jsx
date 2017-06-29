@@ -9,17 +9,81 @@
 // iterate over all the img tags and extract 'href' or whatever
 // ...
 
-// server folder
+// instead of having back-end API routes, just make ajax request from in here?
+// and then maybe we can refactor to do it with an express route
+// fuck actually we want to do this server-side to avoid cross-origin issues
+// except it's probably the case that that API we want to use will allow CORS
+// scrape each page for URL images, and then in the actual card, make those images link to the resource
 
-/* in api.js
-'use strict'
-const api = require('express').Router()
-const db = require('../db')
-// but instead of requiring db, we'll... send this stuff to firebase somehow how help
+// extract the title tag, plus the img tag sources that seem the most appropriate... <img src=....
+// and, don't redo this work every time; store the title and image in the database
 
-api.get('/hello', (req, res) => res.send({hello: 'world'}))
-// set up whatever API we're using below
-api.use('/whatever', require('./whatever'))
+import React, {Component} from 'react'
+import $ from 'jquery'
+// import axios from 'axios'
 
-module.exports = api
+export default class extends Component {
+  constructor(props) {
+    super()
+    this.state = {
+      title: ''
+    }
+  }
+
+  componentDidMount() {
+    const resourceUrl = 'http://api.linkpreview.net/?key=123456&q=https://www.google.com/'
+
+    // $(function(resourceUrl) {
+    //   $.ajax({
+    //     type: 'GET',
+    //     url: resourceUrl,
+    //     success: function(preview) {
+    //       const title = preview.title
+    //       console.log(title)
+    //     }
+    //   })
+    // })
+
+    const target = 'https://www.google.com'
+
+    $.ajax({
+      url: 'http://api.linkpreview.net',
+      dataType: 'jsonp',
+      data: {q: target, key: '123456'},
+      success: function(response) {
+        console.log(response)
+      }
+    })
+
+    // MPM ugh ugh axios doesn't support jsonp or whatever for cross-origin requests
+    // axios.get('http://api.linkpreview.net/?key=123456&q=https://www.google.com/')
+    // .then(res => {
+    //   console.log('res from inside Resource component? ', res)
+    //   const title = res.title
+    //   this.setState({ title })
+    // })
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>lol what</h1>
+      </div>
+    )
+  }
+}
+
+/*
+let resourceUrl = 'http://api.linkpreview.net/?key=123456&q=https://www.google.com/'
+
+$(function(resourceUrl) {
+  $.ajax({
+    type: 'GET',
+    url: resourceUrl,
+    success: function(preview) {
+      const title = preview.title
+      console.log(title)
+    }
+  })
+})
 */
