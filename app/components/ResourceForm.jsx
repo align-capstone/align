@@ -3,7 +3,7 @@ let resourceRef, titleRef, urlRef, imageRef, descriptionRef
 
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
-import TextField from 'material-ui/TextField'
+import {TextField, RaisedButton} from 'material-ui'
 
 import $ from 'jquery'
 
@@ -61,24 +61,36 @@ export default class extends Component {
   // don't write URL yet... first, make the ajax request
   // THEN write title, image, and description based on JSON returned by ajax call
 
+  handleSubmit = (event) => {
+    // event.preventDefault()
+    console.log('clicked it!')
+    console.log(event.target)
+  }
+
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
           <h3>Add a resource below</h3>
-          <div className='form-group'>
-            <TextField
-              // autoFocus
-              hintText='Paste a URL here'
-              floatingLabelText='URL'
-              // value={this.state.url}
-              onChange={console.log(this.value)} // set state in here??
-              onFocus={console.log('focused lol')}
-              // onBlur={console.log('blurred ', this.value) /* this.getPageInfo(this.value) */ }
-              onFocusOut={console.log('unfocused ', this.value)}
-              id='url'
-            />
-          </div>
+          <form>
+            <div>
+              <TextField
+                autoFocus
+                hintText='Paste a URL here'
+                floatingLabelText='URL'
+                // value={this.state.url}
+                // onChange={console.log(this.value)} // set state in here??
+                // onFocus={console.log('focused lol')}
+                // onBlur={console.log('blurred ', this.value) /* this.getPageInfo(this.value) */ }
+                // onFocusOut={console.log('unfocused ', this.value)}
+                onSubmit={console.log('is this even')}
+                id='url'
+              />
+            </div>
+            <div>
+              <RaisedButton label="add resource" type="submit" /* onTouchTap={this.handleSubmit} */ />
+            </div>
+          </form>
         </div>
       </MuiThemeProvider>
     )
