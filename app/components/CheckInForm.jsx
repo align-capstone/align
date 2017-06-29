@@ -42,14 +42,13 @@ export default class extends React.Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
+    // Set up aliases for our Firebase references:
     nameRef = fireRef.nameRef
     descriptionRef = fireRef.descriptionRef
     isOpenRef = fireRef.isOpenRef
     dateRef = fireRef.dateRef
 
-    // Whenever our ref's value changes, set {value} on our state.
-    // const listener = fireRef.on('value', snapshot =>
-    //   this.setState({value: snapshot.val()}))
+    // Whenever a ref's value changes, set {value} on our state:
 
     const nameListener = nameRef.on('value', snapshot =>
       this.setState({ name: snapshot.val() }))
@@ -59,10 +58,9 @@ export default class extends React.Component {
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {
-      if (snapshot.val() === null) isOpenRef.set(true)
       this.setState({ isOpen: snapshot.val() })
+      if (snapshot.val() === null) isOpenRef.set(true)
     })
-
     const dateListener = dateRef.on('value', snapshot => {
       this.setState({ date: snapshot.val() })
       if (snapshot.val() === null) dateRef.set(new Date().getTime())
@@ -94,6 +92,7 @@ export default class extends React.Component {
 
   writeIsOpen = (event, id) => {
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
+    // the id is the index of the select option clicked
     if (id === 0) {
       isOpenRef.set(false)
     }
@@ -103,6 +102,7 @@ export default class extends React.Component {
   }
 
   writeDate = (event, date) => {
+    // get time converts regular date format to timestamp
     dateRef.set(date.getTime())
   }
 
@@ -112,10 +112,10 @@ export default class extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
           <Link to={`/goal/${this.props.goalId}`}>Back to goal</Link>
-          <h1>Edit page for milestone: <span id='milestoneName'>{this.state.name}</span></h1>
+          <h1>Edit page for check in: <span id='checkInName'>{this.state.name}</span></h1>
           <div className='form-group'>
             <TextField
-              hintText='Your milestone name'
+              hintText='Your check in name'
               floatingLabelText='Name'
               value={this.state.name}
               onChange={this.writeName}
@@ -133,7 +133,7 @@ export default class extends React.Component {
           </div>
           <div className='form-group'>
             <SelectField
-              floatingLabelText='Is this milestone achieved?'
+              floatingLabelText='Is this check in achieved?'
               value={this.state.isOpen}
               onChange={this.writeIsOpen}
             >
@@ -142,7 +142,7 @@ export default class extends React.Component {
             </SelectField>
           </div>
           <div className='form-group'>
-            <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this milestone?' />
+            <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this check in?' />
           </div>
         </div>
       </MuiThemeProvider>

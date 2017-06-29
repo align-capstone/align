@@ -37,7 +37,7 @@ export default class extends React.Component {
     console.log("what's on state now? ", this.state)
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       // redirect to timeline on successful log in
-      .then(() => browserHistory.push('/timelines'))
+      // .then(() => browserHistory.push('/timelines'))
       .catch(error => {
         const errorMessage = error.message;
         this.setState({
