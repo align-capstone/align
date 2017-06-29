@@ -15,7 +15,6 @@ import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 
-// go back and add milestones, click handlers, etc.
 // eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
 
 export default class extends Component {
@@ -23,8 +22,8 @@ export default class extends Component {
     super()
     this.state = {
       menuOpen: false,
-      goals: [],
-      // userId: 0
+      goals: [], //the actual goals that happen to belong to the user
+      usersGoals: {}, //from the 'users' object -- the one that just says 'true'
     }
   }
 
@@ -32,13 +31,13 @@ export default class extends Component {
     var data = []
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
-    data.push({x: new Date(goal.startDate), y: index, label: 'start date: \n' + new Date(goal.startDate).toDateString(), symbol: 'circle', fill: goal.color.hex})
-    data.push({x: new Date(goal.endDate), y: index, label: 'end date: \n' + new Date(goal.endDate).toDateString(), symbol: 'circle', fill: goal.color.hex})
+    data.push({ x: new Date(goal.startDate), y: index, label: 'start date: \n' + new Date(goal.startDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.endDate), y: index, label: 'end date: \n' + new Date(goal.endDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       for (var id in goal.milestones) {
         var milestone = goal.milestones[id]
-        data.push({x: new Date(milestone.displayDate), y: index, label: milestone.name, symbol: 'square', fill: 'white'})
+        data.push({ x: new Date(milestone.displayDate), y: index, label: milestone.name, symbol: 'square', fill: 'white' })
       }
     }
     return data
@@ -46,11 +45,11 @@ export default class extends Component {
 
   // VICTORY HELPER FUNCTIONS:
   handleZoom(domain) {
-    this.setState({selectedDomain: domain})
+    this.setState({ selectedDomain: domain })
   }
 
   handleBrush(domain) {
-    this.setState({zoomDomain: domain})
+    this.setState({ zoomDomain: domain })
   }
 
   // MUI HELPER FUNCTIONS:
@@ -81,36 +80,43 @@ export default class extends Component {
       console.log('newGoalId: ', newGoalId)
       browserHistory.push(newGoalPath)
     }
-    // this can be used when we get to milestones:
-    // let newMilestoneRef = milestonesRef.push()
-    // let newMilestonePath = `/milestone/${this.props.id}/${newMilestoneRef.key}`
-    // browserHistory.push(newMilestonePath)
   }
 
   componentDidMount() {
-    goalsRef.on('value', (snapshot) => {
-      // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
-      // do we want to go back to just using Object.keys or a for-in loop?
-      this.setState({goals: Object.entries(snapshot.val())})
-    })
-
     this.unsubscribe = auth.onAuthStateChanged(user => {
-      if(user) {
+      if (user) {
         const userId = user.uid
-        // this.setState({userId: userId})
         currentUserGoalsRef = usersRef.child(userId).child('goals')
         console.log("currentUserGoalsRef???", currentUserGoalsRef)
       }
+      currentUserGoalsRef.on('value', (snapshot) => {
+        // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
+        // do we want to go back to just using Object.keys or a for-in loop?
+
+        this.setState({ usersGoals: snapshot.val() }) //taking current user's {goals: true} object and setting it on the state
+
+        let userGoalIds = Object.keys(this.state.usersGoals)
+        let userGoals = {};
+        userGoalIds.map(goalId => {
+          goalsRef.child(goalId).on('value', (goalSnapshot) => {
+            userGoals[goalId] = goalSnapshot.val()
+            this.setState({goals: Object.entries(userGoals)})
+            console.log("still working?????", this.state)
+          })
+        })
+
+      })
     })
+
   }
 
   // MPM: add componentWillUnmount
 
   render() {
-    const chartStyle = { parent: {minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer'} }
+    const chartStyle = { parent: { minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer' } }
     return (
       <div>
-        <VictoryChart width={600} height={400} scale={{x: 'time'}} style={chartStyle}
+        <VictoryChart width={600} height={400} scale={{ x: 'time' }} style={chartStyle}
           domain={{
             // MPM: eventually, manipulate this time span using moment library
             // for now, though, just start the view at the beginning of 2017??
@@ -127,15 +133,15 @@ export default class extends Component {
           }
         >
           <VictoryAxis
-              style={{
-                axis: {
-                  stroke: 'none'
-                },
-                tickLabels: {
-                  angle: -45
-                }
-              }}
-            />
+            style={{
+              axis: {
+                stroke: 'none'
+              },
+              tickLabels: {
+                angle: -45
+              }
+            }}
+          />
 
           {
             this.state.goals && this.state.goals.map((goal, index) => {
@@ -159,8 +165,8 @@ export default class extends Component {
                     }
                   }]}
                   data={[
-                    {x: new Date(goalInfo.startDate), y: index},
-                    {x: new Date(goalInfo.endDate), y: index}
+                    { x: new Date(goalInfo.startDate), y: index },
+                    { x: new Date(goalInfo.endDate), y: index }
                   ]}
                 />
               )
@@ -187,7 +193,7 @@ export default class extends Component {
                     }
                   }]}
                   data={this.getScatterData(goalInfo, index)}
-                  labelComponent={<VictoryTooltip/>}
+                  labelComponent={<VictoryTooltip />}
                 />
               )
             })
@@ -195,47 +201,47 @@ export default class extends Component {
         </VictoryChart>
 
         <VictoryChart
-            // eventually, we want this size to be responsive / relative to # of goals?
-            padding={{top: 0, left: 50, right: 50, bottom: 30}}
-            width={600} height={50} scale={{x: 'time'}} style={chartStyle}
-            domain={{y: [-1, this.state.goals.length]}}
-            containerComponent={
-              <VictoryBrushContainer
-                dimension='x'
-                selectedDomain={this.state.selectedDomain}
-                onDomainChange={this.handleBrush.bind(this)}
-              />
-            }
-          >
-            <VictoryAxis
-              // tickFormat={(x) => new Date(x).getFullYear()}
-              tickValues={[]}
-              style={{
-                axis: {
-                  stroke: 'none'
-                }
-              }}
+          // eventually, we want this size to be responsive / relative to # of goals?
+          padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
+          width={600} height={50} scale={{ x: 'time' }} style={chartStyle}
+          domain={{ y: [-1, this.state.goals.length] }}
+          containerComponent={
+            <VictoryBrushContainer
+              dimension='x'
+              selectedDomain={this.state.selectedDomain}
+              onDomainChange={this.handleBrush.bind(this)}
             />
-            {
-              this.state.goals && this.state.goals.map((goal, index) => {
-                let goalInfo = goal[1]
-                return (
-                  <VictoryLine
-                    key={index}
-                    style={{
-                      data: {
-                        stroke: goalInfo.color.hex,
-                        strokeWidth: 3
-                      }
-                    }}
-                    data={[
-                      {x: new Date(goalInfo.startDate), y: index},
-                      {x: new Date(goalInfo.endDate), y: index}
-                    ]}
-                  />
-                )
-              })
-            }
+          }
+        >
+          <VictoryAxis
+            // tickFormat={(x) => new Date(x).getFullYear()}
+            tickValues={[]}
+            style={{
+              axis: {
+                stroke: 'none'
+              }
+            }}
+          />
+          {
+            this.state.goals && this.state.goals.map((goal, index) => {
+              let goalInfo = goal[1]
+              return (
+                <VictoryLine
+                  key={index}
+                  style={{
+                    data: {
+                      stroke: goalInfo.color.hex,
+                      strokeWidth: 3
+                    }
+                  }}
+                  data={[
+                    { x: new Date(goalInfo.startDate), y: index },
+                    { x: new Date(goalInfo.endDate), y: index }
+                  ]}
+                />
+              )
+            })
+          }
         </VictoryChart>
         <FloatingActionButton secondary={true} onTouchTap={this.handleTouchTap}>
           <ContentAdd />
@@ -243,8 +249,8 @@ export default class extends Component {
         <Popover
           open={this.state.menuOpen}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           onRequestClose={this.handleRequestClose}
         >
           <Menu onItemTouchTap={this.createNewGoal}>
