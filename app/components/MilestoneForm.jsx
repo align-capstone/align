@@ -59,8 +59,8 @@ export default class extends React.Component {
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {
-      if (snapshot.val() === null) isOpenRef.set(true)
       this.setState({ isOpen: snapshot.val() })
+      if (snapshot.val() === null) isOpenRef.set(true)
     })
 
     const dateListener = dateRef.on('value', snapshot => {

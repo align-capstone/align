@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
 import firebase from 'APP/fire'
 const db = firebase.database()
+const auth = firebase.auth()
 let goalsRef = db.ref('goals')
 
 import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter, VictoryTooltip } from 'victory'
+
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+import ContentAdd from 'material-ui/svg-icons/content/add'
+import Popover from 'material-ui/Popover'
+import Menu from 'material-ui/Menu'
+import MenuItem from 'material-ui/MenuItem'
 
 // go back and add milestones, click handlers, etc.
 // eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
@@ -12,7 +19,9 @@ export default class extends Component {
   constructor(props) {
     super()
     this.state = {
-      goals: []
+      menuOpen: false,
+      goals: [],
+      userId: 0
     }
   }
 
@@ -32,6 +41,7 @@ export default class extends Component {
     return data
   }
 
+  // VICTORY HELPER FUNCTIONS:
   handleZoom(domain) {
     this.setState({selectedDomain: domain})
   }
@@ -40,11 +50,50 @@ export default class extends Component {
     this.setState({zoomDomain: domain})
   }
 
+  // MUI HELPER FUNCTIONS:
+  handleTouchTap = (event) => {
+    // This prevents ghost click.
+    event.preventDefault()
+
+    this.setState({
+      menuOpen: true,
+      anchorEl: event.currentTarget,
+    })
+  }
+
+  handleRequestClose = () => {
+    this.setState({
+      menuOpen: false,
+    })
+  }
+
+  // FIREBASE HELPER FUNCTIONS:
+  createNewGoal = (event, menuItem, index) => {
+    // check to see if the index of the menu item is the index of the add goal item aka 0
+    if (index === 0) {
+      let newGoalRef = goalsRef.push()
+      let newGoalId = newGoalRef.key
+      let newGoalPath = `/goal/${newGoalId}`
+      // console.log("user???", firebase.getAuth()) // this does not work btw
+    }
+    // this can be used when we get to milestones:
+    // let newMilestoneRef = milestonesRef.push()
+    // let newMilestonePath = `/milestone/${this.props.id}/${newMilestoneRef.key}`
+    // browserHistory.push(newMilestonePath)
+  }
+
   componentDidMount() {
     goalsRef.on('value', (snapshot) => {
       // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
       // do we want to go back to just using Object.keys or a for-in loop?
       this.setState({goals: Object.entries(snapshot.val())})
+    })
+
+    this.unsubscribe = auth.onAuthStateChanged(user => {
+      if(user) {
+        console.log("ID???", user.uid)
+        // this gets the id omggggg
+      }
     })
   }
 
@@ -181,6 +230,22 @@ export default class extends Component {
               })
             }
         </VictoryChart>
+        <FloatingActionButton secondary={true} onTouchTap={this.handleTouchTap}>
+          <ContentAdd />
+        </FloatingActionButton>
+        <Popover
+          open={this.state.menuOpen}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+        >
+          <Menu onItemTouchTap={this.createNewGoal}>
+            <MenuItem id='add-goal' primaryText='Add goal' />
+            <MenuItem primaryText='Add milestone' />
+            <MenuItem primaryText='Add check in' />
+          </Menu>
+        </Popover>
       </div>
     )
   }
