@@ -1,8 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef
 
-import uuidv1 from 'uuid/v1'
 let newMilestonePath, newCheckInPath
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -37,8 +36,6 @@ export default class extends React.Component {
     // When the component mounts, start listening to the fireRef
     // we were given.
     this.listenTo(this.props.fireRef)
-    newMilestonePath = `/milestone/${this.props.id}/${uuidv1()}`
-    newCheckInPath = `/checkin/${this.props.id}/${uuidv1()}`
   }
 
   componentWillUnmount() {
@@ -155,6 +152,18 @@ export default class extends React.Component {
     colorRef.set(color)
   }
 
+  createNewMilestone = () => {
+    let newMilestoneRef = milestonesRef.push()
+    let newMilestonePath = `/milestone/${this.props.id}/${newMilestoneRef.key}`
+    browserHistory.push(newMilestonePath)
+  }
+
+  createNewCheckIn = () => {
+    let newCheckInRef = checkInsRef.push()
+    let newCheckInPath = `/checkin/${this.props.id}/${newCheckInRef.key}`
+    browserHistory.push(newCheckInPath)
+  }
+
   render() {
     //color array, for color pallette
     const colorArray = ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b"]
@@ -213,7 +222,7 @@ export default class extends React.Component {
                   )
                 })
               }
-              <ListItem leftIcon={<Add />} containerElement={<Link to={newMilestonePath} />} >Add new</ListItem>
+              <ListItem leftIcon={<Add />} onTouchTap={this.createNewMilestone} >Add new</ListItem>
             </List>
           </div>
           <div>
@@ -227,7 +236,7 @@ export default class extends React.Component {
                   )
                 })
               }
-              <ListItem leftIcon={<Add />} containerElement={<Link to={newCheckInPath} />} >Add new</ListItem>
+              <ListItem leftIcon={<Add />} onTouchTap={this.createNewCheckIn} >Add new</ListItem>
             </List>
           </div>
         </div>
