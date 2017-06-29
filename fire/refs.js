@@ -33,7 +33,7 @@ exports.getCheckInRefs = (goalId, checkId) => ({
 })
 
 exports.getResourceRefs = id => ({
-  idRef: db.ref('resources').child(id),
+  resourceRef: db.ref('resources').child(id),
   urlRef: db.ref('resources').child(id).child('url'),
   titleRef: db.ref('resources').child(id).child('title'),
   imageRef: db.ref('resources').child(id).child('image'),
