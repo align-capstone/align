@@ -15,6 +15,7 @@ import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 
+
 // eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
 
 export default class extends Component {
@@ -27,15 +28,19 @@ export default class extends Component {
     }
   }
 
+  // MPM adding this helper function ugh I hate everything
   getScatterData(goal, index) {
     var data = []
+    console.log('in getScatterData, getting goal info and index:', index, goal.name)
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
     data.push({ x: new Date(goal.startDate), y: index, label: 'start date: \n' + new Date(goal.startDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
     data.push({ x: new Date(goal.endDate), y: index, label: 'end date: \n' + new Date(goal.endDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
+      // console.log('ugh idk milestones?', goal.milestones)
       for (var id in goal.milestones) {
+        // console.log(goal.milestones[id].name)
         var milestone = goal.milestones[id]
         data.push({ x: new Date(milestone.displayDate), y: index, label: milestone.name, symbol: 'square', fill: 'white' })
       }
