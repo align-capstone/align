@@ -29,6 +29,7 @@ export default class extends React.Component {
       color: '#000',
       milestones: [],
       checkIns: []
+      // MPM initialize resources here??? resources: []
     }
   }
 

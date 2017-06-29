@@ -10,7 +10,8 @@ exports.getGoalRefs = id => ({
   endRef: db.ref('goals').child(id).child('endDate'),
   colorRef: db.ref('goals').child(id).child('color'),
   milestonesRef: db.ref('goals').child(id).child('milestones'),
-  checkInsRef: db.ref('goals').child(id).child('checkIns')
+  checkInsRef: db.ref('goals').child(id).child('checkIns'),
+  resourcesRef: db.ref('goals').child(id).child('resources') // will return an object of resource ids on a goal
 })
 
 exports.getMilestoneRefs = (goalId, mileId) => ({
@@ -18,13 +19,23 @@ exports.getMilestoneRefs = (goalId, mileId) => ({
   nameRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('name'),
   descriptionRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('description'),
   isOpenRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('isOpen'),
-  dateRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('displayDate')
+  dateRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('displayDate'),
+  resourcesRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('resources') // will return an object of resource ids on the milestone
 })
 
 exports.getCheckInRefs = (goalId, checkId) => ({
-  milestoneRef: db.ref('goals').child(goalId).child('checkIns').child(checkId),
+  checkInRef: db.ref('goals').child(goalId).child('checkIns').child(checkId),
   nameRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('name'),
   descriptionRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('description'),
   isOpenRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('isOpen'),
-  dateRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('displayDate')
+  dateRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('displayDate'),
+  resourcesRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('resources') // will return an object of resource ids on the check-in
+})
+
+exports.getResourceRefs = id => ({
+  idRef: db.ref('resources').child(id),
+  urlRef: db.ref('resources').child(id).child('url'),
+  titleRef: db.ref('resources').child(id).child('title'),
+  imageRef: db.ref('resources').child(id).child('image'),
+  descriptionRef: db.ref('resources').child(id).child('description')
 })
