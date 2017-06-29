@@ -25,6 +25,7 @@ import Timelines from './components/Timelines'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Doorslam from './components/Doorslam'
+import ResourceForm from './components/ResourceForm'
 
 import firebase from 'APP/fire'
 
@@ -79,6 +80,7 @@ render(
       {/* <Route path="/timelines/:id" component={Timelines} /> */}
       <Route path="/upload" component={Upload} />
       <Route path="/login" component={Login} />
+      <Route path="/test" component={ResourceForm} />
     </Route>
     <Route path='*' component={NotFound} />
   </Router>,
