@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import firebase from 'APP/fire'
 const db = firebase.database()
 const auth = firebase.auth()
 let goalsRef = db.ref('goals')
+let usersRef = db.ref('users')
+let currentUserGoalsRef
 
 import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter, VictoryTooltip } from 'victory'
 
@@ -21,7 +24,7 @@ export default class extends Component {
     this.state = {
       menuOpen: false,
       goals: [],
-      userId: 0
+      // userId: 0
     }
   }
 
@@ -74,7 +77,9 @@ export default class extends Component {
       let newGoalRef = goalsRef.push()
       let newGoalId = newGoalRef.key
       let newGoalPath = `/goal/${newGoalId}`
-      // console.log("user???", firebase.getAuth()) // this does not work btw
+      let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
+      console.log('newGoalId: ', newGoalId)
+      browserHistory.push(newGoalPath)
     }
     // this can be used when we get to milestones:
     // let newMilestoneRef = milestonesRef.push()
@@ -91,8 +96,10 @@ export default class extends Component {
 
     this.unsubscribe = auth.onAuthStateChanged(user => {
       if(user) {
-        console.log("ID???", user.uid)
-        // this gets the id omggggg
+        const userId = user.uid
+        // this.setState({userId: userId})
+        currentUserGoalsRef = usersRef.child(userId).child('goals')
+        console.log("currentUserGoalsRef???", currentUserGoalsRef)
       }
     })
   }
