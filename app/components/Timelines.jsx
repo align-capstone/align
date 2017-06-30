@@ -5,7 +5,7 @@ const db = firebase.database()
 const auth = firebase.auth()
 let goalsRef = db.ref('goals')
 let usersRef = db.ref('users')
-let currentUserGoalsRef
+let currentUserGoalsRef, goalsListener
 
 import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter, VictoryTooltip } from 'victory'
 
@@ -23,7 +23,6 @@ export default class extends Component {
     this.state = {
       menuOpen: false,
       goals: [], // the actual goals that happen to belong to the user
-      usersGoals: {}, // from the 'users' object -- the one that just says 'true'
     }
   }
 
@@ -94,24 +93,45 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = auth.onAuthStateChanged(user => {
+    this.unsubscribeAuth = auth.onAuthStateChanged(user => {
       if (user) {
         const userId = user.uid
         currentUserGoalsRef = usersRef.child(userId).child('goals')
+        this.listenTo(currentUserGoalsRef)
       }
-      currentUserGoalsRef.on('value', (snapshot) => {
-        this.setState({ usersGoals: snapshot.val() }) // taking current user's {goals: true} object and setting it on the state
+    })
+  }
 
-        let userGoalIds = Object.keys(this.state.usersGoals)
-        let userGoals = {}
-        userGoalIds.map(goalId => {
-          goalsRef.child(goalId).on('value', (goalSnapshot) => {
-            userGoals[goalId] = goalSnapshot.val()
-            this.setState({goals: Object.entries(userGoals)})
-          })
+  componentWillUnmount() {
+    // When we unmount, stop listening.
+    this.unsubscribe()
+    this.unsubscribeAuth()
+  }
+
+  componentWillReceiveProps(incoming, outgoing) {
+    // When the props sent to us by our parent component change,
+    // start listening to the new firebase reference.
+    this.listenTo(incoming.fireRef)
+  }
+
+  listenTo(fireRef) {
+    if (this.unsubscribe) this.unsubscribe()
+
+    goalsListener = fireRef.on('value', (snapshot) => {
+      let userGoalIds = Object.keys(snapshot.val())
+      let userGoals = {}
+      userGoalIds.map(goalId => {
+        goalsRef.child(goalId).on('value', (goalSnapshot) => {
+          userGoals[goalId] = goalSnapshot.val()
+          this.setState({goals: Object.entries(userGoals)})
         })
       })
     })
+
+    // Set unsubscribe to be a function that detaches the listener.
+    this.unsubscribe = () => {
+      fireRef.off('value', goalsListener)
+    }
   }
 
   render() {
