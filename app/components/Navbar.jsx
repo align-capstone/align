@@ -15,12 +15,9 @@ import firebase from 'APP/fire'
 // Get the auth API from Firebase.
 const auth = firebase.auth()
 
-console.log("EDITED")
-
 export default function Navbar(props) {
   return (
-    <AppBar title="align" style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}}
-      overlayStyle={{backgroundColor: 'transparent'}}>
+    <AppBar title="align" style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}}>
       <Link to="/login">loginpage</Link>
       <WhoAmI auth={auth}/>
     </AppBar>

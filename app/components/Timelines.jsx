@@ -64,33 +64,33 @@ export default class extends Component {
 
   // MUI FUNCTIONS:
 
-  handleTouchTap = (event) => {
-    // This prevents ghost click.
-    event.preventDefault()
+  // handleTouchTap = (event) => {
+  //   // This prevents ghost click.
+  //   event.preventDefault()
 
-    this.setState({
-      menuOpen: true,
-      anchorEl: event.currentTarget,
-    })
-  }
+  //   this.setState({
+  //     menuOpen: true,
+  //     anchorEl: event.currentTarget,
+  //   })
+  // }
 
-  handleRequestClose = () => {
-    this.setState({
-      menuOpen: false,
-    })
-  }
+  // handleRequestClose = () => {
+  //   this.setState({
+  //     menuOpen: false,
+  //   })
+  // }
 
   // FIREBASE FUNCTIONS:
 
-  createNewGoal = (event, menuItem, index) => {
+  createNewGoal = (event) => {
+    event.preventDefault()
+    console.log('in createNewGoal????‰')
     // check to see if the index of the menu item is the index of the add goal item aka 0
-    if (index === 0) {
-      let newGoalRef = goalsRef.push()
-      let newGoalId = newGoalRef.key
-      let newGoalPath = `/goal/${newGoalId}`
-      let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
-      browserHistory.push(newGoalPath)
-    }
+    let newGoalRef = goalsRef.push()
+    let newGoalId = newGoalRef.key
+    let newGoalPath = `/goal/${newGoalId}`
+    let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
+    browserHistory.push(newGoalPath)
   }
 
   componentDidMount() {
@@ -107,7 +107,7 @@ export default class extends Component {
         userGoalIds.map(goalId => {
           goalsRef.child(goalId).on('value', (goalSnapshot) => {
             userGoals[goalId] = goalSnapshot.val()
-            this.setState({goals: Object.entries(userGoals)})
+            this.setState({ goals: Object.entries(userGoals) })
           })
         })
       })
@@ -247,10 +247,10 @@ export default class extends Component {
             })
           }
         </VictoryChart>
-        <FloatingActionButton secondary={true} onTouchTap={this.handleTouchTap}>
+        <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal}>
           <ContentAdd />
         </FloatingActionButton>
-        <Popover
+        {/*<Popover
           open={this.state.menuOpen}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
@@ -262,7 +262,7 @@ export default class extends Component {
             <MenuItem primaryText='Add milestone' />
             <MenuItem primaryText='Add check in' />
           </Menu>
-        </Popover>
+        </Popover>*/}
       </div>
     )
   }
