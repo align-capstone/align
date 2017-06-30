@@ -17,7 +17,7 @@ const auth = firebase.auth()
 
 export default function Navbar(props) {
   return (
-    <AppBar title="align">
+    <AppBar title="align" style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}}>
       <Link to="/login">loginpage</Link>
       <WhoAmI auth={auth}/>
     </AppBar>
