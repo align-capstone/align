@@ -24,6 +24,7 @@ export default class extends Component {
       menuOpen: false,
       goals: [], // the actual goals that happen to belong to the user
       usersGoals: {}, // from the 'users' object -- the one that just says 'true'
+      openGoal: {}
     }
   }
 
@@ -64,27 +65,35 @@ export default class extends Component {
 
   // MUI FUNCTIONS:
 
-  // handleTouchTap = (event) => {
-  //   // This prevents ghost click.
-  //   event.preventDefault()
+  handleLineTap = (event, goal) => {
+    // This prevents ghost click.
+    event.preventDefault()
+    console.log("in handleLineTap!!!")
+    console.log("what is goalId???", goal[0])
+    console.log("what is goalInfo?? ", goal[1])
+    this.setState({
+      menuOpen: true,
+      anchorEl: event.currentTarget,
+      openGoal: goal
+    })
+  }
 
-  //   this.setState({
-  //     menuOpen: true,
-  //     anchorEl: event.currentTarget,
-  //   })
-  // }
+  handleRequestClose = () => {
+    this.setState({
+      menuOpen: false,
+    })
+  }
 
-  // handleRequestClose = () => {
-  //   this.setState({
-  //     menuOpen: false,
-  //   })
-  // }
+  viewCurrentTimeline = () => {
+    console.log('what is openGoal on state???', this.state.openGoal)
+    let openGoalUrl = `/goal/${this.state.openGoal[0]}`
+    browserHistory.push(openGoalUrl)
+  }
 
   // FIREBASE FUNCTIONS:
 
   createNewGoal = (event) => {
     event.preventDefault()
-    console.log('in createNewGoal????‰')
     // check to see if the index of the menu item is the index of the add goal item aka 0
     let newGoalRef = goalsRef.push()
     let newGoalId = newGoalRef.key
@@ -149,6 +158,7 @@ export default class extends Component {
             this.state.goals && this.state.goals.map((goal, index) => {
               // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
               let goalInfo = goal[1]
+              let goalId = goal[0]
               return (
                 <VictoryLine
                   key={index}
@@ -161,9 +171,9 @@ export default class extends Component {
                   events={[{
                     target: 'data',
                     eventHandlers: {
-                      onClick: (event) => {
-                        console.log('clicked line #', index)
-                      }
+                      onClick: (event) => {this.handleLineTap(event, goal)}
+                        // console.log('clicked line #', index, ", with ID ", goalId)
+                        // console.log("what is goalInfo?? ", goalInfo)
                     }
                   }]}
                   data={[
@@ -250,20 +260,20 @@ export default class extends Component {
         <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal}>
           <ContentAdd />
         </FloatingActionButton>
-        {/*<Popover
+        <Popover
           open={this.state.menuOpen}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={this.handleRequestClose}
-        >
-          <Menu onItemTouchTap={this.createNewGoal}>
-            <MenuItem id='add-goal' primaryText='Add goal' />
-            <MenuItem primaryText='Add milestone' />
+          onRequestClose={this.handleRequestClose}>
+          <Menu>
             <MenuItem primaryText='Add check in' />
+            <MenuItem primaryText='Add milestone' />
+            <MenuItem primaryText='View timeline overview' onTouchTap={this.viewCurrentTimeline}/>
           </Menu>
-        </Popover>*/}
+        </Popover>
       </div>
+
     )
   }
 }
