@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import firebase from 'APP/fire'
 const db = firebase.database()
 const auth = firebase.auth()
@@ -27,27 +27,33 @@ export default class extends Component {
     }
   }
 
-  // MPM adding this helper function ugh I hate everything
-  getScatterData(goal, index) {
+
+  // VICTORY FUNCTIONS:
+
+  getScatterData(goal, index, goalId) {
+
     var data = []
-    console.log('in getScatterData, getting goal info and index:', index, goal.name)
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
-    data.push({ x: new Date(goal.startDate), y: index, label: 'start date: \n' + new Date(goal.startDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
-    data.push({ x: new Date(goal.endDate), y: index, label: 'end date: \n' + new Date(goal.endDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: 'end date: \n' + new Date(goal.endDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
-      // console.log('ugh idk milestones?', goal.milestones)
       for (var id in goal.milestones) {
-        // console.log(goal.milestones[id].name)
         var milestone = goal.milestones[id]
-        data.push({ x: new Date(milestone.displayDate), y: index, label: milestone.name, symbol: 'square', fill: 'white' })
+        data.push({ x: new Date(milestone.displayDate), key: `/milestone/${goalId}/${id}`, y: index, label: milestone.name, symbol: 'square', fill: 'white' })
+      }
+    }
+    if (goal.checkIns) {
+      for (var id in goal.checkIns) {
+        var checkin = goal.checkIns[id]
+        data.push({ x: new Date(checkin.displayDate), key: `/checkin/${goalId}/${id}`, y: index, label: checkin.name, symbol: 'diamond', fill: 'white' })
+
       }
     }
     return data
   }
 
-  // VICTORY HELPER FUNCTIONS:
   handleZoom(domain) {
     this.setState({ selectedDomain: domain })
   }
@@ -56,7 +62,8 @@ export default class extends Component {
     this.setState({ zoomDomain: domain })
   }
 
-  // MUI HELPER FUNCTIONS:
+  // MUI FUNCTIONS:
+
   handleTouchTap = (event) => {
     // This prevents ghost click.
     event.preventDefault()
@@ -73,15 +80,15 @@ export default class extends Component {
     })
   }
 
-  // FIREBASE HELPER FUNCTIONS:
+  // FIREBASE FUNCTIONS:
+
   createNewGoal = (event, menuItem, index) => {
     // check to see if the index of the menu item is the index of the add goal item aka 0
     if (index === 0) {
       let newGoalRef = goalsRef.push()
       let newGoalId = newGoalRef.key
       let newGoalPath = `/goal/${newGoalId}`
-      let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) // takes ID of the new Goal, and adds it as a key: true in user's goal object
-      console.log('newGoalId: ', newGoalId)
+      let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
       browserHistory.push(newGoalPath)
     }
   }
@@ -91,7 +98,6 @@ export default class extends Component {
       if (user) {
         const userId = user.uid
         currentUserGoalsRef = usersRef.child(userId).child('goals')
-        console.log('currentUserGoalsRef???', currentUserGoalsRef)
       }
       currentUserGoalsRef.on('value', (snapshot) => {
         this.setState({ usersGoals: snapshot.val() }) // taking current user's {goals: true} object and setting it on the state
@@ -170,6 +176,7 @@ export default class extends Component {
           }{
             this.state.goals && this.state.goals.map((goal, index) => {
               let goalInfo = goal[1]
+              let goalId = goal[0]
               return (
                 <VictoryScatter
                   key={index}
@@ -183,12 +190,13 @@ export default class extends Component {
                   events={[{
                     target: 'data',
                     eventHandlers: {
-                      onClick: (event) => {
-                        console.log('clicked the data point!')
+                      onClick: (event, props) => {
+                        let goalPath = props.data[props.index].key
+                        browserHistory.push(goalPath)
                       }
                     }
                   }]}
-                  data={this.getScatterData(goalInfo, index)}
+                  data={this.getScatterData(goalInfo, index, goalId)}
                   labelComponent={<VictoryTooltip />}
                 />
               )
