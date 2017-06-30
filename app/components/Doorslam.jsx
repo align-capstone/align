@@ -1,23 +1,5 @@
 import React from 'react'
 import firebase from 'APP/fire'
-// import {browserHistory} from 'react-router'
-
-// export const name = user => {
-//   if (!user) {
-//     return 'Nobody'
-//   }
-//   return user.displayName || user.email
-// }
-
-// export const WhoAmI = ({user, auth}) =>
-//   <div className="whoami">
-//     <span>Hello, {name(user)}</span>
-//     { <button className='logout' onClick={() => {
-//       auth.signOut()
-//       .then(() => { //after logging out, redirect to login/landing page
-//         browserHistory.push('/login')})
-//     }}>logout</button> }
-//   </div>
 
 export default class extends React.Component {
   componentDidMount() {
