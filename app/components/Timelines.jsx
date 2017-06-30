@@ -6,6 +6,7 @@ const auth = firebase.auth()
 let goalsRef = db.ref('goals')
 let usersRef = db.ref('users')
 let currentUserGoalsRef, goalsListener
+let goalRefs = {}
 
 import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter, VictoryTooltip } from 'victory'
 
@@ -147,16 +148,22 @@ export default class extends Component {
       let userGoalIds = Object.keys(snapshot.val())
       let userGoals = {}
       userGoalIds.map(goalId => {
-        goalsRef.child(goalId).on('value', (goalSnapshot) => {
+        let listener = goalsRef.child(goalId).on('value', (goalSnapshot) => {
           userGoals[goalId] = goalSnapshot.val()
           this.setState({goals: Object.entries(userGoals)})
         })
+        goalRefs[goalId] = {ref: goalsRef.child(goalId), listener: listener}
       })
     })
 
     // Set unsubscribe to be a function that detaches the listener.
+    // HI HELP US OK
     this.unsubscribe = () => {
       fireRef.off('value', goalsListener)
+      // for (var goal in goalRefs) {
+      //   console.log('goalRefs???', goalRefs)
+      //   goal.ref.off('value', goal.listener)
+      // }
     }
   }
 
