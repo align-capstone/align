@@ -23,6 +23,7 @@ export default class extends Component {
     this.state = {
       menuOpen: false,
       goals: [], // the actual goals that happen to belong to the user
+      openGoal: {}
     }
   }
 
@@ -63,13 +64,16 @@ export default class extends Component {
 
   // MUI FUNCTIONS:
 
-  handleTouchTap = (event) => {
+  handleLineTap = (event, goal) => {
     // This prevents ghost click.
     event.preventDefault()
-
+    console.log("in handleLineTap!!!")
+    console.log("what is goalId???", goal[0])
+    console.log("what is goalInfo?? ", goal[1])
     this.setState({
       menuOpen: true,
       anchorEl: event.currentTarget,
+      openGoal: goal
     })
   }
 
@@ -79,17 +83,39 @@ export default class extends Component {
     })
   }
 
+  viewCurrentTimeline = () => {
+    event.preventDefault()
+    console.log('what is openGoal on state???', this.state.openGoal)
+    let openGoalUrl = `/goal/${this.state.openGoal[0]}`
+    browserHistory.push(openGoalUrl)
+  }
+
+  addMilestoneToCurrentTimeline = () => {
+    event.preventDefault()
+    let currentGoalId = this.state.openGoal[0]
+    let newMilestoneRef = goalsRef.child(currentGoalId).child('milestones').push()
+    let newMilestonePath = `/milestone/${this.state.openGoal[0]}/${newMilestoneRef.key}`
+    browserHistory.push(newMilestonePath)
+  }
+
+  addCheckinToCurrentTimeline = () => {
+    event.preventDefault()
+    let currentGoalId = this.state.openGoal[0]
+    let newCheckinRef = goalsRef.child(currentGoalId).child('checkIns').push()
+    let newCheckinPath = `/checkin/${this.state.openGoal[0]}/${newCheckinRef.key}`
+    browserHistory.push(newCheckinPath)
+  }
+
   // FIREBASE FUNCTIONS:
 
-  createNewGoal = (event, menuItem, index) => {
+  createNewGoal = (event) => {
+    event.preventDefault()
     // check to see if the index of the menu item is the index of the add goal item aka 0
-    if (index === 0) {
-      let newGoalRef = goalsRef.push()
-      let newGoalId = newGoalRef.key
-      let newGoalPath = `/goal/${newGoalId}`
-      let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
-      browserHistory.push(newGoalPath)
-    }
+    let newGoalRef = goalsRef.push()
+    let newGoalId = newGoalRef.key
+    let newGoalPath = `/goal/${newGoalId}`
+    let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
+    browserHistory.push(newGoalPath)
   }
 
   componentDidMount() {
@@ -169,6 +195,7 @@ export default class extends Component {
             this.state.goals && this.state.goals.map((goal, index) => {
               // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
               let goalInfo = goal[1]
+              let goalId = goal[0]
               return (
                 <VictoryLine
                   key={index}
@@ -181,9 +208,9 @@ export default class extends Component {
                   events={[{
                     target: 'data',
                     eventHandlers: {
-                      onClick: (event) => {
-                        console.log('clicked line #', index)
-                      }
+                      onClick: (event) => {this.handleLineTap(event, goal)}
+                        // console.log('clicked line #', index, ", with ID ", goalId)
+                        // console.log("what is goalInfo?? ", goalInfo)
                     }
                   }]}
                   data={[
@@ -267,7 +294,7 @@ export default class extends Component {
             })
           }
         </VictoryChart>
-        <FloatingActionButton secondary={true} onTouchTap={this.handleTouchTap}>
+        <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal}>
           <ContentAdd />
         </FloatingActionButton>
         <Popover
@@ -275,15 +302,15 @@ export default class extends Component {
           anchorEl={this.state.anchorEl}
           anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={this.handleRequestClose}
-        >
-          <Menu onItemTouchTap={this.createNewGoal}>
-            <MenuItem id='add-goal' primaryText='Add goal' />
-            <MenuItem primaryText='Add milestone' />
-            <MenuItem primaryText='Add check in' />
+          onRequestClose={this.handleRequestClose}>
+          <Menu>
+            <MenuItem primaryText='Add check in' onTouchTap={this.addCheckinToCurrentTimeline} />
+            <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline}/>
+            <MenuItem primaryText='View timeline overview' onTouchTap={this.viewCurrentTimeline}/>
           </Menu>
         </Popover>
       </div>
+
     )
   }
 }
