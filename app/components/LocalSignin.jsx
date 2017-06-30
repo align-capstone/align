@@ -35,6 +35,7 @@ export default class extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+/* Remove dead code -KHAKLM*/
       // redirect to timeline on successful log in
       // .then(() => browserHistory.push('/timelines'))
       .catch(error => {

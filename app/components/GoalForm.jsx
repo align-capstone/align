@@ -17,7 +17,7 @@ import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
 import ResourceContainer from './ResourceContainer'
 import Resource from './Resource'
-
+/* Make this look like a timeline -KHAKLM */
 export default class extends React.Component {
   constructor(props) {
     super()

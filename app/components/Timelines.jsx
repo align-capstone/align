@@ -100,8 +100,9 @@ export default class extends Component {
         currentUserGoalsRef = usersRef.child(userId).child('goals')
       }
       currentUserGoalsRef.on('value', (snapshot) => {
+/* Cannot setState on unmounted component. Capture this user info in GoalForm, maybe? IDK -LUISA */
         this.setState({ usersGoals: snapshot.val() }) // taking current user's {goals: true} object and setting it on the state
-
+/* State is not set yet in line below, but you already haveit in the previous line. -KHAKLM*/
         let userGoalIds = Object.keys(this.state.usersGoals)
         let userGoals = {}
         userGoalIds.map(goalId => {

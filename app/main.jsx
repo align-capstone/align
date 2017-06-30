@@ -69,7 +69,7 @@ const App = ({ children }) =>
       <Doorslam auth={auth} Landing={Login}>{children}</Doorslam>
     </div>
   </MuiThemeProvider>
-
+/* Remove routes to Login and Test - KHAKLM*/
 render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
