@@ -16,7 +16,7 @@ export const WhoAmI = ({user, auth}) =>
     { <button className='logout' onClick={() => {
       auth.signOut()
       .then(() => { //after logging out, redirect to login/landing page
-        browserHistory.push('/login')})
+        browserHistory.push('/')})
     }}>logout</button> }
   </div>
 

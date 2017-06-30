@@ -79,10 +79,7 @@ render(
       <Route path="checkin/:id/:cid" component={CheckInFormContainer} />
       <Route path="/victory-example" component={VictoryExample} />
       <Route path="/timelines" component={Timelines} />
-      {/* <Route path="/timelines/:id" component={Timelines} /> */}
-      {/* <Route path="/resources" component={ResourcesContainer} /> */}
       <Route path="/upload" component={Upload} />
-      <Route path="/login" component={Login} />
       <Route path="/test" component={ResourceForm} />
     </Route>
     <Route path='*' component={NotFound} />
