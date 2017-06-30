@@ -117,6 +117,7 @@ export default class extends React.Component {
       colorRef.off('value', colorListener)
       milestonesRef.off('value', milestonesListener)
       checkInsRef.off('value', checkInsListener)
+      resourcesRef.off('value', resourcesListener)
     }
   }
 
@@ -247,7 +248,7 @@ export default class extends React.Component {
             <h3>Resources:</h3>
             { this.state.resources && this.state.resources.map((resourceID, index) => {
               return (
-                <div>
+                <div key={resourceID}>
                   <ResourceContainer resourceID={resourceID} />
                 </div>
               )

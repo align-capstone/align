@@ -23,7 +23,6 @@ export default class extends Component {
     this.state = {
       menuOpen: false,
       goals: [], // the actual goals that happen to belong to the user
-      usersGoals: {}, // from the 'users' object -- the one that just says 'true'
     }
   }
 
@@ -119,9 +118,7 @@ export default class extends Component {
     if (this.unsubscribe) this.unsubscribe()
 
     goalsListener = fireRef.on('value', (snapshot) => {
-      this.setState({ usersGoals: snapshot.val() }) // taking current user's {goals: true} object and setting it on the state
-
-      let userGoalIds = Object.keys(snapshot.val()) // switched in code review... probs should do something different with the state???
+      let userGoalIds = Object.keys(snapshot.val())
       let userGoals = {}
       userGoalIds.map(goalId => {
         goalsRef.child(goalId).on('value', (goalSnapshot) => {
