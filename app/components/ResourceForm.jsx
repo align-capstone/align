@@ -47,7 +47,6 @@ export default class extends Component {
   // THEN write title, image, and description based on JSON returned by ajax call
 
   handleChange = (event) => {
-    console.log(event.target.value)
     this.setState({
       url: event.target.value
     })
@@ -55,9 +54,6 @@ export default class extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    console.log('clicked it!')
-    console.log('state?', this.state.url)
-
     const target = this.state.url
     $.ajax({
       url: 'http://api.linkpreview.net',

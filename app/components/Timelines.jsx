@@ -15,7 +15,6 @@ import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 
-
 // eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
 
 export default class extends Component {
@@ -23,8 +22,8 @@ export default class extends Component {
     super()
     this.state = {
       menuOpen: false,
-      goals: [], //the actual goals that happen to belong to the user
-      usersGoals: {}, //from the 'users' object -- the one that just says 'true'
+      goals: [], // the actual goals that happen to belong to the user
+      usersGoals: {}, // from the 'users' object -- the one that just says 'true'
     }
   }
 
@@ -81,7 +80,7 @@ export default class extends Component {
       let newGoalRef = goalsRef.push()
       let newGoalId = newGoalRef.key
       let newGoalPath = `/goal/${newGoalId}`
-      let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
+      let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) // takes ID of the new Goal, and adds it as a key: true in user's goal object
       console.log('newGoalId: ', newGoalId)
       browserHistory.push(newGoalPath)
     }
@@ -92,30 +91,22 @@ export default class extends Component {
       if (user) {
         const userId = user.uid
         currentUserGoalsRef = usersRef.child(userId).child('goals')
-        console.log("currentUserGoalsRef???", currentUserGoalsRef)
+        console.log('currentUserGoalsRef???', currentUserGoalsRef)
       }
       currentUserGoalsRef.on('value', (snapshot) => {
-        // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
-        // do we want to go back to just using Object.keys or a for-in loop?
-
-        this.setState({ usersGoals: snapshot.val() }) //taking current user's {goals: true} object and setting it on the state
+        this.setState({ usersGoals: snapshot.val() }) // taking current user's {goals: true} object and setting it on the state
 
         let userGoalIds = Object.keys(this.state.usersGoals)
-        let userGoals = {};
+        let userGoals = {}
         userGoalIds.map(goalId => {
           goalsRef.child(goalId).on('value', (goalSnapshot) => {
             userGoals[goalId] = goalSnapshot.val()
             this.setState({goals: Object.entries(userGoals)})
-            console.log("still working?????", this.state)
           })
         })
-
       })
     })
-
   }
-
-  // MPM: add componentWillUnmount
 
   render() {
     const chartStyle = { parent: { minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer' } }

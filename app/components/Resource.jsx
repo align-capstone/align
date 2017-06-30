@@ -9,6 +9,9 @@ import { Link } from 'react-router'
 export default function Resource(props) {
   console.log(props)
   return (
-    <h3>{props.titleRef}</h3>
+    <div>
+      <h2>lol halp</h2>
+      <h3>{props.titleRef}</h3>
+    </div>
   )
 }

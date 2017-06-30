@@ -80,7 +80,7 @@ render(
       <Route path="/victory-example" component={VictoryExample} />
       <Route path="/timelines" component={Timelines} />
       {/* <Route path="/timelines/:id" component={Timelines} /> */}
-      <Route path="/resource" component={ResourcesContainer} />
+      <Route path="/resources" component={ResourcesContainer} />
       <Route path="/upload" component={Upload} />
       <Route path="/login" component={Login} />
       <Route path="/test" component={ResourceForm} />

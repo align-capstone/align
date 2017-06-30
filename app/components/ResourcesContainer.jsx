@@ -13,25 +13,25 @@ export default class extends Component {
   constructor(props) {
     super()
     this.state = {
-      resources: []
-      // title: '',
-      // url: '',
-      // thumbnail: '',
-      // description: ''
+      resources: [{id: 2, 'fake shit': true}],
+      // goalResources: {},
+      // milestoneResources: {},
+      // checkinResources: {}
     }
   }
 
   // getResourceIDs() {
   //   // here define the thing
-  //   // get resource IDs from the resources object on goal, milestone, and check-in
+  //   // get resource IDs passed down as props from the parent element
   //   // push them to resource array and return it??
   // }
 
   componentDidMount() {
+    console.log('props??', this.props)
     let resources = []
-    let resourcesFromProps = this.props.resources
-    for (var id in resourcesFromProps) {
-      resources.push[id]
+    let resourcesFromParent = this.props.resources
+    for (var id in resourcesFromParent) {
+      resources.push(id)
     }
     this.setState({resources: resources})
     // here we have resources object as props
@@ -43,6 +43,7 @@ export default class extends Component {
   }
 
   render() {
+    console.log('state in resources container: ', this.state)
     return (
       <div>
         {
