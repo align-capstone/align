@@ -301,7 +301,7 @@ export default class extends Component {
             })
           }
         </VictoryChart>
-        <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal}>
+        <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal} style={{position: 'fixed', top: '87%', right: '5%'}} >
           <ContentAdd />
         </FloatingActionButton>
         <Popover
