@@ -7,6 +7,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 
+import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card'
+
 let resourceRef, urlRef, titleRef, imageRef, descriptionRef
 
 export default class extends Component {
@@ -80,10 +82,21 @@ export default class extends Component {
   render() {
     // Rendering form with material UI
     return (
-      <div>
-        <h3>{this.state.title}</h3>
-        <h4>oh dear</h4>
-      </div>
+      <Card>
+        <CardHeader
+          title={this.state.title}
+          actAsExpander={true}
+          showExpandableButton={true}
+        />
+        <CardMedia>
+          <img src={this.state.image} />
+        </CardMedia>
+        <CardText
+          expandable={true}
+        >
+          {this.state.description}
+        </CardText>
+      </Card>
     )
   }
 }
