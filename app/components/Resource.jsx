@@ -9,14 +9,6 @@ import { Link } from 'react-router'
 
 let resourceRef, urlRef, titleRef, imageRef, descriptionRef
 
-// export default function Resource(props) {
-//   console.log('props in Resource component: ', props)
-//   return (
-//     <div>
-//       <h3>{props.resourceID}</h3>
-//     </div>
-//   )
-// }
 export default class extends Component {
   constructor(props) {
     super()
@@ -62,7 +54,7 @@ export default class extends Component {
     const titleListener = titleRef.on('value', snapshot =>
       this.setState({ title: snapshot.val() }))
 
-    // I'm pretty sure we DON'T want URL / image URL to be editable
+    // MPM I'm pretty sure we DON'T want URL / image URL to be editable, right?
 
     const urlListener = urlRef.on('value', snapshot => {
       this.setState({ url: snapshot.val() })
