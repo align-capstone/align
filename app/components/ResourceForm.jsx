@@ -83,15 +83,12 @@ export default class extends Component {
                 autoFocus
                 hintText='Paste a URL here'
                 floatingLabelText='URL'
-                onChange={this.handleChange} // set state in here??
-                // onFocus={console.log('focused lol')}
-                // onBlur={console.log('blurred ', this.value) /* this.getPageInfo(this.value) */ }
-                // onFocusOut={console.log('unfocused ', this.value)}
+                onChange={this.handleChange}
                 id='url'
               />
             </div>
             <div>
-              <RaisedButton label="add resource" type="submit" /* onTouchTap={this.handleSubmit} */ />
+              <RaisedButton label="add resource" type="submit" />
             </div>
           </form>
         </div>

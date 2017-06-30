@@ -25,7 +25,7 @@ import Timelines from './components/Timelines'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Resource from './components/Resource'
-import ResourcesContainer from './components/ResourcesContainer'
+import ResourceContainer from './components/ResourceContainer'
 import Doorslam from './components/Doorslam'
 import ResourceForm from './components/ResourceForm'
 
@@ -80,7 +80,7 @@ render(
       <Route path="/victory-example" component={VictoryExample} />
       <Route path="/timelines" component={Timelines} />
       {/* <Route path="/timelines/:id" component={Timelines} /> */}
-      <Route path="/resources" component={ResourcesContainer} />
+      {/* <Route path="/resources" component={ResourcesContainer} /> */}
       <Route path="/upload" component={Upload} />
       <Route path="/login" component={Login} />
       <Route path="/test" component={ResourceForm} />

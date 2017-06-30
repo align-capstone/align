@@ -11,7 +11,7 @@ export default function Resource(props) {
   return (
     <div>
       <h2>lol halp</h2>
-      <h3>{props.titleRef}</h3>
+      <h3>{props.resourceID}</h3>
     </div>
   )
 }

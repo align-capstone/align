@@ -13,7 +13,13 @@ export default class extends Component {
   constructor(props) {
     super()
     this.state = {
-      resources: [{id: 2, 'fake shit': true}],
+      resources: [
+        // 2: {
+        //   title: 'Get Closer to Doing a Handstand in 12 Minutes',
+        //   url: 'http://vitals.lifehacker.com/get-closer-to-doing-a-handstand-in-12-minutes-1796377028',
+        //   image: 'https://i.kinja-img.com/gawker-media/image/upload/…_center,h_450,q_80,w_800/ojni1ghqt64kl2ncry5z.jpg'
+        // }
+      ],
       // goalResources: {},
       // milestoneResources: {},
       // checkinResources: {}
@@ -27,13 +33,14 @@ export default class extends Component {
   // }
 
   componentDidMount() {
-    console.log('props??', this.props)
+    console.log('props in resources container??', this.props)
     let resources = []
     let resourcesFromParent = this.props.resources
     for (var id in resourcesFromParent) {
       resources.push(id)
     }
     this.setState({resources: resources})
+
     // here we have resources object as props
     // call getResourceIDs on that object
     // and set state with it
@@ -43,13 +50,14 @@ export default class extends Component {
   }
 
   render() {
-    console.log('state in resources container: ', this.state)
+    console.log('state from resources container???', this.state)
     return (
       <div>
         {
           this.state.resources && this.state.resources.map((resource, index) => {
             const id = resource.id
             const resourceRefs = getResourceRefs(id)
+            console.log('id???', id)
             return (
               <Resource fireRef={resourceRefs} id={id} />
             )

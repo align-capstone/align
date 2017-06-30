@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
-let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef
+let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef, resourcesRef
 
 let newMilestonePath, newCheckInPath
 
@@ -15,6 +15,8 @@ import { CirclePicker } from 'react-color'
 import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
+import ResourceContainer from './ResourceContainer'
+import Resource from './Resource'
 
 export default class extends React.Component {
   constructor(props) {
@@ -27,14 +29,13 @@ export default class extends React.Component {
       endDate: new Date().getTime(),
       color: '#000',
       milestones: [],
-      checkIns: []
-      // MPM initialize resources here??? resources: []
+      checkIns: [],
+      resources: []
     }
   }
 
   componentDidMount() {
-    // When the component mounts, start listening to the fireRef
-    // we were given.
+    // When the component mounts, start listening to the fireRef we were given.
     this.listenTo(this.props.fireRef)
   }
 
@@ -62,6 +63,7 @@ export default class extends React.Component {
     colorRef = fireRef.colorRef
     milestonesRef = fireRef.milestonesRef
     checkInsRef = fireRef.checkInsRef
+    resourcesRef = fireRef.resourcesRef
 
     // LISTENERS TO DATEBASE:
     // Whenever a ref's value changes in Firebase, set {value} on our state.
@@ -101,6 +103,13 @@ export default class extends React.Component {
       this.setState({ checkIns: Object.entries(snapshot.val()) })
     })
 
+    const resourcesListener = resourcesRef.on('value', snapshot => {
+      console.log(resourcesRef)
+      console.log(snapshot.val())
+      this.setState({ resources: Object.keys(snapshot.val()) })
+      console.log('state after setting it: ', this.state)
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
@@ -119,8 +128,7 @@ export default class extends React.Component {
   //
   //    this.write = event => (etc...)
   //
-  // in the constructor. Incidentally, this means that write
-  // is always bound to this.
+  // in the constructor. Incidentally, this means that write is always bound to this.
 
   writeName = (event) => {
     nameRef.set(event.target.value)
@@ -165,9 +173,8 @@ export default class extends React.Component {
   }
 
   render() {
-    //color array, for color pallette
+    console.log('state in goal form?', this.state)
     const colorArray = ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b"]
-    // Rendering form with material UI
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
@@ -238,6 +245,18 @@ export default class extends React.Component {
               }
               <ListItem leftIcon={<Add />} onTouchTap={this.createNewCheckIn} >Add new</ListItem>
             </List>
+          </div>
+          <div>
+            <h3>Resources:</h3>
+            { this.state.resources && this.state.resources.map((resourceID, index) => {
+              return (
+                <div>
+                <p>omg no</p>
+                <Resource resourceID={resourceID} />
+              </div>
+              )
+            })
+          }
           </div>
         </div>
       </MuiThemeProvider>
