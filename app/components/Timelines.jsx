@@ -28,9 +28,11 @@ export default class extends Component {
     }
   }
 
+
   // VICTORY FUNCTIONS:
 
   getScatterData(goal, index, goalId) {
+
     var data = []
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
@@ -47,6 +49,7 @@ export default class extends Component {
       for (var id in goal.checkIns) {
         var checkin = goal.checkIns[id]
         data.push({ x: new Date(checkin.displayDate), key: `/checkin/${goalId}/${id}`, y: index, label: checkin.name, symbol: 'diamond', fill: 'white' })
+
       }
     }
     return data
@@ -87,7 +90,6 @@ export default class extends Component {
       let newGoalId = newGoalRef.key
       let newGoalPath = `/goal/${newGoalId}`
       let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
-      console.log('newGoalId: ', newGoalId)
       browserHistory.push(newGoalPath)
     }
   }
