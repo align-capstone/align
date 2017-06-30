@@ -1,3 +1,21 @@
+html {
+  width: 20px;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+h1, h2, h3, h4 {
+  font-family: 'Roboto', sans-serif;
+}
+
+/*.resource-card {
+  padding: 5px;
+  margin: 15px 0;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, .5);
+}
+
+.resource-img {
+  width: 100px;
+}*/
