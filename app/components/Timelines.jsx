@@ -141,34 +141,40 @@ export default class extends Component {
     this.listenTo(incoming.fireRef)
   }
 
+  unsubscribeGoals() {
+    if (this.userGoalUnsubscribers) this.userGoalUnsubscribers.forEach(x => x())
+  }
+
   listenTo(fireRef) {
     if (this.unsubscribe) this.unsubscribe()
+    this.unsubscribeGoals()
 
     goalsListener = fireRef.on('value', (snapshot) => {
+
+      const goals = {}
       let userGoalIds = Object.keys(snapshot.val())
-      let userGoals = {}
-      userGoalIds.map(goalId => {
-        let listener = goalsRef.child(goalId).on('value', (goalSnapshot) => {
-          userGoals[goalId] = goalSnapshot.val()
-          this.setState({goals: Object.entries(userGoals)})
+      this.userGoalUnsubscribers =
+        userGoalIds.map(goalId => {
+          const ref = goalsRef.child(goalId)
+          let listener = ref.on('value', (goalSnapshot) => {
+            goals[goalId] = goalSnapshot.val()
+            this.setState({goals: Object.entries(goals)})
+          })
+          return () => ref.off('value', listener)
         })
-        goalRefs[goalId] = {ref: goalsRef.child(goalId), listener: listener}
-      })
     })
 
     // Set unsubscribe to be a function that detaches the listener.
-    // HI HELP US OK
     this.unsubscribe = () => {
+      this.unsubscribeGoals()
       fireRef.off('value', goalsListener)
-      // for (var goal in goalRefs) {
-      //   console.log('goalRefs???', goalRefs)
-      //   goal.ref.off('value', goal.listener)
-      // }
     }
   }
 
   render() {
     const chartStyle = { parent: { minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer' } }
+    const {goals} = this.state
+    console.log('Timelines goals:', goals)
     return (
       <div>
         <VictoryChart width={600} height={400} scale={{ x: 'time' }} style={chartStyle}
