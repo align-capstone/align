@@ -43,6 +43,12 @@ export default class extends Component {
         data.push({ x: new Date(milestone.displayDate), key: `/milestone/${goalId}/${id}`, y: index, label: milestone.name, symbol: 'square', fill: 'white' })
       }
     }
+    if (goal.checkIns) {
+      for (var id in goal.checkIns) {
+        var checkin = goal.checkIns[id]
+        data.push({ x: new Date(checkin.displayDate), key: `/checkin/${goalId}/${id}`, y: index, label: checkin.name, symbol: 'diamond', fill: 'white' })
+      }
+    }
     return data
   }
 
