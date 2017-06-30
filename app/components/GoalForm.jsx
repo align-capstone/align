@@ -96,15 +96,15 @@ export default class extends React.Component {
     })
 
     const milestonesListener = milestonesRef.on('value', snapshot => {
-      this.setState({ milestones: Object.entries(snapshot.val()) })
+      if (snapshot.val()) this.setState({ milestones: Object.entries(snapshot.val()) })
     })
 
     const checkInsListener = checkInsRef.on('value', snapshot => {
-      this.setState({ checkIns: Object.entries(snapshot.val()) })
+      if (snapshot.val()) this.setState({ checkIns: Object.entries(snapshot.val()) })
     })
 
     const resourcesListener = resourcesRef.on('value', snapshot => {
-      this.setState({ resources: Object.keys(snapshot.val()) })
+      if (snapshot.val()) this.setState({ resources: Object.keys(snapshot.val()) })
     })
 
     // Set unsubscribe to be a function that detaches the listener.
