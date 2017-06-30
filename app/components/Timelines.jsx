@@ -85,9 +85,26 @@ export default class extends Component {
   }
 
   viewCurrentTimeline = () => {
+    event.preventDefault()
     console.log('what is openGoal on state???', this.state.openGoal)
     let openGoalUrl = `/goal/${this.state.openGoal[0]}`
     browserHistory.push(openGoalUrl)
+  }
+
+  addMilestoneToCurrentTimeline = () => {
+    event.preventDefault()
+    let currentGoalId = this.state.openGoal[0]
+    let newMilestoneRef = goalsRef.child(currentGoalId).child('milestones').push()
+    let newMilestonePath = `/milestone/${this.state.openGoal[0]}/${newMilestoneRef.key}`
+    browserHistory.push(newMilestonePath)
+  }
+
+  addCheckinToCurrentTimeline = () => {
+    event.preventDefault()
+    let currentGoalId = this.state.openGoal[0]
+    let newCheckinRef = goalsRef.child(currentGoalId).child('checkIns').push()
+    let newCheckinPath = `/checkin/${this.state.openGoal[0]}/${newCheckinRef.key}`
+    browserHistory.push(newCheckinPath)
   }
 
   // FIREBASE FUNCTIONS:
@@ -267,8 +284,8 @@ export default class extends Component {
           targetOrigin={{ horizontal: 'left', vertical: 'top' }}
           onRequestClose={this.handleRequestClose}>
           <Menu>
-            <MenuItem primaryText='Add check in' />
-            <MenuItem primaryText='Add milestone' />
+            <MenuItem primaryText='Add check in' onTouchTap={this.addCheckinToCurrentTimeline} />
+            <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline}/>
             <MenuItem primaryText='View timeline overview' onTouchTap={this.viewCurrentTimeline}/>
           </Menu>
         </Popover>
