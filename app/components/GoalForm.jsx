@@ -4,8 +4,6 @@ let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRe
 
 let newMilestonePath, newCheckInPath
 
-import ResourcesContainer from './ResourcesContainer'
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
