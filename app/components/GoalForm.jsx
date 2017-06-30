@@ -173,6 +173,7 @@ export default class extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
+          <Link to={`/timelines`}>Back to timelines</Link>
           <h1>Edit page for goal: <span id='goalName'>{this.state.name}</span></h1>
           <div className='form-group'>
             <TextField
