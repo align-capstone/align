@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from 'APP/fire'
 
 import LocalSignin from './LocalSignin'
+import LocalSignup from './LocalSignup'
 
 const google = new firebase.auth.GoogleAuthProvider()
 // google.addScope('https://www.googleapis.com/auth/contacts.readonly'); //use this potentially to get calendar read/writeaccess????
@@ -57,6 +58,7 @@ export default ({ auth }) => {
     <div>
       <div>
         <h3>Signup:</h3>
+        <LocalSignup />
       </div>
       <div>
         <h3>Login Locally:</h3>
