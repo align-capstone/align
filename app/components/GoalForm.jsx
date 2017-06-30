@@ -104,10 +104,7 @@ export default class extends React.Component {
     })
 
     const resourcesListener = resourcesRef.on('value', snapshot => {
-      console.log(resourcesRef)
-      console.log(snapshot.val())
       this.setState({ resources: Object.keys(snapshot.val()) })
-      console.log('state after setting it: ', this.state)
     })
 
     // Set unsubscribe to be a function that detaches the listener.
@@ -173,7 +170,6 @@ export default class extends React.Component {
   }
 
   render() {
-    console.log('state in goal form?', this.state)
     const colorArray = ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b"]
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
@@ -251,9 +247,8 @@ export default class extends React.Component {
             { this.state.resources && this.state.resources.map((resourceID, index) => {
               return (
                 <div>
-                <p>omg no</p>
-                <Resource resourceID={resourceID} />
-              </div>
+                  <ResourceContainer resourceID={resourceID} />
+                </div>
               )
             })
           }
