@@ -31,7 +31,6 @@ export default class extends Component {
   // MPM adding this helper function ugh I hate everything
   getScatterData(goal, index) {
     var data = []
-    console.log('in getScatterData, getting goal info and index:', index, goal.name)
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
     data.push({ x: new Date(goal.startDate), y: index, label: 'start date: \n' + new Date(goal.startDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
@@ -92,7 +91,6 @@ export default class extends Component {
       if (user) {
         const userId = user.uid
         currentUserGoalsRef = usersRef.child(userId).child('goals')
-        console.log("currentUserGoalsRef???", currentUserGoalsRef)
       }
       currentUserGoalsRef.on('value', (snapshot) => {
         // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
@@ -106,7 +104,6 @@ export default class extends Component {
           goalsRef.child(goalId).on('value', (goalSnapshot) => {
             userGoals[goalId] = goalSnapshot.val()
             this.setState({goals: Object.entries(userGoals)})
-            console.log("still working?????", this.state)
           })
         })
 
