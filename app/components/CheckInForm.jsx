@@ -112,6 +112,8 @@ export default class extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div>
           <Link to={`/goal/${this.props.goalId}`}>Back to goal</Link>
+          <br/>
+          <Link to='/timelines'>Back to timelines</Link>
           <h1>Edit page for check in: <span id='checkInName'>{this.state.name}</span></h1>
           <div className='form-group'>
             <TextField
