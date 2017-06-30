@@ -15,7 +15,6 @@ import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 
-
 // eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
 
 export default class extends Component {
@@ -23,8 +22,8 @@ export default class extends Component {
     super()
     this.state = {
       menuOpen: false,
-      goals: [], //the actual goals that happen to belong to the user
-      usersGoals: {}, //from the 'users' object -- the one that just says 'true'
+      goals: [], // the actual goals that happen to belong to the user
+      usersGoals: {}, // from the 'users' object -- the one that just says 'true'
     }
   }
 
@@ -101,26 +100,19 @@ export default class extends Component {
         currentUserGoalsRef = usersRef.child(userId).child('goals')
       }
       currentUserGoalsRef.on('value', (snapshot) => {
-        // MPM: just realized Object.entries is "experimental", so it might not work in all browsers
-        // do we want to go back to just using Object.keys or a for-in loop?
-
-        this.setState({ usersGoals: snapshot.val() }) //taking current user's {goals: true} object and setting it on the state
+        this.setState({ usersGoals: snapshot.val() }) // taking current user's {goals: true} object and setting it on the state
 
         let userGoalIds = Object.keys(this.state.usersGoals)
-        let userGoals = {};
+        let userGoals = {}
         userGoalIds.map(goalId => {
           goalsRef.child(goalId).on('value', (goalSnapshot) => {
             userGoals[goalId] = goalSnapshot.val()
             this.setState({goals: Object.entries(userGoals)})
           })
         })
-
       })
     })
-
   }
-
-  // MPM: add componentWillUnmount
 
   render() {
     const chartStyle = { parent: { minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer' } }

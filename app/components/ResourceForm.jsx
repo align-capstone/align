@@ -47,7 +47,6 @@ export default class extends Component {
   // THEN write title, image, and description based on JSON returned by ajax call
 
   handleChange = (event) => {
-    console.log(event.target.value)
     this.setState({
       url: event.target.value
     })
@@ -55,9 +54,6 @@ export default class extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    console.log('clicked it!')
-    console.log('state?', this.state.url)
-
     const target = this.state.url
     $.ajax({
       url: 'http://api.linkpreview.net',
@@ -87,15 +83,12 @@ export default class extends Component {
                 autoFocus
                 hintText='Paste a URL here'
                 floatingLabelText='URL'
-                onChange={this.handleChange} // set state in here??
-                // onFocus={console.log('focused lol')}
-                // onBlur={console.log('blurred ', this.value) /* this.getPageInfo(this.value) */ }
-                // onFocusOut={console.log('unfocused ', this.value)}
+                onChange={this.handleChange}
                 id='url'
               />
             </div>
             <div>
-              <RaisedButton label="add resource" type="submit" /* onTouchTap={this.handleSubmit} */ />
+              <RaisedButton label="add resource" type="submit" />
             </div>
           </form>
         </div>
