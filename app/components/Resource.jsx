@@ -10,7 +10,11 @@ import { Link } from 'react-router'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import FlatButton from 'material-ui/FlatButton'
+import IconButton from 'material-ui/IconButton'
 import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card'
+import ContentEdit from 'material-ui/svg-icons/content/create'
+import ContentLink from 'material-ui/svg-icons/content/link'
 
 let resourceRef, urlRef, titleRef, imageRef, descriptionRef
 
@@ -83,18 +87,33 @@ export default class extends Component {
 
   render() {
     // Rendering form with material UI
+    // do we maybe want a ternary that either renders a text preview or the full description????
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <Card className="resource-card" style={{width: 300}}>
           <CardHeader
             title={this.state.title}
+            actAsExpander={true}
+            showExpandableButton={true}
           />
-          <CardMedia>
+          <CardMedia style={{padding: 15}}>
             <img src={this.state.image} className="resource-img" />
           </CardMedia>
-          <CardText>
+          <CardText expandable={true}>
             {this.state.description}
           </CardText>
+          <CardActions expandable={true}>
+            <FlatButton
+              href={this.state.url}
+              label="Link to resource"
+              primary={true}
+              icon={<ContentLink />}
+            />
+            <FlatButton
+              label="Edit resource"
+              icon={<ContentEdit />}
+            />
+          </CardActions>
         </Card>
       </MuiThemeProvider>
     )
