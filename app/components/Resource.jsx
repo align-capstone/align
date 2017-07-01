@@ -85,18 +85,14 @@ export default class extends Component {
     // Rendering form with material UI
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <Card className="resource-card">
+        <Card className="resource-card" style={{width: 300}}>
           <CardHeader
             title={this.state.title}
-            actAsExpander={true}
-            showExpandableButton={true}
           />
           <CardMedia>
             <img src={this.state.image} className="resource-img" />
           </CardMedia>
-          <CardText
-            expandable={true}
-          >
+          <CardText>
             {this.state.description}
           </CardText>
         </Card>
