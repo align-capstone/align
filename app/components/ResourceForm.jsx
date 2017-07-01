@@ -6,7 +6,8 @@ const resourceRef = db.ref('resources')
 
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
-import {TextField, RaisedButton} from 'material-ui'
+import {TextField, IconButton, RaisedButton} from 'material-ui'
+import ContentAdd from 'material-ui/svg-icons/content/add'
 
 import $ from 'jquery'
 
@@ -75,23 +76,18 @@ export default class extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <div>
-          <h3>Add a resource below</h3>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <TextField
-                autoFocus
-                hintText='Paste a URL here'
-                floatingLabelText='URL'
-                onChange={this.handleChange}
-                id='url'
-              />
-            </div>
-            <div>
-              <RaisedButton label="add resource" type="submit" />
-            </div>
-          </form>
-        </div>
+        <form onSubmit={this.handleSubmit}>
+            <TextField
+              autoFocus
+              hintText='Paste a URL here'
+              floatingLabelText='URL'
+              onChange={this.handleChange}
+              id='url'
+            />
+          <IconButton type="submit" tooltip="click to add" touch={true} tooltipPosition="top-center">
+            <ContentAdd />
+          </IconButton>
+        </form>
       </MuiThemeProvider>
     )
   }

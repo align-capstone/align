@@ -17,6 +17,7 @@ import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
 import ResourceContainer from './ResourceContainer'
 import Resource from './Resource'
+import ResourceForm from './ResourceForm'
 
 export default class extends React.Component {
   constructor(props) {
@@ -245,15 +246,17 @@ export default class extends React.Component {
             </List>
           </div>
           <div>
+            <h3>Add a resource:</h3>
+            <ResourceForm />
+          </div>
+          <div>
             <h3>Resources:</h3>
-            { this.state.resources && this.state.resources.map((resourceID, index) => {
-              return (
-                <div key={resourceID}>
-                  <ResourceContainer resourceID={resourceID} />
-                </div>
-              )
-            })
-          }
+              { this.state.resources && this.state.resources.map((resourceID, index) => {
+                return (
+                    <ResourceContainer resourceID={resourceID} key={index} />
+                )
+              })
+              }
           </div>
         </div>
       </MuiThemeProvider>
