@@ -75,23 +75,18 @@ export default class extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <div>
-          <h3>Add a resource below</h3>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <TextField
-                autoFocus
-                hintText='Paste a URL here'
-                floatingLabelText='URL'
-                onChange={this.handleChange}
-                id='url'
-              />
-            </div>
-            <div>
-              <RaisedButton label="add resource" type="submit" />
-            </div>
-          </form>
-        </div>
+        <form onSubmit={this.handleSubmit}>
+            <TextField
+              autoFocus
+              hintText='Paste a URL here'
+              floatingLabelText='URL'
+              onChange={this.handleChange}
+              id='url'
+            />
+          <div>
+            <RaisedButton label="add resource" type="submit" />
+          </div>
+        </form>
       </MuiThemeProvider>
     )
   }
