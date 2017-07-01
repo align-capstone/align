@@ -203,6 +203,15 @@ export default class extends Component {
               }
             }}
           />
+            <VictoryLine
+              style={{
+                data: {stroke: "#ccc", strokeWidth: 1}
+              }}
+              data={[
+                {x: new Date(), y: 0},
+                {x: new Date(), y: 400}
+              ]}
+            />
 
           {
             this.state.goals && this.state.goals.map((goal, index) => {
