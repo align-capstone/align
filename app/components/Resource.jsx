@@ -28,7 +28,6 @@ export default class extends Component {
 
   componentDidMount() {
     // When the component mounts, start listening to the fireRef we were given.
-    console.log(this.props)
     this.listenTo(this.props.fireRef)
   }
 

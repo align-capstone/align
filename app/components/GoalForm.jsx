@@ -248,9 +248,7 @@ export default class extends React.Component {
             <h3>Resources:</h3>
             { this.state.resources && this.state.resources.map((resourceID, index) => {
               return (
-                <div key={resourceID}>
-                  <ResourceContainer resourceID={resourceID} />
-                </div>
+                  <ResourceContainer resourceID={resourceID} key={index} />
               )
             })
           }
