@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-let nameRef, descriptionRef, isOpenRef, dateRef
+let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
+import UploadForm from './Upload'
 
 export default class extends React.Component {
   constructor(props) {
@@ -46,6 +47,8 @@ export default class extends React.Component {
     descriptionRef = fireRef.descriptionRef
     isOpenRef = fireRef.isOpenRef
     dateRef = fireRef.dateRef
+    uploadsRef = fireRef.uploadsRef
+    parentRef = fireRef.parentRef
 
     // Whenever our ref's value changes, set {value} on our state.
     // const listener = fireRef.on('value', snapshot =>
@@ -68,12 +71,17 @@ export default class extends React.Component {
       if (snapshot.val() === null) dateRef.set(new Date().getTime())
     })
 
+    const uploadsListener = uploadsRef.on('value', snapshot => {
+      if (snapshot.val()) this.setState({ uploads: Object.values(snapshot.val()) })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
       descriptionRef.off('value', descriptionListener)
       isOpenRef.off('value', isOpenListener)
       dateRef.off('value', dateListener)
+      uploadsRef.off('value', uploadsListener)
     }
   }
 
@@ -145,6 +153,16 @@ export default class extends React.Component {
           </div>
           <div className='form-group'>
             <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this milestone?' />
+          </div>
+          <div>
+            <h3>Uploads:</h3>
+            <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
+            { this.state.uploads && this.state.uploads.map((upload, index) => {
+                return (
+                  <img key={index} src={upload.imageURL} />
+                )
+              })
+            }
           </div>
         </div>
       </MuiThemeProvider>
