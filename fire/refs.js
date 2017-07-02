@@ -30,7 +30,6 @@ exports.getCheckInRefs = (goalId, checkId) => ({
   checkInRef: db.ref('goals').child(goalId).child('checkIns').child(checkId),
   nameRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('name'),
   descriptionRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('description'),
-  isOpenRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('isOpen'),
   dateRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('displayDate'),
   resourcesRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('resources'), // will return an object of resource ids on the check-in
   uploadsRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('uploads'),
