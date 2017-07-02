@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
-let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef, resourcesRef
+let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef, resourcesRef, uploadsRef
 
 let newMilestonePath, newCheckInPath
 
@@ -17,6 +17,7 @@ import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
 import ResourceContainer from './ResourceContainer'
 import Resource from './Resource'
+import UploadForm from './Upload'
 import ResourceForm from './ResourceForm'
 
 export default class extends React.Component {
@@ -65,6 +66,7 @@ export default class extends React.Component {
     milestonesRef = fireRef.milestonesRef
     checkInsRef = fireRef.checkInsRef
     resourcesRef = fireRef.resourcesRef
+    uploadsRef = fireRef.uploadsRef
 
     // LISTENERS TO DATEBASE:
     // Whenever a ref's value changes in Firebase, set {value} on our state.
@@ -108,6 +110,10 @@ export default class extends React.Component {
       if (snapshot.val()) this.setState({ resources: Object.keys(snapshot.val()) })
     })
 
+    const uploadsListener = uploadsRef.on('value', snapshot => {
+      if (snapshot.val()) this.setState({ uploads: Object.values(snapshot.val()) })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
@@ -119,6 +125,7 @@ export default class extends React.Component {
       milestonesRef.off('value', milestonesListener)
       checkInsRef.off('value', checkInsListener)
       resourcesRef.off('value', resourcesListener)
+      uploadsRef.off('value', uploadsListener)
     }
   }
 
@@ -251,12 +258,24 @@ export default class extends React.Component {
           </div>
           <div>
             <h3>Resources:</h3>
-              { this.state.resources && this.state.resources.map((resourceID, index) => {
+            { this.state.resources && this.state.resources.map((resourceID, index) => {
                 return (
-                    <ResourceContainer resourceID={resourceID} key={index} />
+                  <div key={resourceID}>
+                    <ResourceContainer resourceID={resourceID} />
+                  </div>
                 )
               })
-              }
+            }
+          </div>
+          <div>
+            <h3>Uploads:</h3>
+            <UploadForm fireRef={uploadsRef} />
+            { this.state.uploads && this.state.uploads.map((upload, index) => {
+                return (
+                  <img key={index} src={upload} />
+                )
+              })
+            }
           </div>
         </div>
       </MuiThemeProvider>
