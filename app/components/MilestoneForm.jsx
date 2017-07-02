@@ -81,7 +81,7 @@ export default class extends React.Component {
     })
 
     const uploadsListener = uploadsRef.on('value', snapshot => {
-      if (snapshot.val()) this.setState({ uploads: Object.values(snapshot.val()) })
+      if (snapshot.val()) this.setState({ uploads: Object.entries(snapshot.val()) })
     })
 
     // Set unsubscribe to be a function that detaches the listener.
@@ -184,9 +184,12 @@ export default class extends React.Component {
             <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
           </div>
           <div>
+            <h3>Uploads:</h3>
             { this.state.uploads && this.state.uploads.map((upload, index) => {
+                let uploadID = upload[0]
+                let uploadInfo = upload[1]
                 return (
-                  <UploadCard key={index} url={upload.imageURL} milestone={this.state.name} />
+                  <UploadCard key={index} uploadID={uploadID} url={uploadInfo.imageURL} />
                 )
               })
             }
