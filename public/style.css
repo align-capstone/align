@@ -1,3 +1,9 @@
+/*  background: #34223e;  /* fallback for old browsers
+background: -webkit-linear-gradient(#34223e, #0f142b);
+background: -moz-linear-gradient(#34223e, #0f142b);
+background: -o-linear-gradient(#34223e, #0f142b);
+background: linear-gradient(#34223e, #0f142b);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 html,
 
 body {
@@ -29,7 +35,6 @@ h1, h2, h3, h4 {
   bottom:0px;
   left:0px;
   right:0px;
-
 }
 
 

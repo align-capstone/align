@@ -36,8 +36,8 @@ export default class extends Component {
     var data = []
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
-    data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
-    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: 'end date: \n' + new Date(goal.endDate).toDateString(), symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       for (var id in goal.milestones) {
@@ -60,7 +60,7 @@ export default class extends Component {
     var data = []
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
-    data.push({ x: new Date(goal.startDate), y: index })
+    data.push({ x: new Date(goal.startDate), y: index, label: `${goal.name}` })
     data.push({ x: new Date(goal.endDate), y: index })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
@@ -92,9 +92,8 @@ export default class extends Component {
   handleLineTap = (event, goal) => {
     // This prevents ghost click.
     event.preventDefault()
-    console.log("in handleLineTap!!!")
-    console.log("what is goalId???", goal[0])
-    console.log("what is goalInfo?? ", goal[1])
+    console.log('in handleLineTap!!!')
+    console.log('what is event client x/y in handling line tap??', event)
     this.setState({
       menuOpen: true,
       anchorEl: event.currentTarget,
@@ -197,7 +196,6 @@ export default class extends Component {
   render() {
     const chartStyle = { parent: { minWidth: '90%', maxWidth: '100%', padding: '0', margin: '0'} }
     const { goals } = this.state
-    console.log('Timelines goals:', goals)
     return (
       <div className='timeline-container container-fluid'>
         <div className='container chart1'>
@@ -223,18 +221,20 @@ export default class extends Component {
                   stroke: 'none'
                 },
                 tickLabels: {
-                  angle: -45
+                  angle: 0
                 }
               }}
             />
             <VictoryLine
               style={{
-                data: { stroke: "#ccc", strokeWidth: 1 }
+                data: { stroke: '#ccc', strokeWidth: 1 },
+                labels: { fill: "lightgray" }
               }}
               data={[
-                { x: new Date(), y: 0 },
+                { x: new Date(), y: 0, label: 'today'},
                 { x: new Date(), y: 400 }
               ]}
+              labelComponent={<VictoryLabel dy={55} />}
             />
 
             {
@@ -249,17 +249,19 @@ export default class extends Component {
                       data: {
                         stroke: goalInfo.color.hex,
                         strokeWidth: 4,
-                      }
+                      },
+                      labels: { fill: "lightgray" }
                     }}
                     events={[{
                       target: 'data',
                       eventHandlers: {
                         onClick: (event) => { this.handleLineTap(event, goal) }
-                        // console.log('clicked line #', index, ", with ID ", goalId)
-                        // console.log("what is goalInfo?? ", goalInfo)
+                        // console.log('clicked line #', index, ', with ID ', goalId)
+                        // console.log('what is goalInfo?? ', goalInfo)
                       }
                     }]}
                     data={this.getLineData(goalInfo, index)}
+                    labelComponent={<VictoryLabel x={500} textAnchor="start" />}
                   />
                 )
               })

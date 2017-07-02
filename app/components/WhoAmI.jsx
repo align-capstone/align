@@ -1,23 +1,24 @@
 import React from 'react'
 import firebase from 'APP/fire'
 import {browserHistory} from 'react-router'
+import FlatButton from 'material-ui/FlatButton'
 const auth = firebase.auth()
 
 export const name = user => {
   if (!user) {
     return 'Nobody'
   }
-  return user.displayName || user.email
+  return user.displayName
 }
 
 export const WhoAmI = ({user, auth}) =>
   <div className="whoami">
-    <span>Hello, {name(user)}</span>
-    { <button className='btn btn-primary logout' onClick={() => {
+    <span>{name(user)}</span>
+    <FlatButton label="Log Out" onTouchTap={() => {
       auth.signOut()
       .then(() => { //after logging out, redirect to login/landing page
         browserHistory.push('/')})
-    }}>logout</button> }
+    }} primary={true} />
   </div>
 
 export default class extends React.Component {
