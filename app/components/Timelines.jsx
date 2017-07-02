@@ -69,8 +69,7 @@ export default class extends Component {
     // This prevents ghost click.
     event.preventDefault()
     console.log("in handleLineTap!!!")
-    console.log("what is goalId???", goal[0])
-    console.log("what is goalInfo?? ", goal[1])
+    console.log('what is event client x/y in handling line tap??', event)
     this.setState({
       menuOpen: true,
       anchorEl: event.currentTarget,
@@ -173,7 +172,6 @@ export default class extends Component {
   render() {
     const chartStyle = { parent: { minWidth: '90%', maxWidth: '100%', padding: '0', margin: '0'} }
     const { goals } = this.state
-    console.log('Timelines goals:', goals)
     return (
       <div className='timeline-container container-fluid'>
         <div className='container chart1'>

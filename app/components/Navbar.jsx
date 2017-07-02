@@ -15,9 +15,13 @@ import firebase from 'APP/fire'
 // Get the auth API from Firebase.
 const auth = firebase.auth()
 
+const handleTitleTouchTap = function () {
+  browserHistory.push('/')
+}
+
 export default function Navbar(props) {
   return (
-    <AppBar title="align" style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}}>
+    <AppBar title="align" style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}} onTitleTouchTap={handleTitleTouchTap}>
       <Link to="/login">loginpage</Link>
       <WhoAmI auth={auth}/>
     </AppBar>

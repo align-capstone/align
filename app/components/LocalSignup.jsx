@@ -60,6 +60,7 @@ export default class extends React.Component {
     return (
       <div>
         <form className="signupform" onSubmit={this.handleSubmit}>
+          <input name="name" onChange={this.handleChange}
           <input name="email" onChange={this.handleChange} />
           <input name="password" onChange={this.handleChange} />
           <input type="submit" value="Sign Up" />
