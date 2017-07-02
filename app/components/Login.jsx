@@ -7,6 +7,10 @@ import FontIcon from 'material-ui/FontIcon';
 import LocalSignin from './LocalSignin'
 import LocalSignup from './LocalSignup'
 
+import { Tabs, Tab } from 'material-ui/Tabs';
+// From https://github.com/oliviertassinari/react-swipeable-views
+import SwipeableViews from 'react-swipeable-views';
+
 const google = new firebase.auth.GoogleAuthProvider()
 // google.addScope('https://www.googleapis.com/auth/contacts.readonly'); //use this potentially to get calendar read/writeaccess????
 
@@ -24,14 +28,34 @@ const google = new firebase.auth.GoogleAuthProvider()
 //
 // google.addScope('https://mail.google.com/')
 
+const tabStyles = {
+  headline: {
+    fontSize: '5%',
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
+  },
+  slide: {
+    padding: 10,
+  },
+};
 
-export default class LandingPage extends Component {
+
+export default class LandingPage extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
+      slideIndex: 0,
     }
   }
+
+  handleTabChange = (value) => {
+    this.setState({
+      slideIndex: value,
+    })
+    console.log('just set state with slideIndex ', value)
+  };
 
   handleGoogleLogin() {
     firebase.auth().signInWithPopup(google).then(function (result) {
@@ -53,7 +77,7 @@ export default class LandingPage extends Component {
   }
 
   componentDidMount() {
-    document.getElementsByTagName('body')[0].style.backgroundImage = 'url(./imgs/voyagr_landing.png)'
+    document.getElementsByTagName('body')[0].style.backgroundImage = 'url(https://s-media-cache-ak0.pinimg.com/736x/4f/5f/7d/4f5f7d794a8c075a2080528e9c0b0dbf--phone-backgrounds-wallpaper-backgrounds.jpg)'
   }
 
   componentWillUnmount() {
@@ -63,48 +87,29 @@ export default class LandingPage extends Component {
   render() {
     return (
       <div id="landing">
-        <PanelGroup accordion>
-          <Panel header="Sign up" eventKey="1"><LocalSignup /></Panel>
-          <Panel header="Log in" eventKey="2"><LocalSignin /></Panel>
-          <Panel header="Log in with another account" eventKey="3">
+        <Tabs onChange={this.handleTabChange} value={this.state.slideIndex}>
+          <Tab label="Sign up" value={0} />
+          <Tab label="Log in" value={1} />
+          <Tab label="Log in with another account" value={2} />
+        </Tabs>
+        <SwipeableViews index={this.state.slideIndex}
+          onChangeIndex={this.handleTabChange}>
+          <div style={tabStyles.slide}>
+            <LocalSignup />
+          </div>
+          <div style={tabStyles.slide}>
+            <LocalSignin />
+          </div>
+          <div style={tabStyles.slide}>
             <FlatButton
-              onClick={handleGoogleLogin}
+              onClick={this.handleGoogleLogin}
               label="Google"
               secondary={true}
               icon={<FontIcon className="muidocs-icon-custom-github" />}
-            /></Panel>
-        </PanelGroup>
+            />
+          </div>
+        </SwipeableViews>
       </div>
     )
   }
 }
-
-
-
-
-
-
-
-
-// NOTE: change accordion to something Material-UI? --SC
-
-// export default ({ auth }) => {
-
-//   return (
-//     <div id="landing">
-//       <PanelGroup accordion>
-//         <Panel header="Sign up" eventKey="1"><LocalSignup /></Panel>
-//         <Panel header="Log in" eventKey="2"><LocalSignin /></Panel>
-//         <Panel header="Log in with another account" eventKey="3">
-//           <FlatButton
-//             onClick={handleGoogleLogin}
-//             label="Google"
-//             secondary={true}
-//             icon={<FontIcon className="muidocs-icon-custom-github" />}
-//           /></Panel>
-//       </PanelGroup>
-//     </div>
-
-//   )
-
-// }
