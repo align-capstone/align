@@ -31,6 +31,10 @@ h1, h2, h3, h4 {
 
 }
 
+svg g text {
+  margin-left: 20px;
+}
+
 
 /*.resource-card {
   padding: 5px;

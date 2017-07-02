@@ -60,7 +60,7 @@ export default class extends Component {
     var data = []
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
-    data.push({ x: new Date(goal.startDate), y: index })
+    data.push({ x: new Date(goal.startDate), y: index, label: `${goal.name}` })
     data.push({ x: new Date(goal.endDate), y: index })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
