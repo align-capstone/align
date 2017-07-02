@@ -55,6 +55,30 @@ export default class extends Component {
     return data
   }
 
+  getLineData(goal, index) {
+
+    var data = []
+    // push start and end dates to data array
+    // maybe make end date of completed goals into a star??
+    data.push({ x: new Date(goal.startDate), y: index })
+    data.push({ x: new Date(goal.endDate), y: index })
+    // then iterate over the milestones object and push each date to the array
+    if (goal.milestones) {
+      for (var id in goal.milestones) {
+        var milestone = goal.milestones[id]
+        data.push({ x: new Date(milestone.displayDate), y: index })
+      }
+    }
+    if (goal.checkIns) {
+      for (var id in goal.checkIns) {
+        var checkin = goal.checkIns[id]
+        data.push({ x: new Date(checkin.displayDate), y: index })
+
+      }
+    }
+    return data
+  }
+
   handleZoom(domain) {
     this.setState({ selectedDomain: domain })
   }
@@ -86,7 +110,6 @@ export default class extends Component {
 
   viewCurrentTimeline = () => {
     event.preventDefault()
-    console.log('what is openGoal on state???', this.state.openGoal)
     let openGoalUrl = `/goal/${this.state.openGoal[0]}`
     browserHistory.push(openGoalUrl)
   }
@@ -158,7 +181,7 @@ export default class extends Component {
           const ref = goalsRef.child(goalId)
           let listener = ref.on('value', (goalSnapshot) => {
             goals[goalId] = goalSnapshot.val()
-            this.setState({goals: Object.entries(goals)})
+            this.setState({ goals: Object.entries(goals) })
           })
           return () => ref.off('value', listener)
         })
@@ -172,151 +195,151 @@ export default class extends Component {
   }
 
   render() {
-    const chartStyle = { parent: { minWidth: '50%', maxWidth: '80%', marginLeft: '10%', cursor: 'pointer' } }
-    const {goals} = this.state
+    const chartStyle = { parent: { minWidth: '90%', maxWidth: '100%', padding: '0', margin: '0'} }
+    const { goals } = this.state
     console.log('Timelines goals:', goals)
     return (
-      <div>
-        <VictoryChart width={600} height={400} scale={{ x: 'time' }} style={chartStyle}
-          domain={{
-            // MPM: eventually, manipulate this time span using moment library
-            // for now, though, just start the view at the beginning of 2017??
-            // x: [new Date(2017, 0, 1), Date.now()],
-            y: [-1, this.state.goals.length]
-          }}
-          // MPM: add domainPadding?
-          containerComponent={
-            <VictoryZoomContainer
-              dimension='x'
-              zoomDomain={this.state.zoomDomain}
-              onDomainChange={this.handleZoom.bind(this)}
-            />
-          }
-        >
-          <VictoryAxis
-            style={{
-              axis: {
-                stroke: 'none'
-              },
-              tickLabels: {
-                angle: -45
-              }
+      <div className='timeline-container container-fluid'>
+        <div className='container chart1'>
+          <VictoryChart width={1000} height={400} scale={{ x: 'time' }} style={chartStyle}
+            domain={{
+              // MPM: eventually, manipulate this time span using moment library
+              // for now, though, just start the view at the beginning of 2017??
+              // x: [new Date(2017, 0, 1), Date.now()],
+              y: [-1, this.state.goals.length]
             }}
-          />
+            // MPM: add domainPadding?
+            containerComponent={
+              <VictoryZoomContainer
+                dimension='x'
+                zoomDomain={this.state.zoomDomain}
+                onDomainChange={this.handleZoom.bind(this)}
+              />
+            }
+          >
+            <VictoryAxis
+              style={{
+                axis: {
+                  stroke: 'none'
+                },
+                tickLabels: {
+                  angle: -45
+                }
+              }}
+            />
             <VictoryLine
               style={{
-                data: {stroke: "#ccc", strokeWidth: 1}
+                data: { stroke: "#ccc", strokeWidth: 1 }
               }}
               data={[
-                {x: new Date(), y: 0},
-                {x: new Date(), y: 400}
+                { x: new Date(), y: 0 },
+                { x: new Date(), y: 400 }
               ]}
             />
 
-          {
-            this.state.goals && this.state.goals.map((goal, index) => {
-              // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
-              let goalInfo = goal[1]
-              let goalId = goal[0]
-              return (
-                <VictoryLine
-                  key={index}
-                  style={{
-                    data: {
-                      stroke: goalInfo.color.hex,
-                      strokeWidth: 4,
-                    }
-                  }}
-                  events={[{
-                    target: 'data',
-                    eventHandlers: {
-                      onClick: (event) => {this.handleLineTap(event, goal)}
+            {
+              this.state.goals && this.state.goals.map((goal, index) => {
+                // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
+                let goalInfo = goal[1]
+                let goalId = goal[0]
+                return (
+                  <VictoryLine
+                    key={index}
+                    style={{
+                      data: {
+                        stroke: goalInfo.color.hex,
+                        strokeWidth: 4,
+                      }
+                    }}
+                    events={[{
+                      target: 'data',
+                      eventHandlers: {
+                        onClick: (event) => { this.handleLineTap(event, goal) }
                         // console.log('clicked line #', index, ", with ID ", goalId)
                         // console.log("what is goalInfo?? ", goalInfo)
-                    }
-                  }]}
-                  data={[
-                    { x: new Date(goalInfo.startDate), y: index },
-                    { x: new Date(goalInfo.endDate), y: index }
-                  ]}
-                />
-              )
-            })
-          }{
-            this.state.goals && this.state.goals.map((goal, index) => {
-              let goalInfo = goal[1]
-              let goalId = goal[0]
-              return (
-                <VictoryScatter
-                  key={index}
-                  style={{
-                    data: {
-                      stroke: goalInfo.color.hex,
-                      strokeWidth: 3,
-                      fill: 'white'
-                    }
-                  }}
-                  events={[{
-                    target: 'data',
-                    eventHandlers: {
-                      onClick: (event, props) => {
-                        let goalPath = props.data[props.index].key
-                        browserHistory.push(goalPath)
                       }
-                    }
-                  }]}
-                  data={this.getScatterData(goalInfo, index, goalId)}
-                  labelComponent={<VictoryTooltip />}
-                />
-              )
-            })
-          }
-        </VictoryChart>
-
-        <VictoryChart
-          // eventually, we want this size to be responsive / relative to # of goals?
-          padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
-          width={600} height={50} scale={{ x: 'time' }} style={chartStyle}
-          domain={{ y: [-1, this.state.goals.length] }}
-          containerComponent={
-            <VictoryBrushContainer
-              dimension='x'
-              selectedDomain={this.state.selectedDomain}
-              onDomainChange={this.handleBrush.bind(this)}
+                    }]}
+                    data={this.getLineData(goalInfo, index)}
+                  />
+                )
+              })
+            }{
+              this.state.goals && this.state.goals.map((goal, index) => {
+                let goalInfo = goal[1]
+                let goalId = goal[0]
+                return (
+                  <VictoryScatter
+                    key={index}
+                    style={{
+                      data: {
+                        stroke: goalInfo.color.hex,
+                        strokeWidth: 3,
+                        fill: 'white'
+                      }
+                    }}
+                    events={[{
+                      target: 'data',
+                      eventHandlers: {
+                        onClick: (event, props) => {
+                          let goalPath = props.data[props.index].key
+                          browserHistory.push(goalPath)
+                        }
+                      }
+                    }]}
+                    data={this.getScatterData(goalInfo, index, goalId)}
+                    labelComponent={<VictoryTooltip />}
+                  />
+                )
+              })
+            }
+          </VictoryChart>
+        </div>
+        <div className='container chart2'>
+          <VictoryChart
+            // eventually, we want this size to be responsive / relative to # of goals?
+            padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
+            width={600} height={50} scale={{ x: 'time' }} style={chartStyle}
+            domain={{ y: [-1, this.state.goals.length] }}
+            containerComponent={
+              <VictoryBrushContainer
+                dimension='x'
+                selectedDomain={this.state.selectedDomain}
+                onDomainChange={this.handleBrush.bind(this)}
+              />
+            }
+          >
+            <VictoryAxis
+              // tickFormat={(x) => new Date(x).getFullYear()}
+              tickValues={[]}
+              style={{
+                axis: {
+                  stroke: 'none'
+                }
+              }}
             />
-          }
-        >
-          <VictoryAxis
-            // tickFormat={(x) => new Date(x).getFullYear()}
-            tickValues={[]}
-            style={{
-              axis: {
-                stroke: 'none'
-              }
-            }}
-          />
-          {
-            this.state.goals && this.state.goals.map((goal, index) => {
-              let goalInfo = goal[1]
-              return (
-                <VictoryLine
-                  key={index}
-                  style={{
-                    data: {
-                      stroke: goalInfo.color.hex,
-                      strokeWidth: 3
-                    }
-                  }}
-                  data={[
-                    { x: new Date(goalInfo.startDate), y: index },
-                    { x: new Date(goalInfo.endDate), y: index }
-                  ]}
-                />
-              )
-            })
-          }
-        </VictoryChart>
-        <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal} style={{position: 'fixed', top: '87%', right: '5%'}} >
+            {
+              this.state.goals && this.state.goals.map((goal, index) => {
+                let goalInfo = goal[1]
+                return (
+                  <VictoryLine
+                    key={index}
+                    style={{
+                      data: {
+                        stroke: goalInfo.color.hex,
+                        strokeWidth: 3
+                      }
+                    }}
+                    data={[
+                      { x: new Date(goalInfo.startDate), y: index },
+                      { x: new Date(goalInfo.endDate), y: index }
+                    ]}
+                  />
+                )
+              })
+            }
+          </VictoryChart>
+        </div>
+        <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal} style={{ position: 'fixed', top: '87%', right: '5%' }} >
           <ContentAdd />
         </FloatingActionButton>
         <Popover
@@ -327,8 +350,8 @@ export default class extends Component {
           onRequestClose={this.handleRequestClose}>
           <Menu>
             <MenuItem primaryText='Add check in' onTouchTap={this.addCheckinToCurrentTimeline} />
-            <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline}/>
-            <MenuItem primaryText='View timeline overview' onTouchTap={this.viewCurrentTimeline}/>
+            <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline} />
+            <MenuItem primaryText='View timeline overview' onTouchTap={this.viewCurrentTimeline} />
           </Menu>
         </Popover>
       </div>

@@ -2,14 +2,6 @@ import React, { Component } from 'react'
 import firebase from 'APP/fire'
 import FileUploader from 'react-firebase-file-uploader'
 const db = firebase.database()
-let propsStandInGoal = db.ref('goals').child(1234).child('uploads')
-
-/*
-
-This is an example component using react-firebase-file-uploader - it renders a file uploader
-and sends any uploaded images to an "images" directory in firebase storage
-
-*/
 
 class Upload extends Component {
   constructor(props) {

@@ -13,7 +13,7 @@ export const name = user => {
 export const WhoAmI = ({user, auth}) =>
   <div className="whoami">
     <span>Hello, {name(user)}</span>
-    { <button className='logout' onClick={() => {
+    { <button className='btn btn-primary logout' onClick={() => {
       auth.signOut()
       .then(() => { //after logging out, redirect to login/landing page
         browserHistory.push('/')})
