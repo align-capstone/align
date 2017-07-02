@@ -24,7 +24,7 @@ export default class extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribe()
+    // this.unsubscribe()
   }
 
   // move the functions below to our resource component

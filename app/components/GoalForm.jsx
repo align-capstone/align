@@ -17,8 +17,8 @@ import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
 import ResourceContainer from './ResourceContainer'
 import Resource from './Resource'
-import UploadForm from './Upload'
 import ResourceForm from './ResourceForm'
+import UploadForm from './Upload'
 
 export default class extends React.Component {
   constructor(props) {
@@ -269,10 +269,10 @@ export default class extends React.Component {
           </div>
           <div>
             <h3>Uploads:</h3>
-            <UploadForm fireRef={uploadsRef} />
+            <UploadForm goalRef={uploadsRef} />
             { this.state.uploads && this.state.uploads.map((upload, index) => {
                 return (
-                  <img key={index} src={upload} />
+                  <img key={index} src={upload.imageURL} />
                 )
               })
             }
