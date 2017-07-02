@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import firebase from 'APP/fire'
 const db = firebase.database()
 const resourcesRef = db.ref('resources')
-const
 
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -65,9 +64,13 @@ export default class extends Component {
         console.log('props from resource form: ', this.props)
         // let newResourceRef = resourcesRef.push()
         // let newResourceID = newResourceRef.key
-        // let newGoalResource =
-        let key = this.props.fireRef.push().key
-        this.props.fireRef.child(key).set(true)
+
+        // let key = this.props.goalRef.push().key
+        let key = resourcesRef.push().key
+        this.props.goalRef.child(key).set({
+          resourceURL: response.url
+        })
+        resourcesRef.child(key).set(response)
 
         // and here we also want to write to the associated milestone etc.
         // instead of pushing the object, we'll just do .push(), and we'll save it as a variable...
