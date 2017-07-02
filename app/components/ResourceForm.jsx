@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import firebase from 'APP/fire'
 const db = firebase.database()
-const resourceRef = db.ref('resources')
-// let resourceRef, titleRef, urlRef, imageRef, descriptionRef
+const resourcesRef = db.ref('resources')
+const
 
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -60,10 +60,15 @@ export default class extends Component {
       url: 'http://api.linkpreview.net',
       dataType: 'jsonp',
       data: {q: target, key: '59546c0da716e80a54030151e45fe4e025d32430c753a'},
-      success: function(response) {
-        console.log(response)
-        let resourceId
-        resourceRef.push(response)
+      success: response => {
+        console.log('link preview: ', response)
+        console.log('props from resource form: ', this.props)
+        // let newResourceRef = resourcesRef.push()
+        // let newResourceID = newResourceRef.key
+        // let newGoalResource =
+        let key = this.props.fireRef.push().key
+        this.props.fireRef.child(key).set(true)
+
         // and here we also want to write to the associated milestone etc.
         // instead of pushing the object, we'll just do .push(), and we'll save it as a variable...
         // newResourceRef = resourceRef.push()
