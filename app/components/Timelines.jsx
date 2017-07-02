@@ -55,6 +55,30 @@ export default class extends Component {
     return data
   }
 
+  getLineData(goal, index) {
+
+    var data = []
+    // push start and end dates to data array
+    // maybe make end date of completed goals into a star??
+    data.push({ x: new Date(goal.startDate), y: index })
+    data.push({ x: new Date(goal.endDate), y: index })
+    // then iterate over the milestones object and push each date to the array
+    if (goal.milestones) {
+      for (var id in goal.milestones) {
+        var milestone = goal.milestones[id]
+        data.push({ x: new Date(milestone.displayDate), y: index })
+      }
+    }
+    if (goal.checkIns) {
+      for (var id in goal.checkIns) {
+        var checkin = goal.checkIns[id]
+        data.push({ x: new Date(checkin.displayDate), y: index })
+
+      }
+    }
+    return data
+  }
+
   handleZoom(domain) {
     this.setState({ selectedDomain: domain })
   }
@@ -235,10 +259,7 @@ export default class extends Component {
                         // console.log("what is goalInfo?? ", goalInfo)
                       }
                     }]}
-                    data={[
-                      { x: new Date(goalInfo.startDate), y: index },
-                      { x: new Date(goalInfo.endDate), y: index }
-                    ]}
+                    data={this.getLineData(goalInfo, index)}
                   />
                 )
               })
