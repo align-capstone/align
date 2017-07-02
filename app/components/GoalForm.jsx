@@ -19,6 +19,7 @@ import ResourceContainer from './ResourceContainer'
 import ResourceCard from './ResourceCard'
 import ResourceForm from './ResourceForm'
 import UploadForm from './Upload'
+import UploadCard from './UploadCard'
 
 export default class extends React.Component {
   constructor(props) {
@@ -268,11 +269,14 @@ export default class extends React.Component {
             }
           </div>
           <div>
-            <h3>Uploads:</h3>
+            <h3>Add an upload:</h3>
             <UploadForm goalRef={uploadsRef} />
+          </div>
+          <div>
+            <h3>Uploads:</h3>
             { this.state.uploads && this.state.uploads.map((upload, index) => {
                 return (
-                  <img key={index} src={upload.imageURL} />
+                  <UploadCard key={index} url={upload.imageURL} goal={this.state.name} />
                 )
               })
             }

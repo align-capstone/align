@@ -22,7 +22,6 @@ export default class extends Component {
   constructor(props) {
     super()
     this.state = {
-      // resourceID: '',
       title: '',
       url: '',
       image: '',

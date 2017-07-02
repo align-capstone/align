@@ -10,6 +10,7 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import UploadForm from './Upload'
+import UploadCard from './UploadCard'
 import ResourceCard from './ResourceCard'
 import ResourceForm from './ResourceForm'
 import ResourceContainer from './ResourceContainer'
@@ -179,11 +180,13 @@ export default class extends React.Component {
             }
           </div>
           <div>
-            <h3>Uploads:</h3>
+            <h3>Add an upload:</h3>
             <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
+          </div>
+          <div>
             { this.state.uploads && this.state.uploads.map((upload, index) => {
                 return (
-                  <img key={index} src={upload.imageURL} />
+                  <UploadCard key={index} url={upload.imageURL} milestone={this.state.name} />
                 )
               })
             }
