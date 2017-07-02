@@ -61,22 +61,26 @@ export default class extends Component {
       data: {q: target, key: '59546c0da716e80a54030151e45fe4e025d32430c753a'},
       success: response => {
         console.log('link preview: ', response)
-        console.log('props from resource form: ', this.props)
-        // let newResourceRef = resourcesRef.push()
-        // let newResourceID = newResourceRef.key
-
-        // let key = this.props.goalRef.push().key
         let key = resourcesRef.push().key
-        this.props.goalRef.child(key).set({
-          resourceURL: response.url
-        })
+        console.log('what even ', this.props)
+        if (this.props.milestoneRef) {
+          console.log('props from in milestone thing', this.props)
+          // add resource URL to parent goal's uploads:
+          this.props.goalRef.child('resources').child(key).set({
+            resourceURL: response.url,
+            milestoneId: this.props.milestoneId
+          })
+          // add resource URL to milestone:
+          this.props.milestoneRef.child(key).set({
+            resourceURL: response.url
+          })
+        } else {
+          // otherwise, just add resource directly to goal
+          this.props.goalRef.child(key).set({
+            resourceURL: response.url
+          })
+        }
         resourcesRef.child(key).set(response)
-
-        // and here we also want to write to the associated milestone etc.
-        // instead of pushing the object, we'll just do .push(), and we'll save it as a variable...
-        // newResourceRef = resourceRef.push()
-        // newResourceID = newResourceRef.id
-        // look at timelines for example
       }
     })
   }
