@@ -199,7 +199,7 @@ export default class extends Component {
                   stroke: 'none'
                 },
                 tickLabels: {
-                  angle: -45
+                  angle: 0
                 }
               }}
             />
