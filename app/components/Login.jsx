@@ -1,5 +1,8 @@
 import React from 'react'
 import firebase from 'APP/fire'
+import { PanelGroup, Panel } from 'react-bootstrap'
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 
 import LocalSignin from './LocalSignin'
 import LocalSignup from './LocalSignup'
@@ -9,8 +12,6 @@ const google = new firebase.auth.GoogleAuthProvider()
 
 
 const handleGoogleLogin = () => {
-
-  console.log('in handleGoogleLogin!')
 
   firebase.auth().signInWithPopup(google).then(function (result) {
     // This gives you a Google Access Token. You can use it to access the Google API.
@@ -31,14 +32,6 @@ const handleGoogleLogin = () => {
 
 }
 
-// Firebase has several built in auth providers:
-// const facebook = new firebase.auth.FacebookAuthProvider()
-// const twitter = new firebase.auth.TwitterAuthProvider()
-// const github = new firebase.auth.GithubAuthProvider()
-// // This last one is the email and password login we all know and
-// // vaguely tolerate:
-// const email = new firebase.auth.EmailAuthProvider()
-
 // If you want to request additional permissions, you'd do it
 // like so:
 //
@@ -52,25 +45,29 @@ const handleGoogleLogin = () => {
 //
 // google.addScope('https://mail.google.com/')
 
+
+
+
+
+// NOTE: change accordion to something Material-UI? --SC
+
 export default ({ auth }) => {
 
   return (
-    <div>
-      <div>
-        <h3>Signup:</h3>
-        <LocalSignup />
-      </div>
-      <div>
-        <h3>Login Locally:</h3>
-        <LocalSignin />
-      </div>
-      <div>
-        <h3>Login with Google:</h3>
-        <button className='google login'
-          onClick={handleGoogleLogin}>Login with Google</button>
-      </div>
+    <div id="landing">
+      <PanelGroup accordion>
+        <Panel header="Sign up" eventKey="1"><LocalSignup /></Panel>
+        <Panel header="Log in" eventKey="2"><LocalSignin /></Panel>
+        <Panel header="Log in with another account" eventKey="3">
+          <FlatButton
+            onClick={handleGoogleLogin}
+            label="Google"
+            secondary={true}
+            icon={<FontIcon className="muidocs-icon-custom-github" />}
+          /></Panel>
+      </PanelGroup>
     </div>
+
   )
 
 }
-

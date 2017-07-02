@@ -65,6 +65,7 @@
     "pretty-error": "^2.0.2",
     "prop-types": "^15.5.10",
     "react": "^15.3.2",
+    "react-bootstrap": "^0.31.0",
     "react-color": "^2.13.0",
     "react-dom": "^15.3.2",
     "react-firebase-file-uploader": "^2.2.1",
