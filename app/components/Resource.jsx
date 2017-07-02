@@ -16,13 +16,13 @@ import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Ca
 import ContentEdit from 'material-ui/svg-icons/content/create'
 import ContentLink from 'material-ui/svg-icons/content/link'
 
-let resourceRef, urlRef, titleRef, imageRef, descriptionRef
+let urlRef, titleRef, imageRef, descriptionRef
 
 export default class extends Component {
   constructor(props) {
     super()
     this.state = {
-      resourceID: '',
+      // resourceID: '',
       title: '',
       url: '',
       image: '',
@@ -62,8 +62,6 @@ export default class extends Component {
     const titleListener = titleRef.on('value', snapshot =>
       this.setState({ title: snapshot.val() }))
 
-    // MPM I'm pretty sure we DON'T want URL / image URL to be editable, right?
-
     const urlListener = urlRef.on('value', snapshot => {
       this.setState({ url: snapshot.val() })
     })
@@ -97,7 +95,7 @@ export default class extends Component {
             showExpandableButton={true}
           />
           <CardMedia style={{padding: 15}}>
-            <img src={this.state.image} className="resource-img" />
+            <img src={this.state.image} alt="/" className="resource-img" />
           </CardMedia>
           <CardText expandable={true}>
             {this.state.description}

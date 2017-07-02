@@ -2,7 +2,7 @@ import React from 'react'
 import firebase from 'APP/fire'
 const db = firebase.database()
 
-import {browserHistory} from 'react-router'
+import { browserHistory } from 'react-router'
 
 let usersRef = db.ref('users')
 let newUser
@@ -23,7 +23,7 @@ export default class extends React.Component {
 
   handleFailedLogin(message) {
     return (
-      <div style={{color:'red'}}>
+      <div style={{ color: 'red' }}>
         <h4>{message}</h4>
       </div>
     )
@@ -39,13 +39,21 @@ export default class extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-    //   .then((createdUser) => { //now that new user exists, put him under 'users' object in DB
-    //     console.log('newUser variable : ', newUser)
-    //     newUser = createdUser
-    //     let newUserId = newUser.uid
-    //     console.log('newUser ID: ', newUserId)
-    //     usersRef.child(newUserId).set()
-    //   })
+      //   .then((createdUser) => { //now that new user exists, put him under 'users' object in DB
+      //     console.log('newUser variable : ', newUser)
+      //     newUser = createdUser
+      //     let newUserId = newUser.uid
+      //     console.log('newUser ID: ', newUserId)
+      //     usersRef.child(newUserId).set()
+      //   })
+      .then(() => firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log('IN IF USER. what is user?', user)
+          user.updateProfile({
+            displayName: this.state.name
+          })
+        }
+      }))
       .catch(error => {
         const errorMessage = error.message;
         this.setState({
@@ -54,14 +62,17 @@ export default class extends React.Component {
         })
         console.error(error)
       })
+
+
   }
 
   render() {
     return (
       <div>
         <form className="signupform" onSubmit={this.handleSubmit}>
-          <input name="email" onChange={this.handleChange} />
-          <input name="password" onChange={this.handleChange} />
+          <label>Name</label><input name="name" onChange={this.handleChange} />
+          <label>Email</label><input name="email" onChange={this.handleChange} />
+          <label>Password</label><input name="password" onChange={this.handleChange} />
           <input type="submit" value="Sign Up" />
         </form>
 
