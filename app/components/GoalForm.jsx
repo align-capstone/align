@@ -16,9 +16,10 @@ import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
 import ResourceContainer from './ResourceContainer'
-import Resource from './Resource'
+import ResourceCard from './ResourceCard'
 import ResourceForm from './ResourceForm'
 import UploadForm from './Upload'
+import UploadCard from './UploadCard'
 
 export default class extends React.Component {
   constructor(props) {
@@ -111,7 +112,7 @@ export default class extends React.Component {
     })
 
     const uploadsListener = uploadsRef.on('value', snapshot => {
-      if (snapshot.val()) this.setState({ uploads: Object.values(snapshot.val()) })
+      if (snapshot.val()) this.setState({ uploads: Object.entries(snapshot.val()) })
     })
 
     // Set unsubscribe to be a function that detaches the listener.
@@ -268,11 +269,17 @@ export default class extends React.Component {
             }
           </div>
           <div>
-            <h3>Uploads:</h3>
+            <h3>Add an upload:</h3>
             <UploadForm goalRef={uploadsRef} />
+          </div>
+          <div>
+            <h3>Uploads:</h3>
             { this.state.uploads && this.state.uploads.map((upload, index) => {
+                console.log('what even is an upload', upload)
+                let uploadID = upload[0]
+                let uploadInfo = upload[1]
                 return (
-                  <img key={index} src={upload.imageURL} />
+                  <UploadCard key={index} uploadID={uploadID} url={uploadInfo.imageURL} />
                 )
               })
             }
