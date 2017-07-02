@@ -9,7 +9,7 @@ export default ({params: {id, mid}}) => {
   const milestoneRefs = getMilestoneRefs(id, mid)
   return (
     <div>
-      <MilestoneForm fireRef={milestoneRefs} goalId={id} />
+      <MilestoneForm fireRef={milestoneRefs} goalId={id} milestoneId={mid} />
     </div>
   )
 }

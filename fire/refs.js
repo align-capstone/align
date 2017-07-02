@@ -21,7 +21,9 @@ exports.getMilestoneRefs = (goalId, mileId) => ({
   descriptionRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('description'),
   isOpenRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('isOpen'),
   dateRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('displayDate'),
-  resourcesRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('resources') // will return an object of resource ids on the milestone
+  resourcesRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('resources'), // will return an object of resource ids on the milestone
+  uploadsRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('uploads'),
+  parentRef: db.ref('goals').child(goalId)
 })
 
 exports.getCheckInRefs = (goalId, checkId) => ({
@@ -30,7 +32,9 @@ exports.getCheckInRefs = (goalId, checkId) => ({
   descriptionRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('description'),
   isOpenRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('isOpen'),
   dateRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('displayDate'),
-  resourcesRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('resources') // will return an object of resource ids on the check-in
+  resourcesRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('resources'), // will return an object of resource ids on the check-in
+  uploadsRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('uploads'),
+  parentRef: db.ref('goals').child(goalId)
 })
 
 exports.getResourceRefs = id => ({
