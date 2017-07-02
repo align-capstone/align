@@ -97,7 +97,7 @@ export default class extends Component {
             showExpandableButton={true}
           />
           <CardMedia style={{padding: 15}}>
-            <img src={this.state.image} className="resource-img" />
+            <img src={this.state.image} alt="/" className="resource-img" />
           </CardMedia>
           <CardText expandable={true}>
             {this.state.description}
