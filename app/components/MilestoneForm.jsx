@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef
+let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef, resourcesRef
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -10,6 +10,9 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import UploadForm from './Upload'
+import Resource from './Resource'
+import ResourceForm from './ResourceForm'
+import ResourceContainer from './ResourceContainer'
 
 export default class extends React.Component {
   constructor(props) {
@@ -49,6 +52,7 @@ export default class extends React.Component {
     dateRef = fireRef.dateRef
     uploadsRef = fireRef.uploadsRef
     parentRef = fireRef.parentRef
+    resourcesRef = fireRef.resourcesRef
 
     // Whenever our ref's value changes, set {value} on our state.
     // const listener = fireRef.on('value', snapshot =>
@@ -71,6 +75,10 @@ export default class extends React.Component {
       if (snapshot.val() === null) dateRef.set(new Date().getTime())
     })
 
+    const resourcesListener = resourcesRef.on('value', snapshot => {
+      if (snapshot.val()) this.setState({ resources: Object.keys(snapshot.val()) })
+    })
+
     const uploadsListener = uploadsRef.on('value', snapshot => {
       if (snapshot.val()) this.setState({ uploads: Object.values(snapshot.val()) })
     })
@@ -81,6 +89,7 @@ export default class extends React.Component {
       descriptionRef.off('value', descriptionListener)
       isOpenRef.off('value', isOpenListener)
       dateRef.off('value', dateListener)
+      resourcesRef.off('value', resourcesListener)
       uploadsRef.off('value', uploadsListener)
     }
   }
@@ -153,6 +162,21 @@ export default class extends React.Component {
           </div>
           <div className='form-group'>
             <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this milestone?' />
+          </div>
+          <div>
+            <h3>Add a resource:</h3>
+            <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
+          </div>
+          <div>
+            <h3>Resources:</h3>
+            { this.state.resources && this.state.resources.map((resourceID, index) => {
+              return (
+                <div key={resourceID}>
+                  <ResourceContainer resourceID={resourceID} />
+                </div>
+                )
+              })
+            }
           </div>
           <div>
             <h3>Uploads:</h3>

@@ -254,7 +254,7 @@ export default class extends React.Component {
           </div>
           <div>
             <h3>Add a resource:</h3>
-            <ResourceForm />
+            <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
           </div>
           <div>
             <h3>Resources:</h3>

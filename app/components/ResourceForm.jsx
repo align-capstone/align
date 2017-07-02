@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import firebase from 'APP/fire'
 const db = firebase.database()
-const resourceRef = db.ref('resources')
-// let resourceRef, titleRef, urlRef, imageRef, descriptionRef
+const resourcesRef = db.ref('resources')
 
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -27,25 +26,8 @@ export default class extends Component {
     // this.unsubscribe()
   }
 
-  // move the functions below to our resource component
-  // writeURL = (url) => {
-  //   urlRef.set(url)
-  // }
-
-  // writeTitle = (title) => {
-  //   titleRef.set(title)
-  // }
-
-  // writeImage = (image) => {
-  //   imageRef.set(image)
-  // }
-
-  // writeDescription = (description) => {
-  //   descriptionRef.set(description)
-  // }
-
-  // don't write URL yet... first, make the ajax request
-  // THEN write title, image, and description based on JSON returned by ajax call
+  // don't write URL yet... first, make the API call
+  // then write title, image, and description based on JSON we get back
 
   handleChange = (event) => {
     this.setState({
@@ -60,15 +42,25 @@ export default class extends Component {
       url: 'http://api.linkpreview.net',
       dataType: 'jsonp',
       data: {q: target, key: '59546c0da716e80a54030151e45fe4e025d32430c753a'},
-      success: function(response) {
-        console.log(response)
-        let resourceId
-        resourceRef.push(response)
-        // and here we also want to write to the associated milestone etc.
-        // instead of pushing the object, we'll just do .push(), and we'll save it as a variable...
-        // newResourceRef = resourceRef.push()
-        // newResourceID = newResourceRef.id
-        // look at timelines for example
+      success: response => {
+        let key = resourcesRef.push().key
+        if (this.props.milestoneRef) {
+          // add resource URL to parent goal's uploads:
+          this.props.goalRef.child('resources').child(key).set({
+            resourceURL: response.url,
+            milestoneId: this.props.milestoneId
+          })
+          // add resource URL to milestone:
+          this.props.milestoneRef.child(key).set({
+            resourceURL: response.url
+          })
+        } else {
+          // otherwise, just add resource directly to goal
+          this.props.goalRef.child(key).set({
+            resourceURL: response.url
+          })
+        }
+        resourcesRef.child(key).set(response)
       }
     })
   }
