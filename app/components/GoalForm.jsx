@@ -18,6 +18,7 @@ import Add from 'material-ui/svg-icons/content/add'
 import ResourceContainer from './ResourceContainer'
 import Resource from './Resource'
 import UploadForm from './Upload'
+import ResourceForm from './ResourceForm'
 
 export default class extends React.Component {
   constructor(props) {
@@ -250,6 +251,10 @@ export default class extends React.Component {
               }
               <ListItem leftIcon={<Add />} onTouchTap={this.createNewCheckIn} >Add new</ListItem>
             </List>
+          </div>
+          <div>
+            <h3>Add a resource:</h3>
+            <ResourceForm />
           </div>
           <div>
             <h3>Resources:</h3>
