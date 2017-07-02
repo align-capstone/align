@@ -33,7 +33,7 @@ const auth = firebase.auth()
 
 export const Navbar = ({ user, auth }) =>
   <AppBar title="align" style={{ backgroundColor: 'transparent', color: 'black', boxShadow: 'none' }}
-    onTitleTouchTap={() => browserHistory.push('/')} iconElementRight={auth.currentUser ? <WhoAmI auth={auth} /> : null }
+    onTitleTouchTap={() => browserHistory.push('/')} onLeftIconButtonTouchTap={() => browserHistory.push('/')} iconElementRight={auth.currentUser ? <WhoAmI auth={auth} /> : null }
     iconStyleRight={{display: 'flex', alignItems: 'center', marginTop: 0}}>
   </AppBar>
 
