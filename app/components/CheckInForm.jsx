@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef
+let nameRef, descriptionRef, dateRef, uploadsRef, parentRef
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -46,7 +46,6 @@ export default class extends React.Component {
     // Set up aliases for our Firebase references:
     nameRef = fireRef.nameRef
     descriptionRef = fireRef.descriptionRef
-    isOpenRef = fireRef.isOpenRef
     dateRef = fireRef.dateRef
     uploadsRef = fireRef.uploadsRef
     parentRef = fireRef.parentRef
@@ -58,11 +57,6 @@ export default class extends React.Component {
 
     const descriptionListener = descriptionRef.on('value', snapshot => {
       this.setState({ description: snapshot.val() })
-    })
-
-    const isOpenListener = isOpenRef.on('value', snapshot => {
-      this.setState({ isOpen: snapshot.val() })
-      if (snapshot.val() === null) isOpenRef.set(true)
     })
 
     const dateListener = dateRef.on('value', snapshot => {
@@ -78,7 +72,6 @@ export default class extends React.Component {
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
       descriptionRef.off('value', descriptionListener)
-      isOpenRef.off('value', isOpenListener)
       dateRef.off('value', dateListener)
       uploadsRef.off('value', uploadsListener)
     }
@@ -143,17 +136,7 @@ export default class extends React.Component {
             />
           </div>
           <div className='form-group'>
-            <SelectField
-              floatingLabelText='Is this check in achieved?'
-              value={this.state.isOpen}
-              onChange={this.writeIsOpen}
-            >
-              <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
-              <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
-            </SelectField>
-          </div>
-          <div className='form-group'>
-            <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this check in?' />
+            <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check in' />
           </div>
           <div>
             <h3>Uploads:</h3>
