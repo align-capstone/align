@@ -78,7 +78,8 @@ export default class extends Component {
 }
 */
 
-// THE OLD VERSION GO BACK TO THIS I MISS IT
+// MPM here's the version that was just a presentational component
+// let's go back to this i miss it
 export default function UploadCard(props) {
   console.log('props in upload card??', props)
   return (
