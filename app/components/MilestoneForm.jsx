@@ -170,11 +170,10 @@ export default class extends React.Component {
           <div>
             <h3>Resources:</h3>
             { this.state.resources && this.state.resources.map((resourceID, index) => {
-                console.log('resource ID from in the milestone form', resourceID)
-                return (
-                  <div key={resourceID}>
-                    <ResourceContainer resourceID={resourceID} />
-                  </div>
+              return (
+                <div key={resourceID}>
+                  <ResourceContainer resourceID={resourceID} />
+                </div>
                 )
               })
             }

@@ -26,25 +26,8 @@ export default class extends Component {
     // this.unsubscribe()
   }
 
-  // move the functions below to our resource component
-  // writeURL = (url) => {
-  //   urlRef.set(url)
-  // }
-
-  // writeTitle = (title) => {
-  //   titleRef.set(title)
-  // }
-
-  // writeImage = (image) => {
-  //   imageRef.set(image)
-  // }
-
-  // writeDescription = (description) => {
-  //   descriptionRef.set(description)
-  // }
-
-  // don't write URL yet... first, make the ajax request
-  // THEN write title, image, and description based on JSON returned by ajax call
+  // don't write URL yet... first, make the API call
+  // then write title, image, and description based on JSON we get back
 
   handleChange = (event) => {
     this.setState({
@@ -60,11 +43,8 @@ export default class extends Component {
       dataType: 'jsonp',
       data: {q: target, key: '59546c0da716e80a54030151e45fe4e025d32430c753a'},
       success: response => {
-        console.log('link preview: ', response)
         let key = resourcesRef.push().key
-        console.log('what even ', this.props)
         if (this.props.milestoneRef) {
-          console.log('props from in milestone thing', this.props)
           // add resource URL to parent goal's uploads:
           this.props.goalRef.child('resources').child(key).set({
             resourceURL: response.url,

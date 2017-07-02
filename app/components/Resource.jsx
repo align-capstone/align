@@ -86,8 +86,6 @@ export default class extends Component {
   render() {
     // Rendering form with material UI
     // do we maybe want a ternary that either renders a text preview or the full description????
-    console.log('state from resource component: ', this.state)
-    console.log('props inside resource ARE REFS HERE???', this.props)
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <Card className="resource-card" style={{width: 300}}>
