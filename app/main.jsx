@@ -24,10 +24,7 @@ import VictoryExample from './components/VictoryExample'
 import Timelines from './components/Timelines'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
-import Resource from './components/Resource'
-import ResourceContainer from './components/ResourceContainer'
 import Doorslam from './components/Doorslam'
-import ResourceForm from './components/ResourceForm'
 
 import firebase from 'APP/fire'
 
@@ -80,7 +77,6 @@ render(
       <Route path="/victory-example" component={VictoryExample} />
       <Route path="/timelines" component={Timelines} />
       <Route path="/upload" component={Upload} />
-      <Route path="/test" component={ResourceForm} />
     </Route>
     <Route path='*' component={NotFound} />
   </Router>,

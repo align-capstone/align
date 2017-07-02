@@ -4,12 +4,12 @@ import {Route} from 'react-router'
 import {getResourceRefs} from 'APP/fire/refs'
 let resourceRefs
 
-import Resource from './Resource'
+import ResourceCard from './ResourceCard'
 
 export default function(props) {
   const id = props.resourceID
   const resourceRefs = getResourceRefs(id)
   return (
-    <Resource fireRef={resourceRefs} id={id} />
+    <ResourceCard fireRef={resourceRefs} id={id} />
   )
 }

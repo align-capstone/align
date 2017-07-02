@@ -10,7 +10,7 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import UploadForm from './Upload'
-import Resource from './Resource'
+import ResourceCard from './ResourceCard'
 import ResourceForm from './ResourceForm'
 import ResourceContainer from './ResourceContainer'
 

@@ -16,7 +16,7 @@ import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
 import ResourceContainer from './ResourceContainer'
-import Resource from './Resource'
+import ResourceCard from './ResourceCard'
 import ResourceForm from './ResourceForm'
 import UploadForm from './Upload'
 
