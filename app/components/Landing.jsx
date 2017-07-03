@@ -8,6 +8,7 @@ const moduleStyle = {
   height: '50vh',
   backgroundColor: '#fff',
   margin: 'auto',
+  color: '#000'
 }
 
 

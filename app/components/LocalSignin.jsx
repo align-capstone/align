@@ -1,7 +1,16 @@
 import React from 'react'
 import firebase from 'APP/fire'
+import { browserHistory } from 'react-router'
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
-import {browserHistory} from 'react-router'
+const buttonStyle = {
+  margin: 12,
+}
+
 
 export default class extends React.Component {
   constructor(props) {
@@ -19,7 +28,7 @@ export default class extends React.Component {
 
   handleFailedLogin(message) {
     return (
-      <div style={{color:'red'}}>
+      <div style={{ color: 'red' }}>
         <h4>{message}</h4>
       </div>
     )
@@ -47,15 +56,28 @@ export default class extends React.Component {
 
   render() {
     return (
-      <div>
-        <form className="loginform" onSubmit={this.handleSubmit}>
-          <input name="email" onChange={this.handleChange} />
-          <input name="password" onChange={this.handleChange} />
-          <input type="submit" value="Login" />
-        </form>
+      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+        <div>
+          <form className="loginform" onSubmit={this.handleSubmit}>
+            <div className='form-group'>
+              <TextField name="email"
+                floatingLabelText="Email" onChange={this.handleChange} />
+            </div>
+            <div className='form-group'>
+              <TextField name="password"
+                floatingLabelText="Password" onChange={this.handleChange} />
+            </div>
+            <div className='form-group'>
+              <RaisedButton label="Login" type="submit" style={buttonStyle} />
+            </div>
+          </form>
 
-        {this.state.showInvalidAlert ? this.handleFailedLogin(this.state.errorMessage) : null}
-      </div>
+          {this.state.showInvalidAlert ? this.handleFailedLogin(this.state.errorMessage) : null}
+        </div>
+      </MuiThemeProvider>
     )
   }
 }
+
+          // <input name="email" onChange={this.handleChange} />
+          // <input name="password" onChange={this.handleChange} />
