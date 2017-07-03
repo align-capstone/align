@@ -9,12 +9,13 @@ let currentUserGoalsRef, goalsListener
 let goalRefs = {}
 
 import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter, VictoryTooltip } from 'victory'
-
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
+
+import Empty from './Empty'
 
 // eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
 
@@ -142,6 +143,7 @@ export default class extends Component {
   }
 
   componentDidMount() {
+    console.log('this.state.goals???', this.state.goals)
     this.unsubscribeAuth = auth.onAuthStateChanged(user => {
       if (user) {
         const userId = user.uid
@@ -199,8 +201,9 @@ export default class extends Component {
     return (
       <div className='timeline-container container-fluid'>
         <div className='container chart1'>
-          <VictoryChart width={1000} height={400} scale={{ x: 'time' }} style={chartStyle}
-            domain={{
+          {this.state.goals.length > 0 ?
+            <VictoryChart width={1000} height={400} scale={{ x: 'time' }} style={chartStyle}
+              domain={{
               // MPM: eventually, manipulate this time span using moment library
               // for now, though, just start the view at the beginning of 2017??
               // x: [new Date(2017, 0, 1), Date.now()],
@@ -296,8 +299,10 @@ export default class extends Component {
               })
             }
           </VictoryChart>
+          : <div id='empty-message'><Empty /></div> }
         </div>
-        <div className='container chart2'>
+        {this.state.goals.length > 0 ?
+          <div className='container chart2'>
           <VictoryChart
             // eventually, we want this size to be responsive / relative to # of goals?
             padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
@@ -341,7 +346,7 @@ export default class extends Component {
               })
             }
           </VictoryChart>
-        </div>
+        </div> : null }
         <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal} style={{ position: 'fixed', top: '87%', right: '5%' }} >
           <ContentAdd />
         </FloatingActionButton>

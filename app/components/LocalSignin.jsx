@@ -8,6 +8,7 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import FontIcon from 'material-ui/FontIcon'
 
+const google = new firebase.auth.GoogleAuthProvider()
 
 const buttonStyle = {
   margin: 12,
