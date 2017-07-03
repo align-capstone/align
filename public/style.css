@@ -37,6 +37,15 @@ h1, h2, h3, h4 {
   right:0px;
 }
 
+.signupform, .loginform, .oauth {
+  text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    width: 100%;
+    margin: auto;
+}
 
 /*.resource-card {
   padding: 5px;

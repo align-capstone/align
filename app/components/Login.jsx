@@ -1,15 +1,14 @@
 import React from 'react'
 import firebase from 'APP/fire'
 import { PanelGroup, Panel } from 'react-bootstrap'
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
+import RaisedButton from 'material-ui/RaisedButton'
+import FontIcon from 'material-ui/FontIcon'
+import { Tabs, Tab } from 'material-ui/Tabs';
+import SwipeableViews from 'react-swipeable-views';
 
 import LocalSignin from './LocalSignin'
 import LocalSignup from './LocalSignup'
 
-import { Tabs, Tab } from 'material-ui/Tabs';
-// From https://github.com/oliviertassinari/react-swipeable-views
-import SwipeableViews from 'react-swipeable-views';
 
 const google = new firebase.auth.GoogleAuthProvider()
 // google.addScope('https://www.googleapis.com/auth/contacts.readonly'); //use this potentially to get calendar read/writeaccess????
@@ -30,7 +29,7 @@ const google = new firebase.auth.GoogleAuthProvider()
 
 const tabStyles = {
   headline: {
-    fontSize: '5%',
+    fontSize: 4,
     paddingTop: 16,
     marginBottom: 12,
     fontWeight: 400,
@@ -38,7 +37,7 @@ const tabStyles = {
   slide: {
     padding: 10,
   },
-};
+}
 
 
 export default class LandingPage extends React.Component {
@@ -54,8 +53,7 @@ export default class LandingPage extends React.Component {
     this.setState({
       slideIndex: value,
     })
-    console.log('just set state with slideIndex ', value)
-  };
+  }
 
   handleGoogleLogin() {
     firebase.auth().signInWithPopup(google).then(function (result) {
@@ -90,7 +88,7 @@ export default class LandingPage extends React.Component {
         <Tabs onChange={this.handleTabChange} value={this.state.slideIndex}>
           <Tab label="Sign up" value={0} />
           <Tab label="Log in" value={1} />
-          <Tab label="Log in with another account" value={2} />
+          <Tab label="Connect with Google" value={2} />
         </Tabs>
         <SwipeableViews index={this.state.slideIndex}
           onChangeIndex={this.handleTabChange}>
@@ -101,12 +99,19 @@ export default class LandingPage extends React.Component {
             <LocalSignin />
           </div>
           <div style={tabStyles.slide}>
-            <FlatButton
-              onClick={this.handleGoogleLogin}
-              label="Google"
-              secondary={true}
-              icon={<FontIcon className="muidocs-icon-custom-github" />}
-            />
+            <div className='oauth'>
+              <div>
+                Hello, text here about oauth
+              </div>
+              <div>
+                <RaisedButton
+                  onClick={this.handleGoogleLogin}
+                  label="Google"
+                  secondary={true}
+                  icon={<FontIcon className="muidocs-icon-custom-github" />}
+                />
+              </div>
+            </div>
           </div>
         </SwipeableViews>
       </div>

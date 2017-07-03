@@ -5,7 +5,7 @@ import Login from './Login'
 
 const moduleStyle = {
   width: '50vw',
-  height: '50vh',
+  minWidth: '500px',
   backgroundColor: '#fff',
   margin: 'auto',
   color: '#000'
@@ -15,8 +15,7 @@ const moduleStyle = {
 const Landing = () => {
   return (
     <div className='landing'>
-        <Paper zDepth={3} style={moduleStyle}>
-          <Login />
+        <Paper zDepth={3} style={moduleStyle} children={<Login/>}>
         </Paper>
     </div>
   )

@@ -68,7 +68,7 @@ export default class extends React.Component {
                 floatingLabelText="Password" onChange={this.handleChange} />
             </div>
             <div className='form-group'>
-              <RaisedButton label="Login" type="submit" style={buttonStyle} />
+              <RaisedButton label="Login" type="submit" secondary={true} style={buttonStyle} />
             </div>
           </form>
 

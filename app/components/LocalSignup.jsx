@@ -1,11 +1,18 @@
 import React from 'react'
 import firebase from 'APP/fire'
-const db = firebase.database()
-
 import { browserHistory } from 'react-router'
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
-let usersRef = db.ref('users')
+const db = firebase.database()
+const usersRef = db.ref('users')
 let newUser
+const buttonStyle = {
+  margin: 12,
+}
 
 export default class extends React.Component {
   constructor(props) {
@@ -48,7 +55,6 @@ export default class extends React.Component {
       //   })
       .then(() => firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          console.log('IN IF USER. what is user?', user)
           user.updateProfile({
             displayName: this.state.name
           })
@@ -68,16 +74,38 @@ export default class extends React.Component {
 
   render() {
     return (
-      <div>
-        <form className="signupform" onSubmit={this.handleSubmit}>
-          <label>Name</label><input name="name" onChange={this.handleChange} />
-          <label>Email</label><input name="email" onChange={this.handleChange} />
-          <label>Password</label><input name="password" onChange={this.handleChange} />
-          <input type="submit" value="Sign Up" />
-        </form>
+      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+        <div>
+          <form className="signupform" onSubmit={this.handleSubmit}>
+            <div className='form-group'>
+              <TextField name="name"
+                floatingLabelText="Name" onChange={this.handleChange} />
+            </div>
+            <div className='form-group'>
+              <TextField name="email"
+                floatingLabelText="Email" onChange={this.handleChange} />
+            </div>
+            <div className='form-group'>
+              <TextField name="password"
+                floatingLabelText="Password" onChange={this.handleChange} />
+            </div>
+            <div className='form-group'>
+              <RaisedButton label="Sign Up" type="submit" secondary={true} style={buttonStyle} />
+            </div>
+          </form>
 
-        {this.state.showInvalidAlert ? this.handleFailedLogin(this.state.errorMessage) : null}
-      </div>
+          {this.state.showInvalidAlert ? this.handleFailedLogin(this.state.errorMessage) : null}
+        </div>
+      </MuiThemeProvider>
     )
   }
 }
+
+
+
+
+          //   <label>Name</label><input name="name" onChange={this.handleChange} />
+          //   <label>Email</label><input name="email" onChange={this.handleChange} />
+          //   <label>Password</label><input name="password" onChange={this.handleChange} />
+          //   <input type="submit" value="Sign Up" />
+          // </form>
