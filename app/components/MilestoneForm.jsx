@@ -10,7 +10,8 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import UploadForm from './Upload'
-import Resource from './Resource'
+import UploadCard from './UploadCard'
+import ResourceCard from './ResourceCard'
 import ResourceForm from './ResourceForm'
 import ResourceContainer from './ResourceContainer'
 
@@ -80,7 +81,7 @@ export default class extends React.Component {
     })
 
     const uploadsListener = uploadsRef.on('value', snapshot => {
-      if (snapshot.val()) this.setState({ uploads: Object.values(snapshot.val()) })
+      if (snapshot.val()) this.setState({ uploads: Object.entries(snapshot.val()) })
     })
 
     // Set unsubscribe to be a function that detaches the listener.
@@ -179,13 +180,18 @@ export default class extends React.Component {
             }
           </div>
           <div>
-            <h3>Uploads:</h3>
+            <h3>Add an upload:</h3>
             <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
+          </div>
+          <div>
+            <h3>Uploads:</h3>
             { this.state.uploads && this.state.uploads.map((upload, index) => {
-                return (
-                  <img key={index} src={upload.imageURL} />
-                )
-              })
+              let uploadId = upload[0]
+              let uploadInfo = upload[1]
+              return (
+                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
+              )
+            })
             }
           </div>
         </div>

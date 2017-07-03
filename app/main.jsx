@@ -20,14 +20,10 @@ import Upload from './components/Upload'
 import GoalFormContainer from './components/GoalFormContainer'
 import MilestoneFormContainer from './components/MilestoneFormContainer'
 import CheckInFormContainer from './components/CheckInFormContainer'
-import VictoryExample from './components/VictoryExample'
 import Timelines from './components/Timelines'
 import Landing from './components/Landing'
 import Navbar from './components/Navbar'
-import Resource from './components/Resource'
-import ResourceContainer from './components/ResourceContainer'
 import Doorslam from './components/Doorslam'
-import ResourceForm from './components/ResourceForm'
 
 import firebase from 'APP/fire'
 
@@ -77,10 +73,8 @@ render(
       <Route path="goal/:id" component={GoalFormContainer} />
       <Route path="milestone/:id/:mid" component={MilestoneFormContainer} />
       <Route path="checkin/:id/:cid" component={CheckInFormContainer} />
-      <Route path="/victory-example" component={VictoryExample} />
       <Route path="/timelines" component={Timelines} />
       <Route path="/upload" component={Upload} />
-      <Route path="/test" component={ResourceForm} />
     </Route>
     <Route path='*' component={NotFound} />
   </Router>,
