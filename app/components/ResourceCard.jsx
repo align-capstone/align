@@ -102,6 +102,7 @@ export default class extends Component {
           <CardActions expandable={true}>
             <FlatButton
               href={this.state.url}
+              target="_blank"
               label="Link to resource"
               primary={true}
               icon={<ContentLink />}
