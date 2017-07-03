@@ -35,6 +35,7 @@ export default class extends Component {
   getScatterData(goal, index, goalId) {
 
     var data = []
+    var endSymbol = this.chooseEndSymbol(goal)
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
     data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
@@ -54,6 +55,11 @@ export default class extends Component {
       }
     }
     return data
+  }
+
+  chooseEndSymbol(goal) {
+    if (goal.isOpen) return 'circle'
+    else return 'triangle'
   }
 
   getLineData(goal, index) {
@@ -107,6 +113,8 @@ export default class extends Component {
       menuOpen: false,
     })
   }
+
+  // POPOVER OPTIONS
 
   viewCurrentTimeline = () => {
     event.preventDefault()
@@ -259,9 +267,10 @@ export default class extends Component {
                     events={[{
                       target: 'data',
                       eventHandlers: {
-                        onClick: (event) => { this.handleLineTap(event, goal) }
-                        // console.log('clicked line #', index, ', with ID ', goalId)
-                        // console.log('what is goalInfo?? ', goalInfo)
+                        onClick: (event) => { this.handleLineTap(event, goal)
+                        console.log('clicked line #', index, ', with ID ', goalId)
+                        console.log('what is goalInfo?? ', goalInfo)
+                        }
                       }
                     }]}
                     data={this.getLineData(goalInfo, index)}
@@ -301,6 +310,10 @@ export default class extends Component {
           </VictoryChart>
           : <div id='empty-message'><Empty /></div> }
         </div>
+
+      {/* Overview chart at the bottom
+          (Only shown if there are goals) */}
+
         {this.state.goals.length > 0 ?
           <div className='container chart2'>
           <VictoryChart
