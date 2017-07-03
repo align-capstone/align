@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
+import { Grid, Col } from 'react-bootstrap'
 let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef, resourcesRef, uploadsRef
 
 let newMilestonePath, newCheckInPath
@@ -184,105 +185,108 @@ export default class extends React.Component {
     const colorArray = ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b"]
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <div>
+        <div className="container-fluid">
           <Link to={`/timelines`}>Back to timelines</Link>
-          <h1>Edit page for goal: <span id='goalName'>{this.state.name}</span></h1>
-          <div className='form-group'>
-            <TextField
-              hintText='Your goal name'
-              floatingLabelText='Name'
-              value={this.state.name}
-              onChange={this.writeName}
-              id='name'
-            />
+          <h1>goal: <span id='goalName'>{this.state.name}</span></h1>
+          <div className="row">
+            <div className="col-xs-6">
+              <h3>goal details:</h3>
+              <div className='form-group'>
+                <TextField
+                  hintText='Your goal name'
+                  floatingLabelText='Name'
+                  value={this.state.name}
+                  onChange={this.writeName}
+                  id='name'
+                />
+              </div>
+              <div className='form-group'>
+                <TextField
+                  hintText='What do you want to do?'
+                  floatingLabelText='Description'
+                  value={this.state.description}
+                  onChange={this.writeDescription}
+                  multiLine={true}
+                  id='description'
+                />
+              </div>
+              <div className='form-group'>
+                <SelectField
+                  floatingLabelText='Is this goal achieved?'
+                  value={this.state.isOpen}
+                  onChange={this.writeIsOpen}
+                >
+                  <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
+                  <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
+                </SelectField>
+              </div>
+              <div className='form-group'>
+                <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start your goal?' />
+              </div>
+              <div className='form-group'>
+                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText='When will you achieve your goal?' />
+              </div>
+              <div>
+                <h3>Choose Color:</h3>
+                <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
+              </div>
+            </div>
+            <div className="col-xs-6">
+              <div>
+                <h3>Milestones:</h3>
+                <List>
+                  {
+                    this.state.milestones && this.state.milestones.map((milestone, index) => {
+                      let milestonePath = `/milestone/${this.props.id}/${milestone[0]}`
+                      return (
+                        <ListItem key={index} primaryText={milestone[1].name} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} ></ListItem>
+                      )
+                    })
+                  }
+                  <ListItem leftIcon={<Add />} onTouchTap={this.createNewMilestone} >Add new</ListItem>
+                </List>
+              </div>
+              <div>
+                <h3>Check Ins:</h3>
+                <List>
+                  {
+                    this.state.checkIns && this.state.checkIns.map((checkin, index) => {
+                      let checkinPath = `/checkin/${this.props.id}/${checkin[0]}`
+                      return (
+                        <ListItem key={index} primaryText={checkin[1].name} leftIcon={<Edit />} containerElement={<Link to={checkinPath} />} ></ListItem>
+                      )
+                    })
+                  }
+                  <ListItem leftIcon={<Add />} onTouchTap={this.createNewCheckIn} >Add new</ListItem>
+                </List>
+              </div>
+            </div>
           </div>
-          <div className='form-group'>
-            <TextField
-              hintText='What do you want to do?'
-              floatingLabelText='Description'
-              value={this.state.description}
-              onChange={this.writeDescription}
-              id='description'
-            />
-          </div>
-          <div className='form-group'>
-            <SelectField
-              floatingLabelText='Is this goal achieved?'
-              value={this.state.isOpen}
-              onChange={this.writeIsOpen}
-            >
-              <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
-              <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
-            </SelectField>
-          </div>
-          <div className='form-group'>
-            <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start working on your goal?' />
-          </div>
-          <div className='form-group'>
-            <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText='When do you plan to achieve your goal?' />
-          </div>
-          <div>
-            <h3>Choose Color:</h3>
-            <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
-          </div>
-          <br />
-          <div>
-            <h3>Milestones:</h3>
-            <List>
-              {
-                this.state.milestones && this.state.milestones.map((milestone, index) => {
-                  let milestonePath = `/milestone/${this.props.id}/${milestone[0]}`
-                  return (
-                    <ListItem key={index} primaryText={milestone[1].name} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} ></ListItem>
-                  )
-                })
-              }
-              <ListItem leftIcon={<Add />} onTouchTap={this.createNewMilestone} >Add new</ListItem>
-            </List>
-          </div>
-          <div>
-            <h3>Check Ins:</h3>
-            <List>
-              {
-                this.state.checkIns && this.state.checkIns.map((checkin, index) => {
-                  let checkinPath = `/checkin/${this.props.id}/${checkin[0]}`
-                  return (
-                    <ListItem key={index} primaryText={checkin[1].name} leftIcon={<Edit />} containerElement={<Link to={checkinPath} />} ></ListItem>
-                  )
-                })
-              }
-              <ListItem leftIcon={<Add />} onTouchTap={this.createNewCheckIn} >Add new</ListItem>
-            </List>
-          </div>
-          <div>
-            <h3>Add a resource:</h3>
-            <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
-          </div>
-          <div>
-            <h3>Resources:</h3>
-            { this.state.resources && this.state.resources.map((resourceID, index) => {
+          <div className="row">
+            <div className="col-xs-6">
+              <h3>Resources</h3>
+              <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
+              { this.state.resources && this.state.resources.map((resourceID, index) => {
                 return (
-                  <div key={resourceID}>
+                  <div key={resourceID} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <ResourceContainer resourceID={resourceID} />
                   </div>
                 )
               })
-            }
-          </div>
-          <div>
-            <h3>Add an upload:</h3>
-            <UploadForm goalRef={uploadsRef} />
-          </div>
-          <div>
-            <h3>Uploads:</h3>
-            { this.state.uploads && this.state.uploads.map((upload, index) => {
-              let uploadId = upload[0]
-              let uploadInfo = upload[1]
-              return (
-                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
-              )
-            })
-            }
+              }
+            </div>
+            <div className="col-xs-6">
+              <h3>Uploads</h3>
+              <UploadForm goalRef={uploadsRef} />
+              { this.state.uploads && this.state.uploads.map((upload, index) => {
+                const uploadId = upload[0]
+                const uploadInfo = upload[1]
+                return (
+                  <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
+                )
+              })
+              }
+            </div>
           </div>
         </div>
       </MuiThemeProvider>

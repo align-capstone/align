@@ -56,7 +56,7 @@ class Upload extends Component {
     return (
       <div>
         <form>
-          <label>Image:</label>
+          <label>Add an upload:</label>
           {this.state.isUploading &&
             <p>Progress: {this.state.progress}</p>
           }
