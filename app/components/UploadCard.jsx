@@ -8,7 +8,7 @@ import {Card, CardMedia, CardText} from 'material-ui/Card'
 
 import firebase from 'APP/fire'
 const db = firebase.database()
-let captionRef
+let captionRef, parentRef
 
 // we're basically adding a child (or updating child) for something that already exists
 // this component will receive goalRef, plus optional milestoneRef or checkInRef, as props
@@ -44,18 +44,26 @@ export default class extends Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
-    const goalId = this.props.goalId
+    // const goalId = this.props.goalId
     const mileId = this.props.milestoneId
     const checkInId = this.props.checkInId
     const uploadId = this.props.uploadId
+
     console.log('goal ref from listener', goalRef)
     // MPM this ONLY works if we're on the goal page, so pull in the logic from resource cards?
-    if (mileId) {
-      captionRef = db.ref('milestones').child(mileId).child('uploads').child(uploadId).child('caption')
-    } else if (checkInId) {
-      captionRef = db.ref('checkIns').child(checkInId).child('uploads').child(uploadId).child('caption')
+    // refactor this to actually use the refs we're receiving as props (instead of writing them out)
+    // shoot, parentRef isn't writing to the upload on the goal, it's creating a new upload...
+    // HI FIX THIS
+
+    if (this.props.milestoneRef) {
+      captionRef = goalRef.child('milestones').child(mileId).child('uploads').child(uploadId).child('caption')
+      parentRef = goalRef.child('uploads').child(uploadId).child('caption')
+    } else if (this.props.checkInRef) {
+      captionRef = goalRef.child('checkIns').child(checkInId).child('uploads').child(uploadId).child('caption')
+      parentRef = goalRef.child('uploads').child(uploadId).child('caption')
     } else {
-      captionRef = db.ref('goals').child(goalId).child('uploads').child(uploadId).child('caption')
+      captionRef = goalRef.child(uploadId).child('caption')
+      // MPM take out this last else statement to avoid setting caption on goal redundantly
     }
 
     // Whenever our ref's value changes, set {value} on our state
@@ -73,6 +81,7 @@ export default class extends Component {
   writeCaption = (event) => {
     console.log('invoked writeCaption with ', event.target.value)
     captionRef.set(event.target.value)
+    if (parentRef) parentRef.set(event.target.value)
     // this.setState({
     //   caption: event.target.value
     // })
@@ -102,6 +111,7 @@ export default class extends Component {
 }
 
 // MPM here's the version that was just a presentational component
+// preserved for posterity or something idk
 /*
 export default function UploadCard(props) {
   console.log('props in upload card??', props)

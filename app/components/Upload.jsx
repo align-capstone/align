@@ -23,32 +23,28 @@ class Upload extends Component {
     this.setState({image: filename, progress: 100, isUploading: false})
     firebase.storage().ref('images').child(filename).getDownloadURL().then(url => {
       // check to see if upload is to milestone, check in, or just goal:
+      const key = this.props.goalRef.push().key
       if (this.props.milestoneRef) {
         // add image URL to parent goal's uploads:
-        let goalKey = this.props.goalRef.push().key
-        this.props.goalRef.child('uploads').child(goalKey).set({
+        this.props.goalRef.child('uploads').child(key).set({
           imageURL: url,
           milestoneId: this.props.milestoneId
         })
         // add image URL to milestone:
-        let milestoneKey = this.props.milestoneRef.push().key
-        this.props.milestoneRef.child(milestoneKey).set({
+        this.props.milestoneRef.child(key).set({
           imageURL: url
         })
       } else if (this.props.checkInRef) {
         // add image URL to parent goal's uploads:
-        let goalKey = this.props.goalRef.push().key
-        this.props.goalRef.child('uploads').child(goalKey).set({
+        this.props.goalRef.child('uploads').child(key).set({
           imageURL: url,
           checkInId: this.props.checkInId
         })
         // add image URL to check in:
-        let checkInKey = this.props.checkInRef.push().key
-        this.props.checkInRef.child(checkInKey).set({
+        this.props.checkInRef.child(key).set({
           imageURL: url
         })
       } else {
-        let key = this.props.goalRef.push().key
         this.props.goalRef.child(key).set({
           imageURL: url
         })

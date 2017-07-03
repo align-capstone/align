@@ -279,7 +279,7 @@ export default class extends React.Component {
               let uploadId = upload[0]
               let uploadInfo = upload[1]
               return (
-                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} goalId={this.props.id} />
+                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} /* goalId={this.props.id} */ />
               )
             })
             }
