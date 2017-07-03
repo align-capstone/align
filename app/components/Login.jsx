@@ -6,6 +6,7 @@ import FontIcon from 'material-ui/FontIcon'
 import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
 
+
 import LocalSignin from './LocalSignin'
 import LocalSignup from './LocalSignup'
 
@@ -36,6 +37,7 @@ const tabStyles = {
   },
   slide: {
     padding: 10,
+    fontSize: '125%'
   },
 }
 
@@ -55,24 +57,24 @@ export default class LandingPage extends React.Component {
     })
   }
 
-  handleGoogleLogin() {
-    firebase.auth().signInWithPopup(google).then(function (result) {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = result.credential.accessToken;
-      // The signed-in user info.
-      var user = result.user;
-      // ...
-    }).catch(function (error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    })
-  }
+  // handleGoogleLogin() {
+  //   firebase.auth().signInWithPopup(google).then(function (result) {
+  //     // This gives you a Google Access Token. You can use it to access the Google API.
+  //     var token = result.credential.accessToken;
+  //     // The signed-in user info.
+  //     var user = result.user;
+  //     // ...
+  //   }).catch(function (error) {
+  //     // Handle Errors here.
+  //     var errorCode = error.code;
+  //     var errorMessage = error.message;
+  //     // The email of the user's account used.
+  //     var email = error.email;
+  //     // The firebase.auth.AuthCredential type that was used.
+  //     var credential = error.credential;
+  //     // ...
+  //   })
+  // }
 
   componentDidMount() {
     document.getElementsByTagName('body')[0].style.backgroundImage = 'url(https://s-media-cache-ak0.pinimg.com/736x/4f/5f/7d/4f5f7d794a8c075a2080528e9c0b0dbf--phone-backgrounds-wallpaper-backgrounds.jpg)'
@@ -88,7 +90,6 @@ export default class LandingPage extends React.Component {
         <Tabs onChange={this.handleTabChange} value={this.state.slideIndex}>
           <Tab label="Sign up" value={0} />
           <Tab label="Log in" value={1} />
-          <Tab label="Connect with Google" value={2} />
         </Tabs>
         <SwipeableViews index={this.state.slideIndex}
           onChangeIndex={this.handleTabChange}>
@@ -97,21 +98,6 @@ export default class LandingPage extends React.Component {
           </div>
           <div style={tabStyles.slide}>
             <LocalSignin />
-          </div>
-          <div style={tabStyles.slide}>
-            <div className='oauth'>
-              <div>
-                Hello, text here about oauth
-              </div>
-              <div>
-                <RaisedButton
-                  onClick={this.handleGoogleLogin}
-                  label="Google"
-                  secondary={true}
-                  icon={<FontIcon className="muidocs-icon-custom-github" />}
-                />
-              </div>
-            </div>
           </div>
         </SwipeableViews>
       </div>

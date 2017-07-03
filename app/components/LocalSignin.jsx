@@ -6,6 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import FontIcon from 'material-ui/FontIcon'
+
 
 const buttonStyle = {
   margin: 12,
@@ -24,6 +26,25 @@ export default class extends React.Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleGoogleLogin() {
+    firebase.auth().signInWithPopup(google).then(function (result) {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // ...
+    }).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    })
   }
 
   handleFailedLogin(message) {
@@ -57,8 +78,8 @@ export default class extends React.Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <div>
-          <form className="loginform" onSubmit={this.handleSubmit}>
+        <div className='login'>
+          <form onSubmit={this.handleSubmit}>
             <div className='form-group'>
               <TextField name="email"
                 floatingLabelText="Email" onChange={this.handleChange} />
@@ -68,9 +89,18 @@ export default class extends React.Component {
                 floatingLabelText="Password" onChange={this.handleChange} />
             </div>
             <div className='form-group'>
-              <RaisedButton label="Login" type="submit" secondary={true} style={buttonStyle} />
+              <RaisedButton label="Log In" type="submit" primary={true} style={buttonStyle} />
             </div>
           </form>
+          <hr />
+          <div style={{'paddingBottom': '.5em'}}>Or:</div>
+          <div>
+            <RaisedButton
+              onClick={this.handleGoogleLogin}
+              label="Log in with Google"
+              secondary={true}
+            />
+          </div>
 
           {this.state.showInvalidAlert ? this.handleFailedLogin(this.state.errorMessage) : null}
         </div>
@@ -78,6 +108,3 @@ export default class extends React.Component {
     )
   }
 }
-
-          // <input name="email" onChange={this.handleChange} />
-          // <input name="password" onChange={this.handleChange} />

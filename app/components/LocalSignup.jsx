@@ -100,12 +100,3 @@ export default class extends React.Component {
     )
   }
 }
-
-
-
-
-          //   <label>Name</label><input name="name" onChange={this.handleChange} />
-          //   <label>Email</label><input name="email" onChange={this.handleChange} />
-          //   <label>Password</label><input name="password" onChange={this.handleChange} />
-          //   <input type="submit" value="Sign Up" />
-          // </form>
