@@ -128,64 +128,64 @@ export default class extends React.Component {
     // Rendering form with material UI
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <div>
+        <div className="container-fluid">
           <Link to={`/goal/${this.props.goalId}`}>Back to goal</Link>
-          <h1>Edit page for milestone: <span id='milestoneName'>{this.state.name}</span></h1>
-          <div className='form-group'>
-            <TextField
-              hintText='Your milestone name'
-              floatingLabelText='Name'
-              value={this.state.name}
-              onChange={this.writeName}
-              id='name'
-            />
+          <h1>milestone: <span id='milestoneName'>{this.state.name}</span></h1>
+          <div className="row">
+            <div className="col-xs-6">
+              <h3>milestone details:</h3>
+              <div className='form-group'>
+                <TextField
+                  hintText='Your milestone name'
+                  floatingLabelText='Name'
+                  value={this.state.name}
+                  onChange={this.writeName}
+                  id='name'
+                />
+              </div>
+              <div className='form-group'>
+                <TextField
+                  hintText='What do you want to do?'
+                  floatingLabelText='Description'
+                  value={this.state.description}
+                  onChange={this.writeDescription}
+                  id='description'
+                />
+              </div>
+              <div className='form-group'>
+                <SelectField
+                  floatingLabelText='Is this milestone achieved?'
+                  value={this.state.isOpen}
+                  onChange={this.writeIsOpen}
+                >
+                  <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
+                  <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
+                </SelectField>
+              </div>
+              <div className='form-group'>
+                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this milestone?' />
+              </div>
+            </div>
           </div>
-          <div className='form-group'>
-            <TextField
-              hintText='What do you want to do?'
-              floatingLabelText='Description'
-              value={this.state.description}
-              onChange={this.writeDescription}
-              id='description'
-            />
-          </div>
-          <div className='form-group'>
-            <SelectField
-              floatingLabelText='Is this milestone achieved?'
-              value={this.state.isOpen}
-              onChange={this.writeIsOpen}
-            >
-              <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
-              <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
-            </SelectField>
-          </div>
-          <div className='form-group'>
-            <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this milestone?' />
-          </div>
-          <div>
-            <h3>Add a resource:</h3>
-            <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
-          </div>
-          <div>
-            <h3>Resources:</h3>
-            { this.state.resources && this.state.resources.map((resourceID, index) => {
-              return (
-                <div key={resourceID}>
-                  <ResourceContainer resourceID={resourceID} />
-                </div>
+          <div className="row">
+            <div className="col-xs-6">
+              <h3>Resources</h3>
+              <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
+              { this.state.resources && this.state.resources.map((resourceID, index) => {
+                return (
+                  <div key={resourceID}>
+                    <ResourceContainer resourceID={resourceID} />
+                  </div>
                 )
               })
             }
           </div>
-          <div>
-            <h3>Add an upload:</h3>
+          <div className="col-xs-6">
+            <h3>Uploads</h3>
             <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-          </div>
-          <div>
-            <h3>Uploads:</h3>
             { this.state.uploads && this.state.uploads.map((upload, index) => {
-              let uploadId = upload[0]
-              let uploadInfo = upload[1]
+              const uploadId = upload[0]
+              const uploadInfo = upload[1]
               return (
                 <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
               )
@@ -193,6 +193,7 @@ export default class extends React.Component {
             }
           </div>
         </div>
+      </div>
       </MuiThemeProvider>
     )
   }

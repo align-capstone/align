@@ -197,7 +197,6 @@ export default class extends React.Component {
                   floatingLabelText='Name'
                   value={this.state.name}
                   onChange={this.writeName}
-                  // fullWidth={true}
                   id='name'
                 />
               </div>
@@ -207,7 +206,6 @@ export default class extends React.Component {
                   floatingLabelText='Description'
                   value={this.state.description}
                   onChange={this.writeDescription}
-                  // fullWidth={true}
                   multiLine={true}
                   id='description'
                 />
