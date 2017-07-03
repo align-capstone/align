@@ -42,9 +42,23 @@ h1, h2, h3, h4 {
 }
 
 .form-group {
-    margin-bottom: 15px;
-    width: 100%;
-    margin: auto;
+  margin-bottom: 15px;
+  width: 100%;
+  margin: auto;
+}
+
+#empty-message {
+  color: grey;
+  width: 50%; /* width and margin horizontally center it */
+  margin: auto;
+  position: relative; /* relative position & transform vertically center it */
+  top: 60%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+#empty-message h4 {
+  font-weight: 300;
 }
 
 /*.resource-card {
