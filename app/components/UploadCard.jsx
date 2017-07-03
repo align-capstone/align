@@ -13,9 +13,7 @@ let captionRef, parentRef, child, childRef
 // we're basically adding a child (or updating child) for something that already exists
 // this component will receive goalRef, plus optional milestoneRef or checkInRef, as props
   // if we have milestone or checkIn refs, we'll also want to write to the goalRef (parent)?
-  // if we only get goalRef, we'll want to check whether we can write to milestone or checkIn?
-
-// MPM on goal page specifically, might be cool to link (on resource cards AND upload cards?) back to related milestone / check-in?
+  // BUT if we only get goalRef, we'll also want to check whether we can write to milestone or checkIn?
 
 export default class extends Component {
   constructor(props) {
@@ -48,7 +46,6 @@ export default class extends Component {
     let checkInId = this.props.checkInId
     const uploadId = this.props.uploadId
 
-    // refactor this to actually use the refs we're receiving as props (instead of writing them out)
     // what if we just make it so that you can't update captions for mstone / checkin uploads on the goal??
     if (this.props.milestoneRef) {
       captionRef = goalRef.child('milestones').child(mileId).child('uploads').child(uploadId).child('caption')
@@ -92,10 +89,6 @@ export default class extends Component {
     captionRef.set(event.target.value)
     if (parentRef) parentRef.set(event.target.value)
     if (childRef) childRef.set(event.target.value)
-
-    // this.setState({
-    //   caption: event.target.value
-    // })
   }
 
   render() {
@@ -120,23 +113,3 @@ export default class extends Component {
     )
   }
 }
-
-// MPM here's the version that was just a presentational component
-// preserved for posterity or something idk
-/*
-export default function UploadCard(props) {
-  console.log('props in upload card??', props)
-  return (
-    <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-      <Card className="upload-card" style={{width: 300}}>
-        <CardMedia style={{padding: 15}}>
-          <img src={props.url} className="upload-media" />
-        </CardMedia>
-        <CardText>
-          <TextField hintText='Add a caption for this upload' />
-        </CardText>
-      </Card>
-    </MuiThemeProvider>
-  )
-}
-*/
