@@ -163,7 +163,7 @@ export default class extends React.Component {
                 </SelectField>
               </div>
               <div className='form-group'>
-                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this milestone?' />
+                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'By when do you hope to achieve this milestone?' : 'When did you achieve this milestone?'} />
               </div>
             </div>
           </div>

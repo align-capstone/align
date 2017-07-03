@@ -224,7 +224,7 @@ export default class extends React.Component {
                 <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start your goal?' />
               </div>
               <div className='form-group'>
-                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText='When will you achieve your goal?' />
+                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText={this.state.isOpen ? 'By when do you hope to achieve this goal?' : 'When did you achieve this goal?'} />
               </div>
               <div>
                 <h3>Choose Color:</h3>

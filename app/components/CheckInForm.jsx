@@ -138,7 +138,7 @@ export default class extends React.Component {
                 />
               </div>
               <div className='form-group'>
-                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check in' />
+                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check-in' />
               </div>
             </div>
             <div className="col-xs-6">
