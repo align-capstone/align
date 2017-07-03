@@ -10,10 +10,12 @@ import firebase from 'APP/fire'
 const db = firebase.database()
 let captionRef
 
-// MPM we'll receive goalRef, milestoneRef, or checkInRef as props
-// in this case, we're basically adding a child (or updating child) for something that already exists
-// if milestone or checkIn, we'll also necessarily write to the goalRef (parent)
-// if we only get goalRef, we'll want to check whether we can write to milestone or checkIn
+// we're basically adding a child (or updating child) for something that already exists
+// this component will receive goalRef, plus optional milestoneRef or checkInRef, as props
+  // if we have milestone or checkIn refs, we'll also want to write to the goalRef (parent)?
+  // if we only get goalRef, we'll want to check whether we can write to milestone or checkIn?
+
+// MPM on goal page specifically, might be cool to link (on resource cards AND upload cards?) back to related milestone / check-in?
 
 export default class extends Component {
   constructor(props) {
@@ -33,10 +35,8 @@ export default class extends Component {
     this.unsubscribe()
   }
 
-  // MPM making this as dumb as possible for now
   componentWillReceiveProps(incoming, outgoing) {
-    // When the props sent to us by our parent component change,
-    // start listening to the new firebase reference.
+    // When the props sent by our parent component change, start listening to the new reference.
     this.listenTo(incoming.goalRef)
   }
 
@@ -44,11 +44,19 @@ export default class extends Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
-    let goalID = this.props.goalID
-    let uploadID = this.props.uploadID
-    // captionRef = goalRef(goalID).uploads(uploadID).child('caption')
-    // captionRef = goalRef.child(goalID).uploads(uploadID).child('caption')
-    captionRef = db.ref('goals').child(goalID).child('uploads').child(uploadID).child('caption')
+    const goalId = this.props.goalId
+    const mileId = this.props.milestoneId
+    const checkInId = this.props.checkInId
+    const uploadId = this.props.uploadId
+    console.log('goal ref from listener', goalRef)
+    // MPM this ONLY works if we're on the goal page, so pull in the logic from resource cards?
+    if (mileId) {
+      captionRef = db.ref('milestones').child(mileId).child('uploads').child(uploadId).child('caption')
+    } else if (checkInId) {
+      captionRef = db.ref('checkIns').child(checkInId).child('uploads').child(uploadId).child('caption')
+    } else {
+      captionRef = db.ref('goals').child(goalId).child('uploads').child(uploadId).child('caption')
+    }
 
     // Whenever our ref's value changes, set {value} on our state
     const captionListener = captionRef.on('value', snapshot => {

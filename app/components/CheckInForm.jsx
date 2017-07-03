@@ -142,10 +142,10 @@ export default class extends React.Component {
             <h3>Uploads:</h3>
             <UploadForm goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
             { this.state.uploads && this.state.uploads.map((upload, index) => {
-              let uploadID = upload[0]
+              let uploadId = upload[0]
               let uploadInfo = upload[1]
               return (
-                <UploadCard key={index} uploadID={uploadID} url={uploadInfo.imageURL} goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
+                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
               )
             })
             }
