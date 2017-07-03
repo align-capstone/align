@@ -12,7 +12,7 @@ exports.getGoalRefs = id => ({
   milestonesRef: db.ref('goals').child(id).child('milestones'),
   checkInsRef: db.ref('goals').child(id).child('checkIns'),
   resourcesRef: db.ref('goals').child(id).child('resources'), // will return an object of resource ids on a goal
-  uploadsRef: db.ref('goals').child(id).child('uploads')
+  uploadsRef: db.ref('goals').child(id).child('uploads'),
 })
 
 exports.getMilestoneRefs = (goalId, mileId) => ({
