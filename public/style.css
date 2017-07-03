@@ -72,3 +72,47 @@ h1, h2, h3, h4 {
   padding: 10px;
 }
 */
+
+
+/* added to the body element when shown; prevent scrolling */
+.react-router-modal__modal-open {
+  overflow: hidden;
+}
+
+/* container that contains all modals and backdrops */
+.react-router-modal__container {
+  position: fixed;
+  z-index: 1000
+}
+
+/* backdrop shown behind each modal */
+.react-router-modal__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0,0,0,0.5)
+}
+
+/* wrapper element for the modal component */
+.react-router-modal__modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #777
+}
+
+.test-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #777
+}

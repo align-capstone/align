@@ -24,6 +24,7 @@ import Timelines from './components/Timelines'
 import Landing from './components/Landing'
 import Navbar from './components/Navbar'
 import Doorslam from './components/Doorslam'
+import ModalTest from './components/ModalTest'
 
 import firebase from 'APP/fire'
 
@@ -75,6 +76,7 @@ render(
       <Route path="checkin/:id/:cid" component={CheckInFormContainer} />
       <Route path="/timelines" component={Timelines} />
       <Route path="/upload" component={Upload} />
+      <Route path="/modaltest" component={ModalTest} />
     </Route>
     <Route path='*' component={NotFound} />
   </Router>,
