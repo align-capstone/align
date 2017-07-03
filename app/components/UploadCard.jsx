@@ -6,17 +6,15 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import TextField from 'material-ui/TextField'
 import {Card, CardMedia, CardText} from 'material-ui/Card'
 
-// MPM do we want to be able to add title / text to upload cards??
-// put that stuff on state?
+import firebase from 'APP/fire'
+const db = firebase.database()
+let captionRef, parentRef, child, childRef
 
-// have a handleChange function that sets the caption???
-  // handleChange = (event) => {
-  //   this.setState({
-  //     caption: event.target.value
-  //   })
-  // }
+// we're basically adding a child (or updating child) for something that already exists
+// this component will receive goalRef, plus optional milestoneRef or checkInRef, as props
+  // if we have milestone or checkIn refs, we'll also want to write to the goalRef (parent)?
+  // BUT if we only get goalRef, we'll also want to check whether we can write to milestone or checkIn?
 
-/*
 export default class extends Component {
   constructor(props) {
     super()
@@ -27,7 +25,7 @@ export default class extends Component {
 
   componentDidMount() {
     // When the component mounts, start listening to the fireRef we were given.
-    this.listenTo(this.props.fireRef)
+    this.listenTo(this.props.goalRef)
   }
 
   componentWillUnmount() {
@@ -36,18 +34,48 @@ export default class extends Component {
   }
 
   componentWillReceiveProps(incoming, outgoing) {
-    // When the props sent to us by our parent component change,
-    // start listening to the new firebase reference.
-    this.listenTo(incoming.fireRef)
+    // When the props sent by our parent component change, start listening to the new reference.
+    this.listenTo(incoming.goalRef)
   }
 
-  listenTo(fireRef) {
+  listenTo(goalRef) {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
-    captionRef = fireRef.captionRef
+
+    let mileId = this.props.milestoneId
+    let checkInId = this.props.checkInId
+    const uploadId = this.props.uploadId
+
+    // what if we just make it so that you can't update captions for mstone / checkin uploads on the goal??
+    if (this.props.milestoneRef) {
+      captionRef = goalRef.child('milestones').child(mileId).child('uploads').child(uploadId).child('caption')
+      parentRef = goalRef.child('uploads').child(uploadId).child('caption')
+    } else if (this.props.checkInRef) {
+      captionRef = goalRef.child('checkIns').child(checkInId).child('uploads').child(uploadId).child('caption')
+      parentRef = goalRef.child('uploads').child(uploadId).child('caption')
+    } else {
+      captionRef = goalRef.child(uploadId).child('caption')
+    }
+
+    /*
+    // here's an attempt to start doing this by child instead of by parent; requires adjusting what we pass down as goalRefs
+    const uploadId = this.props.uploadId
+    const mileId = goalRef.child(uploadId).child('milestoneId') || null
+    const checkInId = goalRef.child(uploadId).child('checkInId') || null
+
+    captionRef = goalRef.child('uploads').child(uploadId).child('caption')
+    if (mileId) {
+      childRef = goalRef.child('milestones').child(mileId).child('uploads').child(uploadId).child('caption')
+    } else if (checkInId) {
+      childRef = goalRef.child('checkIns').child(checkInId).child('uploads').child(uploadId).child('caption')
+    } else {
+      childRef = null // ??
+    }
+    */
 
     // Whenever our ref's value changes, set {value} on our state
     const captionListener = captionRef.on('value', snapshot => {
+      console.log('got in the listener, value: ', snapshot.val())
       this.setState({ caption: snapshot.val() })
     })
 
@@ -58,10 +86,15 @@ export default class extends Component {
   }
 
   writeCaption = (event) => {
+    console.log('invoked writeCaption with ', event.target.value)
     captionRef.set(event.target.value)
+    if (parentRef) parentRef.set(event.target.value)
+    if (childRef) childRef.set(event.target.value)
   }
 
   render() {
+    console.log('props in upload card??', this.props)
+    console.log('state in upload card??', this.state)
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <Card className="upload-card" style={{width: 300}}>
@@ -69,29 +102,15 @@ export default class extends Component {
             <img src={this.props.url} className="upload-media" />
           </CardMedia>
           <CardText>
-            <TextField hintText='Add a caption for this upload' />
+            <TextField
+              hintText='Add a caption for this upload'
+              value={this.state.caption || ''}
+              onChange={this.writeCaption}
+              id='caption'
+            />
           </CardText>
         </Card>
       </MuiThemeProvider>
     )
   }
-}
-*/
-
-// MPM here's the version that was just a presentational component
-// let's go back to this i miss it
-export default function UploadCard(props) {
-  console.log('props in upload card??', props)
-  return (
-    <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-      <Card className="upload-card" style={{width: 300}}>
-        <CardMedia style={{padding: 15}}>
-          <img src={props.url} className="upload-media" />
-        </CardMedia>
-        <CardText>
-          <TextField hintText='Add a caption for this upload' />
-        </CardText>
-      </Card>
-    </MuiThemeProvider>
-  )
 }
