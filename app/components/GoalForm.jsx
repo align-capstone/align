@@ -187,10 +187,10 @@ export default class extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div className="container-fluid">
           <Link to={`/timelines`}>Back to timelines</Link>
-          <h1>Goal: <span id='goalName'>{this.state.name}</span></h1>
+          <h1>goal: <span id='goalName'>{this.state.name}</span></h1>
           <div className="row">
             <div className="col-xs-6">
-              <h3>Goal details:</h3>
+              <h3>goal details:</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your goal name'

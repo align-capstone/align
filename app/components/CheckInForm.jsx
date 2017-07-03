@@ -10,6 +10,7 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import UploadForm from './Upload'
+import UploadCard from './UploadCard'
 
 export default class extends React.Component {
   constructor(props) {
@@ -112,43 +113,46 @@ export default class extends React.Component {
     // Rendering form with material UI
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <div>
+        <div className="container-fluid">
           <Link to={`/goal/${this.props.goalId}`}>Back to goal</Link>
-          <br/>
-          <Link to='/timelines'>Back to timelines</Link>
-          <h1>Edit page for check in: <span id='checkInName'>{this.state.name}</span></h1>
-          <div className='form-group'>
-            <TextField
-              hintText='Your check in name'
-              floatingLabelText='Name'
-              value={this.state.name}
-              onChange={this.writeName}
-              id='name'
-            />
-          </div>
-          <div className='form-group'>
-            <TextField
-              hintText='What do you want to do?'
-              floatingLabelText='Description'
-              value={this.state.description}
-              onChange={this.writeDescription}
-              id='description'
-            />
-          </div>
-          <div className='form-group'>
-            <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check in' />
-          </div>
-          <div>
-            <h3>Uploads:</h3>
-            <UploadForm goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
-            { this.state.uploads && this.state.uploads.map((upload, index) => {
-              let uploadId = upload[0]
-              let uploadInfo = upload[1]
-              return (
-                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
-              )
-            })
-            }
+          <h2 id='checkInName'>{this.state.name}</h2>
+          <div className="row">
+            <div className="col-xs-6">
+              <h3>check-in details:</h3>
+              <div className='form-group'>
+                <TextField
+                  hintText='Your check in name'
+                  floatingLabelText='Name'
+                  value={this.state.name}
+                  onChange={this.writeName}
+                  id='name'
+                />
+              </div>
+              <div className='form-group'>
+                <TextField
+                  hintText='What do you want to do?'
+                  floatingLabelText='Description'
+                  value={this.state.description}
+                  onChange={this.writeDescription}
+                  id='description'
+                />
+              </div>
+              <div className='form-group'>
+                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check in' />
+              </div>
+            </div>
+            <div className="col-xs-6">
+              <h3>Uploads:</h3>
+              <UploadForm goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
+              { this.state.uploads && this.state.uploads.map((upload, index) => {
+                let uploadId = upload[0]
+                let uploadInfo = upload[1]
+                return (
+                  <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
+                )
+              })
+              }
+            </div>
           </div>
         </div>
       </MuiThemeProvider>
