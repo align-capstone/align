@@ -245,6 +245,7 @@ export default class extends Component {
                 return (
                   <VictoryLine
                     key={index}
+                    animate={{duration: 500}}
                     style={{
                       data: {
                         stroke: goalInfo.color.hex,
