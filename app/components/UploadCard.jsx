@@ -8,7 +8,7 @@ import {Card, CardMedia, CardText} from 'material-ui/Card'
 
 import firebase from 'APP/fire'
 const db = firebase.database()
-let captionRef, parentRef
+let captionRef, parentRef, child, childRef
 
 // we're basically adding a child (or updating child) for something that already exists
 // this component will receive goalRef, plus optional milestoneRef or checkInRef, as props
@@ -44,17 +44,12 @@ export default class extends Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
-    // const goalId = this.props.goalId
-    const mileId = this.props.milestoneId
-    const checkInId = this.props.checkInId
+    let mileId = this.props.milestoneId
+    let checkInId = this.props.checkInId
     const uploadId = this.props.uploadId
 
-    console.log('goal ref from listener', goalRef)
-    // MPM this ONLY works if we're on the goal page, so pull in the logic from resource cards?
     // refactor this to actually use the refs we're receiving as props (instead of writing them out)
-    // shoot, parentRef isn't writing to the upload on the goal, it's creating a new upload...
-    // HI FIX THIS
-
+    // what if we just make it so that you can't update captions for mstone / checkin uploads on the goal??
     if (this.props.milestoneRef) {
       captionRef = goalRef.child('milestones').child(mileId).child('uploads').child(uploadId).child('caption')
       parentRef = goalRef.child('uploads').child(uploadId).child('caption')
@@ -63,8 +58,22 @@ export default class extends Component {
       parentRef = goalRef.child('uploads').child(uploadId).child('caption')
     } else {
       captionRef = goalRef.child(uploadId).child('caption')
-      // MPM take out this last else statement to avoid setting caption on goal redundantly
     }
+
+    /*
+    const uploadId = this.props.uploadId
+    const mileId = goalRef.child(uploadId).child('milestoneId') || null
+    const checkInId = goalRef.child(uploadId).child('checkInId') || null
+
+    captionRef = goalRef.child('uploads').child(uploadId).child('caption')
+    if (mileId) {
+      childRef = goalRef.child('milestones').child(mileId).child('uploads').child(uploadId).child('caption')
+    } else if (checkInId) {
+      childRef = goalRef.child('checkIns').child(checkInId).child('uploads').child(uploadId).child('caption')
+    } else {
+      childRef = null // ??
+    }
+    */
 
     // Whenever our ref's value changes, set {value} on our state
     const captionListener = captionRef.on('value', snapshot => {
@@ -82,6 +91,8 @@ export default class extends Component {
     console.log('invoked writeCaption with ', event.target.value)
     captionRef.set(event.target.value)
     if (parentRef) parentRef.set(event.target.value)
+    if (childRef) childRef.set(event.target.value)
+
     // this.setState({
     //   caption: event.target.value
     // })

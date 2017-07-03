@@ -58,6 +58,7 @@ export default class extends React.Component {
     if (this.unsubscribe) this.unsubscribe()
 
     // Set up aliases for our Firebase references:
+    // MPM adding goal ref to send to upload??
     nameRef = fireRef.nameRef
     descriptionRef = fireRef.descriptionRef
     isOpenRef = fireRef.isOpenRef
@@ -275,11 +276,10 @@ export default class extends React.Component {
           <div>
             <h3>Uploads:</h3>
             { this.state.uploads && this.state.uploads.map((upload, index) => {
-              console.log('what even is an upload', upload)
               let uploadId = upload[0]
               let uploadInfo = upload[1]
               return (
-                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} /* goalId={this.props.id} */ />
+                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
               )
             })
             }
