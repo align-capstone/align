@@ -97,7 +97,30 @@ export default class extends React.Component {
     })
 
     const colorListener = colorRef.on('value', snapshot => {
-      if (snapshot.val() === null) colorRef.set('#00f0f0')
+      console.log("the color????", snapshot.val())
+      if (snapshot.val() === null) colorRef.set({
+        hex: '#bcbbb9',
+        hsl: {
+          a: 1,
+          h: 39.99999999999962,
+          l: 0.7313725490196079,
+          s:0.02189781021897823
+        },
+        hsv: {
+          a: 1,
+          h: 39.99999999999962,
+          s: 0.01595744680851073,
+          v: 0.7372549019607844
+        },
+        oldHue: 250,
+        rgb: {
+          a: 1,
+          b: 185,
+          g: 187,
+          r: 188
+        },
+        source: 'hex'
+      })
       this.setState({ color: snapshot.val() })
     })
 
@@ -187,7 +210,7 @@ export default class extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div className="container-fluid">
           <Link to={`/timelines`}>Back to timelines</Link>
-          <h1>goal: <span id='goalName'>{this.state.name}</span></h1>
+          <h1><span id='goalName'>{this.state.name}</span></h1>
           <div className="row">
             <div className="col-xs-6">
               <h3>goal details:</h3>
