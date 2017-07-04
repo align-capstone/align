@@ -134,6 +134,7 @@ export default class extends React.Component {
                   floatingLabelText='Description'
                   value={this.state.description}
                   onChange={this.writeDescription}
+                  multiLine={true}
                   id='description'
                 />
               </div>
