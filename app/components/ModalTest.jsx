@@ -1,6 +1,9 @@
 import React from 'react'
-import { ModalContainer, ModalRoute } from 'react-router-modal';
-import { BrowserRouter, Link } from 'react-router-dom';
+import { ModalContainer, ModalRoute, Modal } from 'react-router-modal';
+// import { BrowserRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router'
+
+import GoalFormContainer from './GoalFormContainer'
 
 function FooModal() {
   return (
@@ -21,22 +24,38 @@ function BarModal() {
 }
 
 function ModalTest() {
+  let id='1234'
  return (
-   <BrowserRouter>
      <div>
        <Link to='/foo/5'>show foo</Link>
        <Link to='/bar'>show bar</Link>
+       <Link to={`/goal/${id}`}>show goal 1234</Link>
 
-       <ModalRoute path='/foo' component={FooModal} className='test-modal test-modal-foo' />
-       <ModalRoute path='/bar' component={BarModal} className='test-modal test-modal-bar' />
+       <Modal component={GoalFormContainer} props={{ id: id }} className='test-modal' />
 
-       <ModalContainer />
+       <ModalContainer id={id} />
      </div>
-   </BrowserRouter>
  );
 }
 
 export default ModalTest
 
-// <ModalRoute path='/foo' className='test-modal test-modal-foo'>Hello</ModalRoute>
-//        <ModalRoute path='/bar' className='test-modal test-modal-bar'>Hi</ModalRoute>
+
+// function ModalTest() {
+//   let id='1234'
+//  return (
+//    <BrowserRouter>
+//      <div>
+//        <Link to='/foo/5'>show foo</Link>
+//        <Link to='/bar'>show bar</Link>
+//        <Link to={`/goal/${id}`}>show goal 1234</Link>
+
+//        <ModalRoute path='/foo' component={FooModal} className='test-modal test-modal-foo' />
+//        <ModalRoute path='/bar' component={BarModal} className='test-modal test-modal-bar' />
+//        <ModalRoute path={`/goal/${id}`} component={GoalFormContainer} props={{ id: id }} className='test-modal' />
+
+//        <ModalContainer id={id} />
+//      </div>
+//    </BrowserRouter>
+//  );
+// }

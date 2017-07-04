@@ -78,7 +78,7 @@ render(
       <Route path="/upload" component={Upload} />
       <Route path="/modaltest" component={ModalTest} />
     </Route>
-    <Route path='*' component={NotFound} />
+    <Route path='*' component={Timelines} />
   </Router>,
   document.getElementById('main')
 )
