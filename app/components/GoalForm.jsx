@@ -12,6 +12,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
+import RaisedButton from 'material-ui/RaisedButton'
 import { CirclePicker } from 'react-color'
 import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
@@ -209,11 +210,9 @@ export default class extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div className="container-fluid">
-          <Link to={`/timelines`}>Back to timelines</Link>
           <h1><span id='goalName'>{this.state.name}</span></h1>
           <div className="row">
             <div className="col-xs-6">
-              <h3>goal details:</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your goal name'
@@ -309,6 +308,11 @@ export default class extends React.Component {
                 )
               })
               }
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-6">
+              <RaisedButton label="Delete this goal?" primary={true} />
             </div>
           </div>
         </div>

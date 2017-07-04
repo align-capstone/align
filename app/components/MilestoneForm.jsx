@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
+import RaisedButton from 'material-ui/RaisedButton'
 import {GridList, GridTile} from 'material-ui/GridList'
 import UploadForm from './Upload'
 import UploadCard from './UploadCard'
@@ -131,10 +132,9 @@ export default class extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div className="container-fluid">
           <Link to={`/goal/${this.props.goalId}`}>Back to goal</Link>
-          <h1>milestone: <span id='milestoneName'>{this.state.name}</span></h1>
+          <h1><span id='milestoneName'>{this.state.name}</span></h1>
           <div className="row">
             <div className="col-xs-6">
-              <h3>milestone details:</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your milestone name'
@@ -174,27 +174,32 @@ export default class extends React.Component {
               <h3>Resources</h3>
               <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
               { this.state.resources && this.state.resources.map((resourceID, index) => {
-                return (
-                  <div key={resourceID} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <ResourceContainer resourceID={resourceID} />
-                  </div>
-                )
-              })
-            }
-          </div>
-          <div className="col-xs-6">
-            <h3>Uploads</h3>
-            <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-              { this.state.uploads && this.state.uploads.map((upload, index) => {
-                const uploadId = upload[0]
-                const uploadInfo = upload[1]
-                return (
-                  <div key={index} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-                  </div>
-                )
-              })
+                  return (
+                    <div key={resourceID} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                      <ResourceContainer resourceID={resourceID} />
+                    </div>
+                  )
+                })
               }
+            </div>
+            <div className="col-xs-6">
+              <h3>Uploads</h3>
+              <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
+                { this.state.uploads && this.state.uploads.map((upload, index) => {
+                  const uploadId = upload[0]
+                  const uploadInfo = upload[1]
+                  return (
+                    <div key={index} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                      <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
+                    </div>
+                  )
+                })
+                }
+            </div>
+        </div>
+        <div className="row">
+          <div className="col-xs-6">
+            <RaisedButton label="Delete this milestone?" primary={true} />
           </div>
         </div>
       </div>

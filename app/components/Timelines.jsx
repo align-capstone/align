@@ -382,6 +382,7 @@ export default class extends Component {
             <MenuItem primaryText='Add check in' onTouchTap={this.addCheckinToCurrentTimeline} />
             <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline} />
             <MenuItem primaryText='Goal overview' onTouchTap={this.viewCurrentTimeline} />
+            <MenuItem primaryText='Delete goal' onTouchTap={this.viewCurrentTimeline} />
           </Menu>
         </Popover>
       </div>

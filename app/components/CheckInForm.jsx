@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
+import RaisedButton from 'material-ui/RaisedButton'
 import UploadForm from './Upload'
 import UploadCard from './UploadCard'
 
@@ -118,7 +119,6 @@ export default class extends React.Component {
           <h2 id='checkInName'>{this.state.name}</h2>
           <div className="row">
             <div className="col-xs-6">
-              <h3>check-in details:</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your check in name'
@@ -153,6 +153,11 @@ export default class extends React.Component {
                 )
               })
               }
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-6">
+              <RaisedButton label="Delete this check in?" primary={true} />
             </div>
           </div>
         </div>
