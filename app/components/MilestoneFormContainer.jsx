@@ -5,11 +5,11 @@ import {getMilestoneRefs} from 'APP/fire/refs'
 
 import MilestoneForm from './MilestoneForm'
 
-export default ({params: {id, mid}}) => {
-  const milestoneRefs = getMilestoneRefs(id, mid)
+export default (props) => {
+  const milestoneRefs = getMilestoneRefs(props.id, props.mid)
   return (
     <div>
-      <MilestoneForm fireRef={milestoneRefs} goalId={id} milestoneId={mid} />
+      <MilestoneForm fireRef={milestoneRefs} goalId={props.id} milestoneId={props.mid} />
     </div>
   )
 }

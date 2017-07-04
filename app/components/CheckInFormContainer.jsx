@@ -5,12 +5,12 @@ import {getCheckInRefs} from 'APP/fire/refs'
 
 import CheckInForm from './CheckInForm'
 
-export default ({params: {id, cid}}) => {
+export default (props) => {
   // Generate the db refs for the check in that we want:
-  const checkInRefs = getCheckInRefs(id, cid)
+  const checkInRefs = getCheckInRefs(props.id, props.cid)
   return (
     <div>
-      <CheckInForm fireRef={checkInRefs} goalId={id} checkInId={cid} />
+      <CheckInForm fireRef={checkInRefs} goalId={props.id} checkInId={props.cid} />
     </div>
   )
 }

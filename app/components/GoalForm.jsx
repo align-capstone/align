@@ -3,6 +3,10 @@ import { Link, browserHistory } from 'react-router'
 import { Grid, Col } from 'react-bootstrap'
 let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef, resourcesRef, uploadsRef
 
+import { ModalContainer, Modal } from 'react-router-modal'
+import MilestoneFormContainer from './MilestoneFormContainer'
+import CheckInFormContainer from './CheckInFormContainer'
+
 let newMilestonePath, newCheckInPath
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -35,7 +39,8 @@ export default class extends React.Component {
       color: '#000',
       milestones: [],
       checkIns: [],
-      resources: []
+      resources: [],
+      showMilestone: false
     }
   }
 
@@ -260,7 +265,7 @@ export default class extends React.Component {
                     this.state.milestones && this.state.milestones.map((milestone, index) => {
                       let milestonePath = `/milestone/${this.props.id}/${milestone[0]}`
                       return (
-                        <ListItem key={index} primaryText={milestone[1].name} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} ></ListItem>
+                        <ListItem key={index} primaryText={milestone[1].name} leftIcon={<Edit />} /* containerElement={<Link to={milestonePath} />} */ onTouchTap={this.setState({showMilestone: true})} ></ListItem>
                       )
                     })
                   }
@@ -321,6 +326,15 @@ export default class extends React.Component {
               <div><RaisedButton label="Delete this goal?" secondary={true} /></div>
             </div>
           </div>
+          {
+          this.state.showMilestone && <Modal
+            component={MilestoneFormContainer}
+            props={{ id: this.state.openGoal[0], mid: this.state.newMilestoneKey }}
+            className='test-modal'
+            onBackdropClick={() => this.setState({showMilestone: false})}
+           />
+          }
+          <ModalContainer />
         </div>
       </MuiThemeProvider>
     )

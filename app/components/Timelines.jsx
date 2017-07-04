@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link, browserHistory } from 'react-router'
 import { ModalContainer, Modal } from 'react-router-modal'
 import GoalFormContainer from './GoalFormContainer'
+import MilestoneFormContainer from './MilestoneFormContainer'
+import CheckInFormContainer from './CheckInFormContainer'
 import firebase from 'APP/fire'
 const db = firebase.database()
 const auth = firebase.auth()
@@ -28,19 +30,28 @@ export default class extends Component {
       menuOpen: false,
       goals: [], // the actual goals that happen to belong to the user
       openGoal: {},
-      showGoal: false
+      showGoal: false,
+      showMilestone: false,
+      showCheckIn: false,
+      newGoalKey: '',
+      newMilestoneKey: '',
+      newCheckInKey: ''
     }
   }
 
   // VICTORY FUNCTIONS:
+
+  goalClick(goalId) {
+    console.log('goal id from our new func', goalId)
+  }
 
   getScatterData(goal, index, goalId) {
     var data = []
     var endSymbol = this.chooseEndSymbol(goal)
 
     // push start and end dates to data array
-    data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', strokeWidth: 7, fill: goal.color.hex })
-    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, strokeWidth: 7, fill: goal.color.hex })
+    data.push({ x: new Date(goal.startDate), key: goalId, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', strokeWidth: 7, fill: goal.color.hex, onClick: this.goalClick })
+    data.push({ x: new Date(goal.endDate), key: goalId, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, strokeWidth: 7, fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       for (var id in goal.milestones) {
@@ -131,17 +142,21 @@ export default class extends Component {
   addMilestoneToCurrentTimeline = () => {
     event.preventDefault()
     let currentGoalId = this.state.openGoal[0]
+    // let newMilestoneRef = goalsRef.child(currentGoalId).child('milestones').push()
+    // let newMilestonePath = `/milestone/${this.state.openGoal[0]}/${newMilestoneRef.key}`
+    // browserHistory.push(newMilestonePath)
     let newMilestoneRef = goalsRef.child(currentGoalId).child('milestones').push()
-    let newMilestonePath = `/milestone/${this.state.openGoal[0]}/${newMilestoneRef.key}`
-    browserHistory.push(newMilestonePath)
+    let newMilestoneKey = newMilestoneRef.key
+    this.setState({showMilestone: true, menuOpen: false, newMilestoneKey: newMilestoneKey })
   }
 
   addCheckinToCurrentTimeline = () => {
     event.preventDefault()
     let currentGoalId = this.state.openGoal[0]
-    let newCheckinRef = goalsRef.child(currentGoalId).child('checkIns').push()
-    let newCheckinPath = `/checkin/${this.state.openGoal[0]}/${newCheckinRef.key}`
-    browserHistory.push(newCheckinPath)
+    // let newCheckinRef = goalsRef.child(currentGoalId).child('checkIns').push()
+    // let newCheckinPath = `/checkin/${this.state.openGoal[0]}/${newCheckinRef.key}`
+    // browserHistory.push(newCheckinPath)
+    // COME BACK
   }
 
   // FIREBASE FUNCTIONS:
@@ -306,8 +321,10 @@ export default class extends Component {
                       target: 'data',
                       eventHandlers: {
                         onClick: (event, props) => {
-                          let goalPath = props.data[props.index].key
-                          browserHistory.push(goalPath)
+                          // let goalPath = props.data[props.index].key
+                          console.log('props.data array?', props.data)
+                          // browserHistory.push(goalPath)
+                          props.data.onClick
                         }
                       }
                     }]}
@@ -387,9 +404,17 @@ export default class extends Component {
         {
           this.state.showGoal && <Modal
             component={GoalFormContainer}
-            props={{ id: '666' }}
+            props={{ id: this.state.openGoal[0] }}
             className='test-modal'
             onBackdropClick={() => this.setState({showGoal: false})}
+           />
+        }
+        {
+          this.state.showMilestone && <Modal
+            component={MilestoneFormContainer}
+            props={{ id: this.state.openGoal[0], mid: this.state.newMilestoneKey }}
+            className='test-modal'
+            onBackdropClick={() => this.setState({showMilestone: false})}
            />
         }
 
