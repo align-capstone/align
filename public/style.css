@@ -94,6 +94,15 @@ h1, h2, h3, h4 {
   border-top: 1px dashed #ccc;
 }
 
+.upload-card, .resource-card {
+  margin: 10px;
+  display: inline-block;
+}
+
+.upload-card hr, .resource-card hr {
+  width: 85% !important;
+}
+
 .upload-container label {
   margin-top: 22px;
   font-weight: 700;

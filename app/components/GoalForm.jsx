@@ -144,7 +144,6 @@ export default class extends React.Component {
     })
 
     const notesListener = notesRef.on('value', snapshot => {
-      // if (snapshot.val() === null) notesRef.set("Hello")
       if (snapshot.val()) this.setState({ notes: snapshot.val() })
     })
 
@@ -300,7 +299,6 @@ export default class extends React.Component {
             <div className="col-xs-6">
               <h3>Resources</h3>
               <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
-              <div className="col-xs-6">
               { this.state.resources && this.state.resources.map((resourceID, index) => {
                 return (
                   <div key={resourceID} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -309,12 +307,10 @@ export default class extends React.Component {
                 )
               })
               }
-              </div>
             </div>
             <div className="col-xs-6" className='upload-container'>
               <h3>Uploads</h3>
               <UploadForm goalRef={uploadsRef} />
-              <div className="col-xs-6">
               { this.state.uploads && this.state.uploads.map((upload, index) => {
                 const uploadId = upload[0]
                 const uploadInfo = upload[1]
@@ -323,7 +319,6 @@ export default class extends React.Component {
                 )
               })
               }
-              </div>
             </div>
           </div>
           <div className="row">

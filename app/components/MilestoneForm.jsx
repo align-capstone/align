@@ -90,7 +90,6 @@ export default class extends React.Component {
     })
 
     const notesListener = notesRef.on('value', snapshot => {
-      // if (snapshot.val() === null) notesRef.set("Hello")
       if (snapshot.val()) this.setState({ notes: snapshot.val() })
     })
 

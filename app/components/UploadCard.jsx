@@ -93,7 +93,7 @@ export default class extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <Card className="upload-card" style={{width: 300}}>
+        <Card className="upload-card" style={{width: 250}}>
           <CardMedia style={{padding: 15}}>
             <img src={this.props.url} className="upload-media" />
           </CardMedia>

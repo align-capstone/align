@@ -87,7 +87,7 @@ export default class extends Component {
     // do we maybe want a ternary that either renders a text preview or the full description????
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-        <Card className="resource-card" style={{width: 300}}>
+        <Card className="resource-card" style={{width: 250}}>
           <CardHeader
             title={this.state.title}
             actAsExpander={true}
