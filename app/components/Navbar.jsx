@@ -21,7 +21,7 @@ const auth = firebase.auth()
 
 // export default function Navbar(props) {
 //   return (
-//     <AppBar title="align" style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}} onTitleTouchTap={handleTitleTouchTap}>
+//     <AppBar title='align' style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}} onTitleTouchTap={handleTitleTouchTap}>
 //       {auth.currentUser ? console.log('in yes user') : console.log('in null')}
 //       <WhoAmI auth={auth}/>
 //     </AppBar>
@@ -32,7 +32,7 @@ const auth = firebase.auth()
 
 
 export const Navbar = ({ user, auth }) =>
-  <AppBar title="align" style={{ backgroundColor: 'transparent', color: 'black', boxShadow: 'none' }}
+  <AppBar title='align' id='navbar' style={{ backgroundColor: 'transparent', color: 'black', boxShadow: 'none' }}
     onTitleTouchTap={() => browserHistory.push('/')} onLeftIconButtonTouchTap={() => browserHistory.push('/')} iconElementRight={auth.currentUser ? <div style={{'fontSize': '125%'}}><WhoAmI auth={auth} /></div> : null  }
     iconStyleRight={{display: 'flex', alignItems: 'center', marginTop: 0}}>
   </AppBar>

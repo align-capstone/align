@@ -182,7 +182,7 @@ export default class extends React.Component {
   }
 
   render() {
-    const colorArray = ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5", "#2196f3", "#03a9f4", "#00bcd4", "#009688", "#4caf50", "#8bc34a", "#cddc39", "#ffeb3b", "#ffc107", "#ff9800", "#ff5722", "#795548", "#607d8b"]
+    const colorArray = ["#6CC2BD", "#5A809E", "#7C79A2", "#F57D7C", "#FFC1A6", "#ffd7a6", "#bcbbb9", "#9E898F", "#667762", "#35464D", "#386174", "#6B96C9"]
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div className="container-fluid">

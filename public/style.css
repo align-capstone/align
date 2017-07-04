@@ -4,12 +4,14 @@ background: -moz-linear-gradient(#34223e, #0f142b);
 background: -o-linear-gradient(#34223e, #0f142b);
 background: linear-gradient(#34223e, #0f142b);  W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-html,
-
-body {
+html, body {
   width: 100%;
   height: 100vh;
   margin: 0;
+background: rgb(30,87,153); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(30,87,153,1) 0%, rgba(255,255,255,1) 0%, rgba(255,249,249,1) 5%, rgba(238,238,238,1) 100%, rgba(195,214,229,1) 100%) fixed; /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(255,255,255,1) 0%,rgba(255,249,249,1) 5%,rgba(238,238,238,1) 100%,rgba(195,214,229,1) 100%) fixed; /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(30,87,153,1) 0%,rgba(255,255,255,1) 0%,rgba(255,249,249,1) 5%,rgba(238,238,238,1) 100%,rgba(195,214,229,1) 100%) fixed; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
 body {
@@ -18,6 +20,7 @@ body {
 
 h1, h2, h3, h4 {
   font-family: 'Roboto', sans-serif;
+  color: #888;
 }
 
 .chart1 {
