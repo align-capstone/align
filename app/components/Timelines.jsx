@@ -17,7 +17,19 @@ import MenuItem from 'material-ui/MenuItem'
 
 import Empty from './Empty'
 
-// eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
+// eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significancecc
+
+class CatPoint extends React.Component {
+  render() {
+    const {x, y, datum} = this.props;
+    const cat = datum.y >= 0 ? "😻" : "😹";
+    return (
+      <text x={x} y={y} fontSize={30}>
+        {cat}
+      </text>
+    );
+  }
+}
 
 export default class extends Component {
   constructor(props) {
@@ -301,7 +313,7 @@ export default class extends Component {
                         }
                       }
                     }]}
-                    data={this.getScatterData(goalInfo, index, goalId)}
+                    dataComponent={<CatPoint/>}
                     labelComponent={<VictoryTooltip />}
                   />
                 )
