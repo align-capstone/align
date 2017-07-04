@@ -75,7 +75,6 @@ export default class extends Component {
 
     // Whenever our ref's value changes, set {value} on our state
     const captionListener = captionRef.on('value', snapshot => {
-      console.log('got in the listener, value: ', snapshot.val())
       this.setState({ caption: snapshot.val() })
     })
 
@@ -86,15 +85,12 @@ export default class extends Component {
   }
 
   writeCaption = (event) => {
-    console.log('invoked writeCaption with ', event.target.value)
     captionRef.set(event.target.value)
     if (parentRef) parentRef.set(event.target.value)
     if (childRef) childRef.set(event.target.value)
   }
 
   render() {
-    console.log('props in upload card??', this.props)
-    console.log('state in upload card??', this.state)
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <Card className="upload-card" style={{width: 300}}>
