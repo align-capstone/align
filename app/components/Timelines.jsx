@@ -216,48 +216,57 @@ export default class extends Component {
   }
 
   render() {
-    const chartStyle = { parent: { minWidth: '90%', maxWidth: '100%', padding: '0', margin: '0'} }
+    const chartStyle = { parent: { width: '100%', padding: '0', margin: '0'} }
+    const sansSerif = "'Roboto', 'Helvetica Neue', Helvetica, sans-serif"
     const { goals } = this.state
     return (
       <div className='timeline-container container-fluid'>
         <div className='container chart1'>
           {this.state.goals.length > 0 ?
-            <VictoryChart width={1000} height={400} scale={{ x: 'time' }} style={chartStyle}
+            <VictoryChart
+              width={1000}
+              height={400}
+              scale={{ x: 'time' }}
+              style={chartStyle}
               domain={{
               // MPM: eventually, manipulate this time span using moment library
               // for now, though, just start the view at the beginning of 2017??
               // x: [new Date(2017, 0, 1), Date.now()],
               y: [-1, this.state.goals.length]
-            }}
-            // MPM: add domainPadding?
-            containerComponent={
-              <VictoryZoomContainer
-                dimension='x'
-                zoomDomain={this.state.zoomDomain}
-                onDomainChange={this.handleZoom.bind(this)}
-              />
-            }
-          >
+              }}
+              // MPM: add domainPadding?
+              containerComponent={
+                <VictoryZoomContainer
+                  dimension='x'
+                  zoomDomain={this.state.zoomDomain}
+                  onDomainChange={this.handleZoom.bind(this)}
+                />
+              }
+              padding={{top: 0, left: 0, right: 0, bottom: 0}}
+            >
             <VictoryAxis
               style={{
                 axis: {
                   stroke: 'none'
                 },
                 tickLabels: {
-                  angle: 0
+                  angle: 0,
+                  padding:30,
+                  border: 1,
+                  fontFamily: sansSerif
                 }
               }}
             />
             <VictoryLine
               style={{
-                data: { stroke: '#ccc', strokeWidth: 1 },
-                labels: { fill: "lightgray" }
+                data: { stroke: '#999', strokeWidth: 1 },
+                labels: { fill: "#999", fontFamily: sansSerif }
               }}
               data={[
                 { x: new Date(), y: 0, label: 'today'},
                 { x: new Date(), y: 400 }
               ]}
-              labelComponent={<VictoryLabel dy={55} />}
+              labelComponent={<VictoryLabel dy={35} />}
             />
 
             {
@@ -273,8 +282,9 @@ export default class extends Component {
                       data: {
                         stroke: goalInfo.color.hex,
                         strokeWidth: 4,
+                        cursor: "pointer"
                       },
-                      labels: { fill: "lightgray" }
+                      labels: { fill: "#999", fontFamily: sansSerif, fontWeight: "lighter" }
                     }}
                     events={[{
                       target: 'data',
@@ -301,8 +311,10 @@ export default class extends Component {
                       data: {
                         stroke: goalInfo.color.hex,
                         strokeWidth: 3,
-                        fill: 'white'
-                      }
+                        fill: 'white',
+                        cursor: "pointer"
+                      },
+                      labels: { fontFamily: sansSerif }
                     }}
                     events={[{
                       target: 'data',

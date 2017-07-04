@@ -21,7 +21,7 @@ const auth = firebase.auth()
 
 // export default function Navbar(props) {
 //   return (
-//     <AppBar title="align" style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}} onTitleTouchTap={handleTitleTouchTap}>
+//     <AppBar title='align' style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}} onTitleTouchTap={handleTitleTouchTap}>
 //       {auth.currentUser ? console.log('in yes user') : console.log('in null')}
 //       <WhoAmI auth={auth}/>
 //     </AppBar>
