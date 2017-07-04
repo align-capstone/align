@@ -27,6 +27,10 @@ h1, h2, h3, h4 {
   color: #888;
 }
 
+#nav img:hover {
+  cursor: pointer;
+}
+
 .chart1 {
   height: 80vh;
 }

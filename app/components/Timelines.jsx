@@ -239,8 +239,8 @@ export default class extends Component {
             />
             <VictoryLine
               style={{
-                data: { stroke: '#999', strokeWidth: 1 },
-                labels: { fill: "#999", fontFamily: sansSerif }
+                data: { stroke: '#888', strokeWidth: 1 },
+                labels: { fill: "#888", fontFamily: sansSerif }
               }}
               data={[
                 { x: new Date(), y: 0, label: 'today'},
@@ -264,7 +264,7 @@ export default class extends Component {
                         strokeWidth: 4,
                         cursor: "pointer"
                       },
-                      labels: { fill: "#999", fontFamily: sansSerif, fontWeight: "lighter" }
+                      labels: { fill: "#888", fontFamily: sansSerif, fontWeight: "lighter" }
                     }}
                     events={[{
                       target: 'data',
