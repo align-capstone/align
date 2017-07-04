@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
-let nameRef, descriptionRef, dateRef, uploadsRef, parentRef
+let nameRef, descriptionRef, dateRef, uploadsRef, parentRef, notesRef
+import ReactQuill from 'react-quill'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -20,7 +21,8 @@ export default class extends React.Component {
       name: '',
       description: '',
       isOpen: true,
-      date: new Date().getTime()
+      date: new Date().getTime(),
+      notes: ''
     }
   }
 
@@ -51,6 +53,7 @@ export default class extends React.Component {
     dateRef = fireRef.dateRef
     uploadsRef = fireRef.uploadsRef
     parentRef = fireRef.parentRef
+    notesRef = fireRef.notesRef
 
     // Whenever a ref's value changes, set {value} on our state:
 
@@ -70,12 +73,17 @@ export default class extends React.Component {
       if (snapshot.val()) this.setState({ uploads: Object.entries(snapshot.val()) })
     })
 
+    const notesListener = notesRef.on('value', snapshot => {
+      if (snapshot.val()) this.setState({ notes: snapshot.val() })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
       descriptionRef.off('value', descriptionListener)
       dateRef.off('value', dateListener)
       uploadsRef.off('value', uploadsListener)
+      notesRef.off('value', notesListener)
     }
   }
 
@@ -92,6 +100,10 @@ export default class extends React.Component {
 
   writeDescription = (event) => {
     descriptionRef.set(event.target.value)
+  }
+
+  writeNotes = (event) => {
+    notesRef.set(event)
   }
 
   writeIsOpen = (event, id) => {
@@ -152,6 +164,15 @@ export default class extends React.Component {
                 )
               })
               }
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-12">
+              <h3>Notes</h3>
+              <ReactQuill
+                value={this.state.notes}
+                onChange={this.writeNotes}
+              />
             </div>
           </div>
           <div className="row">

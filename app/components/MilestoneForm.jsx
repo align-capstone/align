@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
-let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef, resourcesRef
+let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef, resourcesRef, notesRef
+import ReactQuill from 'react-quill'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -24,7 +25,8 @@ export default class extends React.Component {
       name: '',
       description: '',
       isOpen: true,
-      date: new Date().getTime()
+      date: new Date().getTime(),
+      notes: ''
     }
   }
 
@@ -56,6 +58,7 @@ export default class extends React.Component {
     uploadsRef = fireRef.uploadsRef
     parentRef = fireRef.parentRef
     resourcesRef = fireRef.resourcesRef
+    notesRef = fireRef.notesRef
 
     // Whenever our ref's value changes, set {value} on our state.
     // const listener = fireRef.on('value', snapshot =>
@@ -86,6 +89,10 @@ export default class extends React.Component {
       if (snapshot.val()) this.setState({ uploads: Object.entries(snapshot.val()) })
     })
 
+    const notesListener = notesRef.on('value', snapshot => {
+      if (snapshot.val()) this.setState({ notes: snapshot.val() })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
@@ -94,6 +101,7 @@ export default class extends React.Component {
       dateRef.off('value', dateListener)
       resourcesRef.off('value', resourcesListener)
       uploadsRef.off('value', uploadsListener)
+      notesRef.off('value', notesListener)
     }
   }
 
@@ -110,6 +118,10 @@ export default class extends React.Component {
 
   writeDescription = (event) => {
     descriptionRef.set(event.target.value)
+  }
+
+  writeNotes = (event) => {
+    notesRef.set(event)
   }
 
   writeIsOpen = (event, id) => {
@@ -196,6 +208,15 @@ export default class extends React.Component {
                 }
             </div>
         </div>
+        <div className="row">
+            <div className="col-xs-12">
+              <h3>Notes</h3>
+              <ReactQuill
+                value={this.state.notes}
+                onChange={this.writeNotes}
+              />
+            </div>
+          </div>
         <div className="row">
           <div className="col-xs-6" id="bottom-buttons">
             <div id="button-container">

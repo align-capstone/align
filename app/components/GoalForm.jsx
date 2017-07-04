@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
 import { Grid, Col } from 'react-bootstrap'
-let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef, resourcesRef, uploadsRef
-
+let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef, resourcesRef, uploadsRef, notesRef
 let newMilestonePath, newCheckInPath
+
+import ReactQuill from 'react-quill'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
@@ -35,7 +36,8 @@ export default class extends React.Component {
       color: '#000',
       milestones: [],
       checkIns: [],
-      resources: []
+      resources: [],
+      notes: ''
     }
   }
 
@@ -71,6 +73,7 @@ export default class extends React.Component {
     checkInsRef = fireRef.checkInsRef
     resourcesRef = fireRef.resourcesRef
     uploadsRef = fireRef.uploadsRef
+    notesRef = fireRef.notesRef
 
     // LISTENERS TO DATEBASE:
     // Whenever a ref's value changes in Firebase, set {value} on our state.
@@ -140,6 +143,10 @@ export default class extends React.Component {
       if (snapshot.val()) this.setState({ uploads: Object.entries(snapshot.val()) })
     })
 
+    const notesListener = notesRef.on('value', snapshot => {
+      if (snapshot.val()) this.setState({ notes: snapshot.val() })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
@@ -152,6 +159,7 @@ export default class extends React.Component {
       checkInsRef.off('value', checkInsListener)
       resourcesRef.off('value', resourcesListener)
       uploadsRef.off('value', uploadsListener)
+      notesRef.off('value', notesListener)
     }
   }
 
@@ -168,6 +176,10 @@ export default class extends React.Component {
 
   writeDescription = (event) => {
     descriptionRef.set(event.target.value)
+  }
+
+  writeNotes = (event) => {
+    notesRef.set(event)
   }
 
   writeIsOpen = (event, id) => {
@@ -248,13 +260,13 @@ export default class extends React.Component {
                 <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText={this.state.isOpen ? 'By when do you hope to achieve this goal?' : 'When did you achieve this goal?'} />
               </div>
               <div>
-                <h3>Choose Color:</h3>
+                <h3>Choose Color</h3>
                 <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
               </div>
             </div>
             <div className="col-xs-6">
               <div>
-                <h3>Milestones:</h3>
+                <h3>Milestones</h3>
                 <List>
                   {
                     this.state.milestones && this.state.milestones.map((milestone, index) => {
@@ -268,7 +280,7 @@ export default class extends React.Component {
                 </List>
               </div>
               <div>
-                <h3>Check Ins:</h3>
+                <h3>Check Ins</h3>
                 <List>
                   {
                     this.state.checkIns && this.state.checkIns.map((checkin, index) => {
@@ -307,6 +319,15 @@ export default class extends React.Component {
                 )
               })
               }
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-12">
+              <h3>Notes</h3>
+              <ReactQuill
+                value={this.state.notes}
+                onChange={this.writeNotes}
+              />
             </div>
           </div>
           <div className="row">

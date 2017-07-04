@@ -13,6 +13,7 @@ exports.getGoalRefs = id => ({
   checkInsRef: db.ref('goals').child(id).child('checkIns'),
   resourcesRef: db.ref('goals').child(id).child('resources'), // will return an object of resource ids on a goal
   uploadsRef: db.ref('goals').child(id).child('uploads'),
+  notesRef: db.ref('goals').child(id).child('notes')
 })
 
 exports.getMilestoneRefs = (goalId, mileId) => ({
@@ -23,7 +24,8 @@ exports.getMilestoneRefs = (goalId, mileId) => ({
   dateRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('displayDate'),
   resourcesRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('resources'), // will return an object of resource ids on the milestone
   uploadsRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('uploads'),
-  parentRef: db.ref('goals').child(goalId)
+  parentRef: db.ref('goals').child(goalId),
+  notesRef: db.ref('goals').child(goalId).child('milestones').child(mileId).child('notes')
 })
 
 exports.getCheckInRefs = (goalId, checkId) => ({
@@ -33,7 +35,8 @@ exports.getCheckInRefs = (goalId, checkId) => ({
   dateRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('displayDate'),
   resourcesRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('resources'), // will return an object of resource ids on the check-in
   uploadsRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('uploads'),
-  parentRef: db.ref('goals').child(goalId)
+  parentRef: db.ref('goals').child(goalId),
+  notesRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('notes')
 })
 
 exports.getResourceRefs = id => ({
