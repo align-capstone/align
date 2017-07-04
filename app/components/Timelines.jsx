@@ -103,8 +103,6 @@ export default class extends Component {
   handleLineTap = (event, goal) => {
     // This prevents ghost click.
     event.preventDefault()
-    console.log('in handleLineTap!!!')
-    console.log('what is event client x/y in handling line tap??', event)
     this.setState({
       menuOpen: true,
       anchorEl: event.currentTarget,
@@ -155,7 +153,6 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    console.log('this.state.goals???', this.state.goals)
     this.unsubscribeAuth = auth.onAuthStateChanged(user => {
       if (user) {
         const userId = user.uid
@@ -209,7 +206,7 @@ export default class extends Component {
 
   render() {
     const chartStyle = { parent: { width: '100%', padding: '0', margin: '0'} }
-    const sansSerif = "'Roboto', 'Helvetica Neue', Helvetica, sans-serif"
+    const sansSerif = `'Roboto', 'Helvetica Neue', Helvetica, sans-serif`
     const { goals } = this.state
     return (
       <div className='timeline-container container-fluid'>
@@ -247,7 +244,7 @@ export default class extends Component {
             <VictoryLine
               style={{
                 data: { stroke: '#888', strokeWidth: 1 },
-                labels: { fill: "#888", fontFamily: sansSerif }
+                labels: { fill: '#888', fontFamily: sansSerif }
               }}
               data={[
                 { x: new Date(), y: 0, label: 'today'},
@@ -269,21 +266,19 @@ export default class extends Component {
                       data: {
                         stroke: goalInfo.color.hex,
                         strokeWidth: 4,
-                        cursor: "pointer"
+                        cursor: 'pointer'
                       },
-                      labels: { fill: "#888", fontFamily: sansSerif, fontWeight: "lighter" }
+                      labels: { fill: '#888', fontFamily: sansSerif, fontWeight: 'lighter', textAnchor: 'start' }
                     }}
                     events={[{
                       target: 'data',
                       eventHandlers: {
                         onClick: (event) => { this.handleLineTap(event, goal)
-                        console.log('clicked line #', index, ', with ID ', goalId)
-                        console.log('what is goalInfo?? ', goalInfo)
                         }
                       }
                     }]}
                     data={this.getLineData(goalInfo, index)}
-                    labelComponent={<VictoryLabel x={500} textAnchor="start" />}
+                    labelComponent={<VictoryLabel x={450} />}
                   />
                 )
               })
@@ -299,7 +294,7 @@ export default class extends Component {
                         stroke: goalInfo.color.hex,
                         // strokeWidth: 3,
                         // fill: 'white',
-                        cursor: "pointer"
+                        cursor: 'pointer'
                       },
                       labels: { fontFamily: sansSerif }
                     }}
@@ -382,6 +377,7 @@ export default class extends Component {
             <MenuItem primaryText='Add check in' onTouchTap={this.addCheckinToCurrentTimeline} />
             <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline} />
             <MenuItem primaryText='Goal overview' onTouchTap={this.viewCurrentTimeline} />
+            <MenuItem primaryText='Delete goal' onTouchTap={this.viewCurrentTimeline} />
           </Menu>
         </Popover>
       </div>
