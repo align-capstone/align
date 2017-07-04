@@ -139,6 +139,10 @@ h1, h2, h3, h4 {
  * Copyright (c) 2013, salesforce.com
  */
 
+.ql-editor {
+    background-color: #fff;
+}
+
 .ql-container {
   box-sizing: border-box;
   font-family: Helvetica, Arial, sans-serif;
