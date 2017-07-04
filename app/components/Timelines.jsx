@@ -34,11 +34,13 @@ export default class extends Component {
 
   getScatterData(goal, index, goalId) {
 
+    console.log('what is goal in getScatterData?', goal)
     var data = []
+    var endSymbol = this.chooseEndSymbol(goal)
+
     // push start and end dates to data array
-    // maybe make end date of completed goals into a star??
     data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
-    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, strokeWidth: 7, fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       for (var id in goal.milestones) {
@@ -54,6 +56,11 @@ export default class extends Component {
       }
     }
     return data
+  }
+
+  chooseEndSymbol(goal) {
+    if (goal.isOpen) return 'circle'
+    else return 'star'
   }
 
   getLineData(goal, index) {
@@ -107,6 +114,8 @@ export default class extends Component {
       menuOpen: false,
     })
   }
+
+  // POPOVER OPTIONS
 
   viewCurrentTimeline = () => {
     event.preventDefault()
@@ -269,9 +278,10 @@ export default class extends Component {
                     events={[{
                       target: 'data',
                       eventHandlers: {
-                        onClick: (event) => { this.handleLineTap(event, goal) }
-                        // console.log('clicked line #', index, ', with ID ', goalId)
-                        // console.log('what is goalInfo?? ', goalInfo)
+                        onClick: (event) => { this.handleLineTap(event, goal)
+                        console.log('clicked line #', index, ', with ID ', goalId)
+                        console.log('what is goalInfo?? ', goalInfo)
+                        }
                       }
                     }]}
                     data={this.getLineData(goalInfo, index)}
@@ -313,10 +323,13 @@ export default class extends Component {
           </VictoryChart>
           : <div id='empty-message'><Empty /></div> }
         </div>
+
+      {/* Overview chart at the bottom
+          (Only shown if there are goals) */}
+
         {this.state.goals.length > 0 ?
           <div className='container chart2'>
           <VictoryChart
-            // eventually, we want this size to be responsive / relative to # of goals?
             padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
             width={600} height={50} scale={{ x: 'time' }} style={chartStyle}
             domain={{ y: [-1, this.state.goals.length] }}
@@ -329,7 +342,6 @@ export default class extends Component {
             }
           >
             <VictoryAxis
-              // tickFormat={(x) => new Date(x).getFullYear()}
               tickValues={[]}
               style={{
                 axis: {
@@ -371,7 +383,7 @@ export default class extends Component {
           <Menu>
             <MenuItem primaryText='Add check in' onTouchTap={this.addCheckinToCurrentTimeline} />
             <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline} />
-            <MenuItem primaryText='View timeline overview' onTouchTap={this.viewCurrentTimeline} />
+            <MenuItem primaryText='Goal overview' onTouchTap={this.viewCurrentTimeline} />
           </Menu>
         </Popover>
       </div>
