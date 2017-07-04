@@ -27,14 +27,10 @@ function ModalTest() {
   let id = '1234'
   return (
     <div>
-      <Link to='/foo/5'>show foo</Link>
-      <Link to='/bar'>show bar</Link>
-      <Link to={`/goal/${id}`}>show goal 1234</Link>
-
       <Modal component={GoalFormContainer} props={{ id: id }} className='test-modal' />
-
+      <ModalContainer />
     </div>
-  );
+  )
 }
 
 export default ModalTest

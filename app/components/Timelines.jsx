@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Link, browserHistory } from 'react-router'
+import { ModalContainer, Modal } from 'react-router-modal'
+import GoalFormContainer from './GoalFormContainer'
 import firebase from 'APP/fire'
 const db = firebase.database()
 const auth = firebase.auth()
@@ -25,7 +27,8 @@ export default class extends Component {
     this.state = {
       menuOpen: false,
       goals: [], // the actual goals that happen to belong to the user
-      openGoal: {}
+      openGoal: {},
+      showGoal: false
     }
   }
 
@@ -122,8 +125,9 @@ export default class extends Component {
 
   viewCurrentTimeline = () => {
     event.preventDefault()
-    let openGoalUrl = `/goal/${this.state.openGoal[0]}`
-    browserHistory.push(openGoalUrl)
+    // let openGoalUrl = `/goal/${this.state.openGoal[0]}`
+    // browserHistory.push(openGoalUrl)
+    this.setState({showGoal: true, menuOpen: false})
   }
 
   addMilestoneToCurrentTimeline = () => {
@@ -384,6 +388,16 @@ export default class extends Component {
             <MenuItem primaryText='Goal overview' onTouchTap={this.viewCurrentTimeline} />
           </Menu>
         </Popover>
+        {
+          this.state.showGoal && <Modal
+            component={GoalFormContainer}
+            props={{ id: '666' }}
+            className='test-modal'
+            onBackdropClick={() => this.setState({showGoal: false})}
+           />
+        }
+
+        <ModalContainer />
       </div>
 
     )
