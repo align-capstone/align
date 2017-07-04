@@ -131,7 +131,6 @@ export default class extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div className="container-fluid">
-          <Link to={`/goal/${this.props.goalId}`}>Back to goal</Link>
           <h1><span id='milestoneName'>{this.state.name}</span></h1>
           <div className="row">
             <div className="col-xs-6">
@@ -182,7 +181,7 @@ export default class extends React.Component {
                 })
               }
             </div>
-            <div className="col-xs-6">
+            <div className="col-xs-6" className='upload-container'>
               <h3>Uploads</h3>
               <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
                 { this.state.uploads && this.state.uploads.map((upload, index) => {
@@ -198,8 +197,16 @@ export default class extends React.Component {
             </div>
         </div>
         <div className="row">
-          <div className="col-xs-6">
-            <RaisedButton label="Delete this milestone?" primary={true} />
+          <div className="col-xs-6" id="bottom-buttons">
+            <div id="button-container">
+              <RaisedButton
+                label="Back to timeline"
+                primary={true}
+                onTouchTap={() => browserHistory.push('/')}
+              />
+            </div>
+            <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Back to goal" primary={true} /></Link></div>
+            <div><RaisedButton label="Delete this milestone?" secondary={true} /></div>
           </div>
         </div>
       </div>

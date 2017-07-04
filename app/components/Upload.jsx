@@ -1,8 +1,36 @@
 import React, { Component } from 'react'
 import firebase from 'APP/fire'
 import FileUploader from 'react-firebase-file-uploader'
+import Add from 'material-ui/svg-icons/content/add'
 import CircularProgress from 'material-ui/CircularProgress'
+import RaisedButton from 'material-ui/RaisedButton'
 const db = firebase.database()
+
+class InputButton extends Component {
+  constructor(props) {
+    super()
+    this.state = {
+
+    }
+  }
+
+  componentWillReceiveProps (newProps, oldProps) {
+    this.setState({onChange: newProps.onChange})
+  }
+
+  render() {
+    return (
+      <RaisedButton
+        containerElement='label'
+        label='Upload'
+        icon={<Add />}
+        primary={true}
+      >
+        <input type="file" onChange={this.state.onChange} />
+      </RaisedButton>
+    )
+  }
+}
 
 class Upload extends Component {
   constructor(props) {
@@ -57,7 +85,7 @@ class Upload extends Component {
     return (
       <div>
         <form>
-          <label>Add an upload:</label>
+          <label></label>
           {this.state.isUploading &&
             <p>Progress: {this.state.progress}</p>
           }
@@ -78,6 +106,7 @@ class Upload extends Component {
             onUploadError={this.handleUploadError}
             onUploadSuccess={this.handleUploadSuccess}
             onProgress={this.handleProgress}
+            as={InputButton}
           />
         </form>
       </div>

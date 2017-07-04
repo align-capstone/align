@@ -98,7 +98,6 @@ export default class extends React.Component {
     })
 
     const colorListener = colorRef.on('value', snapshot => {
-      console.log("the color????", snapshot.val())
       if (snapshot.val() === null) colorRef.set({
         hex: '#bcbbb9',
         hsl: {
@@ -297,7 +296,7 @@ export default class extends React.Component {
               })
               }
             </div>
-            <div className="col-xs-6">
+            <div className="col-xs-6" className='upload-container'>
               <h3>Uploads</h3>
               <UploadForm goalRef={uploadsRef} />
               { this.state.uploads && this.state.uploads.map((upload, index) => {
@@ -311,8 +310,15 @@ export default class extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-xs-6">
-              <RaisedButton label="Delete this goal?" primary={true} />
+            <div className="col-xs-6" id="bottom-buttons">
+              <div id="button-container">
+                <RaisedButton
+                  label="Back to timeline"
+                  primary={true}
+                  onTouchTap={() => browserHistory.push('/')}
+                />
+              </div>
+              <div><RaisedButton label="Delete this goal?" secondary={true} /></div>
             </div>
           </div>
         </div>
