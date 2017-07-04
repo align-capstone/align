@@ -34,11 +34,13 @@ export default class extends Component {
 
   getScatterData(goal, index, goalId) {
 
+    console.log('what is goal in getScatterData?', goal)
     var data = []
+    var endSymbol = this.chooseEndSymbol(goal)
+
     // push start and end dates to data array
-    // maybe make end date of completed goals into a star??
     data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
-    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, strokeWidth: 7, fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       for (var id in goal.milestones) {
@@ -54,6 +56,11 @@ export default class extends Component {
       }
     }
     return data
+  }
+
+  chooseEndSymbol(goal) {
+    if (goal.isOpen) return 'circle'
+    else return 'star'
   }
 
   getLineData(goal, index) {
@@ -107,6 +114,8 @@ export default class extends Component {
       menuOpen: false,
     })
   }
+
+  // POPOVER OPTIONS
 
   viewCurrentTimeline = () => {
     event.preventDefault()
@@ -196,48 +205,57 @@ export default class extends Component {
   }
 
   render() {
-    const chartStyle = { parent: { minWidth: '90%', maxWidth: '100%', padding: '0', margin: '0'} }
+    const chartStyle = { parent: { width: '100%', padding: '0', margin: '0'} }
+    const sansSerif = "'Roboto', 'Helvetica Neue', Helvetica, sans-serif"
     const { goals } = this.state
     return (
       <div className='timeline-container container-fluid'>
         <div className='container chart1'>
           {this.state.goals.length > 0 ?
-            <VictoryChart width={1000} height={400} scale={{ x: 'time' }} style={chartStyle}
+            <VictoryChart
+              width={1000}
+              height={400}
+              scale={{ x: 'time' }}
+              style={chartStyle}
               domain={{
               // MPM: eventually, manipulate this time span using moment library
               // for now, though, just start the view at the beginning of 2017??
               // x: [new Date(2017, 0, 1), Date.now()],
               y: [-1, this.state.goals.length]
-            }}
-            // MPM: add domainPadding?
-            containerComponent={
-              <VictoryZoomContainer
-                dimension='x'
-                zoomDomain={this.state.zoomDomain}
-                onDomainChange={this.handleZoom.bind(this)}
-              />
-            }
-          >
+              }}
+              // MPM: add domainPadding?
+              containerComponent={
+                <VictoryZoomContainer
+                  dimension='x'
+                  zoomDomain={this.state.zoomDomain}
+                  onDomainChange={this.handleZoom.bind(this)}
+                />
+              }
+              padding={{top: 0, left: 0, right: 0, bottom: 0}}
+            >
             <VictoryAxis
               style={{
                 axis: {
                   stroke: 'none'
                 },
                 tickLabels: {
-                  angle: 0
+                  angle: 0,
+                  padding:30,
+                  border: 1,
+                  fontFamily: sansSerif
                 }
               }}
             />
             <VictoryLine
               style={{
-                data: { stroke: '#ccc', strokeWidth: 1 },
-                labels: { fill: "lightgray" }
+                data: { stroke: '#888', strokeWidth: 1 },
+                labels: { fill: "#888", fontFamily: sansSerif }
               }}
               data={[
                 { x: new Date(), y: 0, label: 'today'},
                 { x: new Date(), y: 400 }
               ]}
-              labelComponent={<VictoryLabel dy={55} />}
+              labelComponent={<VictoryLabel dy={35} />}
             />
 
             {
@@ -253,15 +271,17 @@ export default class extends Component {
                       data: {
                         stroke: goalInfo.color.hex,
                         strokeWidth: 4,
+                        cursor: "pointer"
                       },
-                      labels: { fill: "lightgray" }
+                      labels: { fill: "#888", fontFamily: sansSerif, fontWeight: "lighter" }
                     }}
                     events={[{
                       target: 'data',
                       eventHandlers: {
-                        onClick: (event) => { this.handleLineTap(event, goal) }
-                        // console.log('clicked line #', index, ', with ID ', goalId)
-                        // console.log('what is goalInfo?? ', goalInfo)
+                        onClick: (event) => { this.handleLineTap(event, goal)
+                        console.log('clicked line #', index, ', with ID ', goalId)
+                        console.log('what is goalInfo?? ', goalInfo)
+                        }
                       }
                     }]}
                     data={this.getLineData(goalInfo, index)}
@@ -280,8 +300,10 @@ export default class extends Component {
                       data: {
                         stroke: goalInfo.color.hex,
                         strokeWidth: 3,
-                        fill: 'white'
-                      }
+                        fill: 'white',
+                        cursor: "pointer"
+                      },
+                      labels: { fontFamily: sansSerif }
                     }}
                     events={[{
                       target: 'data',
@@ -301,10 +323,13 @@ export default class extends Component {
           </VictoryChart>
           : <div id='empty-message'><Empty /></div> }
         </div>
+
+      {/* Overview chart at the bottom
+          (Only shown if there are goals) */}
+
         {this.state.goals.length > 0 ?
           <div className='container chart2'>
           <VictoryChart
-            // eventually, we want this size to be responsive / relative to # of goals?
             padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
             width={600} height={50} scale={{ x: 'time' }} style={chartStyle}
             domain={{ y: [-1, this.state.goals.length] }}
@@ -317,7 +342,6 @@ export default class extends Component {
             }
           >
             <VictoryAxis
-              // tickFormat={(x) => new Date(x).getFullYear()}
               tickValues={[]}
               style={{
                 axis: {
@@ -359,7 +383,7 @@ export default class extends Component {
           <Menu>
             <MenuItem primaryText='Add check in' onTouchTap={this.addCheckinToCurrentTimeline} />
             <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline} />
-            <MenuItem primaryText='View timeline overview' onTouchTap={this.viewCurrentTimeline} />
+            <MenuItem primaryText='Goal overview' onTouchTap={this.viewCurrentTimeline} />
           </Menu>
         </Popover>
       </div>

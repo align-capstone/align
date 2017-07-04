@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
+import {GridList, GridTile} from 'material-ui/GridList'
 import UploadForm from './Upload'
 import UploadCard from './UploadCard'
 import ResourceCard from './ResourceCard'
@@ -149,6 +150,7 @@ export default class extends React.Component {
                   floatingLabelText='Description'
                   value={this.state.description}
                   onChange={this.writeDescription}
+                  multiLine={true}
                   id='description'
                 />
               </div>
@@ -163,7 +165,7 @@ export default class extends React.Component {
                 </SelectField>
               </div>
               <div className='form-group'>
-                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='When do you hope to accomplish this milestone?' />
+                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'By when do you hope to achieve this milestone?' : 'When did you achieve this milestone?'} />
               </div>
             </div>
           </div>
@@ -173,7 +175,7 @@ export default class extends React.Component {
               <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
               { this.state.resources && this.state.resources.map((resourceID, index) => {
                 return (
-                  <div key={resourceID}>
+                  <div key={resourceID} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <ResourceContainer resourceID={resourceID} />
                   </div>
                 )
@@ -183,14 +185,16 @@ export default class extends React.Component {
           <div className="col-xs-6">
             <h3>Uploads</h3>
             <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-            { this.state.uploads && this.state.uploads.map((upload, index) => {
-              const uploadId = upload[0]
-              const uploadInfo = upload[1]
-              return (
-                <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-              )
-            })
-            }
+              { this.state.uploads && this.state.uploads.map((upload, index) => {
+                const uploadId = upload[0]
+                const uploadInfo = upload[1]
+                return (
+                  <div key={index} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
+                  </div>
+                )
+              })
+              }
           </div>
         </div>
       </div>

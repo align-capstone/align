@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import firebase from 'APP/fire'
 import FileUploader from 'react-firebase-file-uploader'
+import CircularProgress from 'material-ui/CircularProgress'
 const db = firebase.database()
 
 class Upload extends Component {
@@ -59,6 +60,14 @@ class Upload extends Component {
           <label>Add an upload:</label>
           {this.state.isUploading &&
             <p>Progress: {this.state.progress}</p>
+          }
+          {this.state.isUploading &&
+            <CircularProgress
+              mode="determinate"
+              value={this.state.progress}
+              size={60}
+              thickness={8}
+            />
           }
           <FileUploader
             accept="image/*"

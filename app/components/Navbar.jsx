@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link, browserHistory } from 'react-router'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -21,7 +21,7 @@ const auth = firebase.auth()
 
 // export default function Navbar(props) {
 //   return (
-//     <AppBar title="align" style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}} onTitleTouchTap={handleTitleTouchTap}>
+//     <AppBar title='align' style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}} onTitleTouchTap={handleTitleTouchTap}>
 //       {auth.currentUser ? console.log('in yes user') : console.log('in null')}
 //       <WhoAmI auth={auth}/>
 //     </AppBar>
@@ -30,15 +30,20 @@ const auth = firebase.auth()
 
 // // <WhoAmI auth={auth}/>
 
-
 export const Navbar = ({ user, auth }) =>
-  <AppBar title="align" style={{ backgroundColor: 'transparent', color: 'black', boxShadow: 'none' }}
-    onTitleTouchTap={() => browserHistory.push('/')} onLeftIconButtonTouchTap={() => browserHistory.push('/')} iconElementRight={auth.currentUser ? <div style={{'fontSize': '125%'}}><WhoAmI auth={auth} /></div> : null  }
-    iconStyleRight={{display: 'flex', alignItems: 'center', marginTop: 0}}>
+  <AppBar
+    // title="align"
+    style={{ backgroundColor: 'transparent', color: 'black', boxShadow: 'none' }}
+    onTitleTouchTap={() => browserHistory.push('/')}
+    iconElementLeft={<img src="/logo.jpg" />}
+    onLeftIconButtonTouchTap={() => browserHistory.push('/')}
+    iconElementRight={auth.currentUser ? <div style={{'fontSize': '125%'}}><WhoAmI auth={auth} /></div> : null }
+    iconStyleRight={{display: 'flex', alignItems: 'center', marginTop: 0}}
+    id='nav'
+    >
   </AppBar>
 
-export default class extends React.Component {
-
+export default class extends Component {
   componentDidMount() {
     this.unsubscribe = auth.onAuthStateChanged(user => this.setState({ user }))
   }

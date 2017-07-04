@@ -70,7 +70,6 @@ export default class extends Component {
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <form onSubmit={this.handleSubmit}>
             <TextField
-              // autoFocus
               hintText='Paste a URL here'
               floatingLabelText='Add a new resource:'
               floatingLabelShrinkStyle={{'fontSize': 20}}
