@@ -12,6 +12,7 @@ import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
+import RaisedButton from 'material-ui/RaisedButton'
 import { CirclePicker } from 'react-color'
 import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
@@ -97,7 +98,29 @@ export default class extends React.Component {
     })
 
     const colorListener = colorRef.on('value', snapshot => {
-      if (snapshot.val() === null) colorRef.set('#00f0f0')
+      if (snapshot.val() === null) colorRef.set({
+        hex: '#bcbbb9',
+        hsl: {
+          a: 1,
+          h: 39.99999999999962,
+          l: 0.7313725490196079,
+          s:0.02189781021897823
+        },
+        hsv: {
+          a: 1,
+          h: 39.99999999999962,
+          s: 0.01595744680851073,
+          v: 0.7372549019607844
+        },
+        oldHue: 250,
+        rgb: {
+          a: 1,
+          b: 185,
+          g: 187,
+          r: 188
+        },
+        source: 'hex'
+      })
       this.setState({ color: snapshot.val() })
     })
 
@@ -186,11 +209,9 @@ export default class extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div className="container-fluid">
-          <Link to={`/timelines`}>Back to timelines</Link>
-          <h1>goal: <span id='goalName'>{this.state.name}</span></h1>
+          <h1><span id='goalName'>{this.state.name}</span></h1>
           <div className="row">
             <div className="col-xs-6">
-              <h3>goal details:</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your goal name'
@@ -275,7 +296,7 @@ export default class extends React.Component {
               })
               }
             </div>
-            <div className="col-xs-6">
+            <div className="col-xs-6" className='upload-container'>
               <h3>Uploads</h3>
               <UploadForm goalRef={uploadsRef} />
               { this.state.uploads && this.state.uploads.map((upload, index) => {
@@ -286,6 +307,18 @@ export default class extends React.Component {
                 )
               })
               }
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-6" id="bottom-buttons">
+              <div id="button-container">
+                <RaisedButton
+                  label="Back to timeline"
+                  primary={true}
+                  onTouchTap={() => browserHistory.push('/')}
+                />
+              </div>
+              <div><RaisedButton label="Delete this goal?" secondary={true} /></div>
             </div>
           </div>
         </div>
