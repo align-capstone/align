@@ -40,7 +40,6 @@ export default class extends Component {
     data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, strokeWidth: 7, fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
-      console.log('mstones', goal.milestones)
       for (var id in goal.milestones) {
         var milestone = goal.milestones[id]
         var milestoneFill = this.chooseMilestoneFill(goal, milestone)
