@@ -11,7 +11,7 @@ function FooModal() {
       <div>FOO</div>
       <div><Link to='/bar'>now let's go to bar!</Link></div>
     </div>
-    )
+  )
 }
 
 function BarModal() {
@@ -20,27 +20,30 @@ function BarModal() {
       <div>BAR</div>
       <div><Link to='/foo'>now let's go to foo!</Link></div>
     </div>
-    )
+  )
 }
 
 function ModalTest() {
-  let id='1234'
- return (
-     <div>
-       <Link to='/foo/5'>show foo</Link>
-       <Link to='/bar'>show bar</Link>
-       <Link to={`/goal/${id}`}>show goal 1234</Link>
+  let id = '1234'
+  return (
+    <div>
+      <Link to='/foo/5'>show foo</Link>
+      <Link to='/bar'>show bar</Link>
+      <Link to={`/goal/${id}`}>show goal 1234</Link>
 
-       <Modal component={GoalFormContainer} props={{ id: id }} className='test-modal' />
+      <Modal component={GoalFormContainer} props={{ id: id }} className='test-modal' />
 
-       <ModalContainer id={id} />
-     </div>
- );
+    </div>
+  );
 }
 
 export default ModalTest
 
+/*
+to do:
+on popover click: instead of browserHistory pushing, change modal state to open, and
 
+*/
 // function ModalTest() {
 //   let id='1234'
 //  return (
