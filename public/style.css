@@ -111,6 +111,10 @@ h1, h2, h3, h4 {
   z-index: -1;
 }
 
+tspan {
+  text-anchor: start !important;
+}
+
 #bottom-buttons div {
   display: inline-block;
 }
