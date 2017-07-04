@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link, browserHistory } from 'react-router'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -30,10 +30,9 @@ const auth = firebase.auth()
 
 // // <WhoAmI auth={auth}/>
 
-
 export const Navbar = ({ user, auth }) =>
   <AppBar
-    title="align"
+    // title="align"
     style={{ backgroundColor: 'transparent', color: 'black', boxShadow: 'none' }}
     onTitleTouchTap={() => browserHistory.push('/')}
     iconElementLeft={<img src="/logo.jpg" />}
@@ -42,8 +41,7 @@ export const Navbar = ({ user, auth }) =>
     iconStyleRight={{display: 'flex', alignItems: 'center', marginTop: 0}}>
   </AppBar>
 
-export default class extends React.Component {
-
+export default class extends Component {
   componentDidMount() {
     this.unsubscribe = auth.onAuthStateChanged(user => this.setState({ user }))
   }
