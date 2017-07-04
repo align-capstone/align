@@ -29,29 +29,27 @@ export default class extends Component {
     }
   }
 
-
   // VICTORY FUNCTIONS:
 
   getScatterData(goal, index, goalId) {
-
-    console.log('what is goal in getScatterData?', goal)
     var data = []
     var endSymbol = this.chooseEndSymbol(goal)
 
     // push start and end dates to data array
-    data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', strokeWidth: 7, fill: goal.color.hex })
     data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, strokeWidth: 7, fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       for (var id in goal.milestones) {
         var milestone = goal.milestones[id]
-        data.push({ x: new Date(milestone.displayDate), key: `/milestone/${goalId}/${id}`, y: index, label: milestone.name, symbol: 'square', fill: 'white' })
+        var milestoneFill = this.chooseMilestoneFill(goal, milestone)
+        data.push({ x: new Date(milestone.displayDate), key: `/milestone/${goalId}/${id}`, y: index, label: milestone.name, symbol: 'square', strokeWidth: 3, size: 5, fill: milestoneFill })
       }
     }
     if (goal.checkIns) {
       for (var id in goal.checkIns) {
         var checkin = goal.checkIns[id]
-        data.push({ x: new Date(checkin.displayDate), key: `/checkin/${goalId}/${id}`, y: index, label: checkin.name, symbol: 'diamond', fill: 'white' })
+        data.push({ x: new Date(checkin.displayDate), key: `/checkin/${goalId}/${id}`, y: index, label: checkin.name, symbol: 'diamond', strokeWidth: 3, fill: goal.color.hex })
 
       }
     }
@@ -61,6 +59,11 @@ export default class extends Component {
   chooseEndSymbol(goal) {
     if (goal.isOpen) return 'circle'
     else return 'star'
+  }
+
+  chooseMilestoneFill(goal, milestone) {
+    if (milestone.isOpen) return 'white'
+    else return goal.color.hex
   }
 
   getLineData(goal, index) {
@@ -217,13 +220,8 @@ export default class extends Component {
               height={400}
               scale={{ x: 'time' }}
               style={chartStyle}
-              domain={{
-              // MPM: eventually, manipulate this time span using moment library
-              // for now, though, just start the view at the beginning of 2017??
-              // x: [new Date(2017, 0, 1), Date.now()],
-              y: [-1, this.state.goals.length]
-              }}
-              // MPM: add domainPadding?
+              domainPadding={{x: [20, 20]}}
+              domain={{ y: [-1, this.state.goals.length] }}
               containerComponent={
                 <VictoryZoomContainer
                   dimension='x'
@@ -240,7 +238,7 @@ export default class extends Component {
                 },
                 tickLabels: {
                   angle: 0,
-                  padding:30,
+                  padding: 30,
                   border: 1,
                   fontFamily: sansSerif
                 }
@@ -299,8 +297,8 @@ export default class extends Component {
                     style={{
                       data: {
                         stroke: goalInfo.color.hex,
-                        strokeWidth: 3,
-                        fill: 'white',
+                        // strokeWidth: 3,
+                        // fill: 'white',
                         cursor: "pointer"
                       },
                       labels: { fontFamily: sansSerif }
