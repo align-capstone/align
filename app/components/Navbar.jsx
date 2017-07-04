@@ -38,7 +38,9 @@ export const Navbar = ({ user, auth }) =>
     iconElementLeft={<img src="/logo.jpg" />}
     onLeftIconButtonTouchTap={() => browserHistory.push('/')}
     iconElementRight={auth.currentUser ? <div style={{'fontSize': '125%'}}><WhoAmI auth={auth} /></div> : null }
-    iconStyleRight={{display: 'flex', alignItems: 'center', marginTop: 0}}>
+    iconStyleRight={{display: 'flex', alignItems: 'center', marginTop: 0}}
+    id='nav'
+    >
   </AppBar>
 
 export default class extends Component {
