@@ -268,7 +268,7 @@ export default class extends Component {
                         strokeWidth: 4,
                         cursor: 'pointer'
                       },
-                      labels: { fill: '#888', fontFamily: sansSerif, fontWeight: 'lighter', textAlign: 'left' }
+                      labels: { fill: '#888', fontFamily: sansSerif, fontWeight: 'lighter', textAnchor: 'start' }
                     }}
                     events={[{
                       target: 'data',
