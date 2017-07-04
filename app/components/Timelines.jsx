@@ -19,17 +19,17 @@ import Empty from './Empty'
 
 // eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significancecc
 
-class CatPoint extends React.Component {
-  render() {
-    const {x, y, datum} = this.props;
-    const cat = datum.y >= 0 ? "😻" : "😹";
-    return (
-      <text x={x} y={y} fontSize={30}>
-        {cat}
-      </text>
-    );
-  }
-}
+// class CatPoint extends React.Component {
+//   render() {
+//     const {x, y, datum} = this.props;
+//     const cat = datum.y >= 0 ? "😻" : "😹";
+//     return (
+//       <text x={x} y={y} fontSize={30}>
+//         {cat}
+//       </text>
+//     );
+//   }
+// }
 
 export default class extends Component {
   constructor(props) {
@@ -46,12 +46,14 @@ export default class extends Component {
 
   getScatterData(goal, index, goalId) {
 
+    console.log('what is goal in getScatterData?', goal)
     var data = []
     var endSymbol = this.chooseEndSymbol(goal)
+    console.log('what is endSymbol?', endSymbol)
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
     data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
-    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: 'circle', fill: goal.color.hex })
+    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, fill: goal.color.hex })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       for (var id in goal.milestones) {
@@ -71,7 +73,7 @@ export default class extends Component {
 
   chooseEndSymbol(goal) {
     if (goal.isOpen) return 'circle'
-    else return 'triangle'
+    else return 'star'
   }
 
   getLineData(goal, index) {
@@ -325,7 +327,7 @@ export default class extends Component {
                         }
                       }
                     }]}
-                    dataComponent={<CatPoint/>}
+                    data={this.getScatterData(goalInfo, index, goalId)}
                     labelComponent={<VictoryTooltip />}
                   />
                 )
