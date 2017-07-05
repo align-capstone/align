@@ -243,14 +243,14 @@ export default class extends React.Component {
   }
 
   render() {
-    const colorArray = ["#6CC2BD", "#5A809E", "#7C79A2", "#F57D7C", "#FFC1A6", "#ffd7a6", "#bcbbb9", "#9E898F", "#667762", "#35464D", "#386174", "#6B96C9"]
+    const colorArray = ['#6CC2BD', '#5A809E', '#7C79A2', '#F57D7C', '#FFC1A6', '#ffd7a6', '#bcbbb9', '#9E898F', '#667762', '#35464D', '#386174', '#6B96C9']
     return (
       <div id='mockup-container'>
       <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
-        <div className="container-fluid">
+        <div className='container-fluid'>
           <h1 style={{color:this.state.color.hex}}><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
-          <div className="row">
-            <div className="col-xs-6">
+          <div className='row'>
+            <div className='col-xs-6'>
               <h3 style={{color:this.state.color.hex}}>Goal Information</h3>
               <div className='form-group'>
                 <TextField
@@ -293,7 +293,7 @@ export default class extends React.Component {
                 <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
               </div>
             </div>
-            <div className="col-xs-6">
+            <div className='col-xs-6'>
               <div>
                 <h3 style={{color:this.state.color.hex}}>Milestones</h3>
                 <List>
@@ -324,20 +324,20 @@ export default class extends React.Component {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-xs-6">
+          <div className='row'>
+            <div className='col-xs-6'>
               <h3 style={{color:this.state.color.hex}}>Resources</h3>
               <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
               { this.state.resources && this.state.resources.map((resourceID, index) => {
                 return (
-                  <div key={resourceID} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div key={resourceID} className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
                     <ResourceContainer resourceID={resourceID} />
                   </div>
                 )
               })
               }
             </div>
-            <div className="col-xs-6" className='upload-container'>
+            <div className='col-xs-6 upload-container'>
               <h3 style={{color:this.state.color.hex}}>Uploads</h3>
               <UploadForm goalRef={uploadsRef} />
               { this.state.uploads && this.state.uploads.map((upload, index) => {
@@ -350,8 +350,8 @@ export default class extends React.Component {
               }
             </div>
           </div>
-          <div className="row">
-            <div className="col-xs-12">
+          <div className='row'>
+            <div className='col-xs-12'>
               <h3 style={{color:this.state.color.hex}}>Notes</h3>
               <ReactQuill
                 value={this.state.notes}
@@ -359,9 +359,9 @@ export default class extends React.Component {
               />
             </div>
           </div>
-          <div className="row">
-            <div className="col-xs-6" id="bottom-buttons">
-              <div><RaisedButton label="Delete this goal?" secondary={true} onClick={this.deleteGoal} /></div>
+          <div className='row'>
+            <div className='col-xs-6' id='bottom-buttons'>
+              <div><RaisedButton label='Delete this goal?' secondary={true} onClick={this.deleteGoal} /></div>
             </div>
           </div>
         </div>

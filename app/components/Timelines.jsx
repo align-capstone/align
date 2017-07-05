@@ -272,8 +272,7 @@ export default class extends Component {
                   angle: 0,
                   padding: 30,
                   border: 1,
-                  fontFamily: sansSerif,
-                  stroke: '#888888'
+                  fontFamily: sansSerif
                 }
               }}
             />
