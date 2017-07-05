@@ -5,6 +5,10 @@ import RaisedButton from 'material-ui/RaisedButton'
 import FontIcon from 'material-ui/FontIcon'
 import { Tabs, Tab } from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import alignTheme from './AlignTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
 
 import LocalSignin from './LocalSignin'
@@ -86,6 +90,7 @@ export default class LandingPage extends React.Component {
 
   render() {
     return (
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
       <div id="landing">
         <Tabs onChange={this.handleTabChange} value={this.state.slideIndex}>
           <Tab label="Sign up" value={0} />
@@ -101,6 +106,7 @@ export default class LandingPage extends React.Component {
           </div>
         </SwipeableViews>
       </div>
+      </MuiThemeProvider>
     )
   }
 }

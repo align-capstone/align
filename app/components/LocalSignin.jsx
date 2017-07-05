@@ -5,6 +5,7 @@ import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import alignTheme from './AlignTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import FontIcon from 'material-ui/FontIcon'
 
@@ -78,19 +79,19 @@ export default class extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <div className='login'>
           <form onSubmit={this.handleSubmit}>
             <div className='form-group'>
-              <TextField name="email"
-                floatingLabelText="Email" onChange={this.handleChange} />
+              <TextField name='email'
+                floatingLabelText='Email' onChange={this.handleChange} />
             </div>
             <div className='form-group'>
-              <TextField name="password"
-                floatingLabelText="Password" onChange={this.handleChange} />
+              <TextField name='password' type='password'
+                floatingLabelText='Password' onChange={this.handleChange} />
             </div>
             <div className='form-group'>
-              <RaisedButton label="Log In" type="submit" primary={true} style={buttonStyle} />
+              <RaisedButton label='Log In' type='submit' primary={true} style={buttonStyle} />
             </div>
           </form>
           <hr />
@@ -98,7 +99,7 @@ export default class extends React.Component {
           <div>
             <RaisedButton
               onClick={this.handleGoogleLogin}
-              label="Log in with Google"
+              label='Log in with Google'
               secondary={true}
             />
           </div>
