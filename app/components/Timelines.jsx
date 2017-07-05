@@ -104,11 +104,25 @@ export default class extends Component {
   // MUI FUNCTIONS:
 
   handleLineTap = (event, goal) => {
+    let ourTop = event.pageY + window.scrollY
+    let ourLeft = event.pageX + window.scrollX //just putting these scroll values in case for some reason it scrolls
+    const ourBbox = {
+      bottom: event.target.getBoundingClientRect().bottom,
+      right: event.target.getBoundingClientRect().right,
+      width: event.target.getBoundingClientRect().width,
+      left: ourLeft,
+      top: ourTop
+    }
+
     // This prevents ghost click.
     event.preventDefault()
     this.setState({
       menuOpen: true,
-      anchorEl: event.currentTarget,
+      anchorEl: {
+        getBoundingClientRect() {
+          return ourBbox
+        }
+      },
       openGoal: goal
     })
   }
@@ -258,7 +272,8 @@ export default class extends Component {
                   angle: 0,
                   padding: 30,
                   border: 1,
-                  fontFamily: sansSerif
+                  fontFamily: sansSerif,
+                  stroke: '#888888'
                 }
               }}
             />
