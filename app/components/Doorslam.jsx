@@ -13,7 +13,6 @@ export default class extends React.Component {
 
   render() {
     const {user} = this.state || {}
-    console.log('user from doorslam', user)
     const {Landing, children} = this.props
     return user ? children : <Landing />
   }

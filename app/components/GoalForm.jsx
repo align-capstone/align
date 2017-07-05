@@ -227,6 +227,7 @@ export default class extends React.Component {
   deleteGoal = () => {
     let goalId = this.props.id
     let userId = auth.currentUser.uid
+    this.unsubscribe()
     goalsRef.child(goalId).set(null)
     usersRef.child(userId).child('goals').child(goalId).set(null)
     browserHistory.push('/')

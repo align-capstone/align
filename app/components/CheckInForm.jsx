@@ -132,6 +132,7 @@ export default class extends React.Component {
   deleteCheckIn = () => {
     let goalId = this.props.goalId
     let checkInId = this.props.checkInId
+    this.unsubscribe()
     goalsRef.child(goalId).child('checkIns').child(checkInId).set(null)
     browserHistory.push('/')
   }

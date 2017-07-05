@@ -148,8 +148,7 @@ export default class extends React.Component {
   deleteMilestone = () => {
     let goalId = this.props.goalId
     let milestoneId = this.props.milestoneId
-    // let milestoneRef = this.props.fireRef.milestoneRef
-    // milestoneRef.set(null)
+    this.unsubscribe()
     goalsRef.child(goalId).child('milestones').child(milestoneId).set(null)
     browserHistory.push('/')
   }
