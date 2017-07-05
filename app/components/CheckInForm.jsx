@@ -143,59 +143,67 @@ export default class extends React.Component {
       <div id='mockup-container'>
       <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <div className="container-fluid">
-          <h1 id='checkInName'>{this.state.name}<span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
-          <div className="row">
-            <div className="col-xs-6">
-              <h3>Check-In Information</h3>
-              <div className='form-group'>
-                <TextField
-                  hintText='Your check-in name'
-                  floatingLabelText='Name'
-                  value={this.state.name}
-                  onChange={this.writeName}
-                  id='name'
-                />
+          <div id='faux-modal-header'>
+            <div className='row faux-header'>
+              <div className='col-xs-12'>
+                <h1 id='checkInName'>{this.state.name}<span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
               </div>
-              <div className='form-group'>
-                <TextField
-                  hintText='What do you want to do?'
-                  floatingLabelText='Description'
-                  value={this.state.description}
-                  onChange={this.writeDescription}
-                  multiLine={true}
-                  id='description'
-                />
-              </div>
-              <div className='form-group'>
-                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check-in' />
-              </div>
-            </div>
-            <div className="col-xs-6" className='upload-container'>
-              <h3>Uploads:</h3>
-              <UploadForm goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
-              { this.state.uploads && this.state.uploads.map((upload, index) => {
-                let uploadId = upload[0]
-                let uploadInfo = upload[1]
-                return (
-                  <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
-                )
-              })
-              }
             </div>
           </div>
-          <div className="row">
-            <div className="col-xs-12">
-              <h3>Notes</h3>
-              <ReactQuill
-                value={this.state.notes}
-                onChange={this.writeNotes}
-              />
+          <div id='faux-modal-body'>
+            <div className="row">
+              <div className="col-xs-6">
+                <h3>Check-In Information</h3>
+                <div className='form-group'>
+                  <TextField
+                    hintText='Your check-in name'
+                    floatingLabelText='Name'
+                    value={this.state.name}
+                    onChange={this.writeName}
+                    id='name'
+                  />
+                </div>
+                <div className='form-group'>
+                  <TextField
+                    hintText='What do you want to do?'
+                    floatingLabelText='Description'
+                    value={this.state.description}
+                    onChange={this.writeDescription}
+                    multiLine={true}
+                    id='description'
+                  />
+                </div>
+                <div className='form-group'>
+                  <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check-in' />
+                </div>
+              </div>
+              <div className="col-xs-6" className='upload-container'>
+                <h3>Uploads:</h3>
+                <UploadForm goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
+                { this.state.uploads && this.state.uploads.map((upload, index) => {
+                  let uploadId = upload[0]
+                  let uploadInfo = upload[1]
+                  return (
+                    <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
+                  )
+                })
+                }
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-xs-6" id="bottom-buttons">
-              <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Check-in" primary={true} /></Link></div>
-              <div><RaisedButton label="Delete this check-in?" secondary={true} onClick={this.deleteCheckIn} /></div>
+            <div className="row">
+              <div className="col-xs-12">
+                <h3>Notes</h3>
+                <ReactQuill
+                  value={this.state.notes}
+                  onChange={this.writeNotes}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-6" id="bottom-buttons">
+                <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Check-in" primary={true} /></Link></div>
+                <div><RaisedButton label="Delete this check-in?" secondary={true} onClick={this.deleteCheckIn} /></div>
+              </div>
             </div>
           </div>
         </div>
