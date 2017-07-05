@@ -148,15 +148,16 @@ export default class extends Component {
     let goalId = this.state.openGoal[0]
     let userId = this.state.userId
 
-    // dataToDelete[`/goals/${goalId}`] = null
-    // dataToDelete[`/users/${userId}/goals/${goalId}`] = null
-    // db.update(dataToDelete, function(error) {
-    //   if (error) {
-    //     console.log('Error deleting data: ', error)
-    //   }
-    // })
-    goalsRef.child(goalId).set(null)
-    usersRef.child(userId).child('goals').child(goalId).set(null)
+    // to avoid multiple writes to firebase:
+    // make an object of data to delete and pass it to the top level
+    let dataToDelete = {}
+    dataToDelete[`/goals/${goalId}`] = null
+    dataToDelete[`/users/${userId}/goals/${goalId}`] = null
+    db.ref().update(dataToDelete, function(error) {
+      if (error) {
+        console.log('Error deleting data: ', error)
+      }
+    })
   }
 
   // FIREBASE FUNCTIONS:
