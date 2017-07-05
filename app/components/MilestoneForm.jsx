@@ -204,7 +204,7 @@ export default class extends React.Component {
               <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
               { this.state.resources && this.state.resources.map((resourceID, index) => {
                   return (
-                    <div key={resourceID} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div key={resourceID} className='flexy-columns'>
                       <ResourceContainer resourceID={resourceID} />
                     </div>
                   )
@@ -218,7 +218,7 @@ export default class extends React.Component {
                   const uploadId = upload[0]
                   const uploadInfo = upload[1]
                   return (
-                    <div key={index} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div key={index} className='flexy-columns'>
                       <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
                     </div>
                   )

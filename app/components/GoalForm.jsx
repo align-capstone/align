@@ -22,7 +22,7 @@ import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import RaisedButton from 'material-ui/RaisedButton'
 import { CirclePicker } from 'react-color'
-import {List, ListItem} from 'material-ui/List'
+import { List, ListItem } from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
 import Close from 'material-ui/svg-icons/navigation/close'
@@ -115,7 +115,7 @@ export default class extends React.Component {
           a: 1,
           h: 39.99999999999962,
           l: 0.7313725490196079,
-          s:0.02189781021897823
+          s: 0.02189781021897823
         },
         hsv: {
           a: 1,
@@ -234,7 +234,7 @@ export default class extends React.Component {
     let dataToDelete = {}
     dataToDelete[`/goals/${goalId}`] = null
     dataToDelete[`/users/${userId}/goals/${goalId}`] = null
-    db.ref().update(dataToDelete, function(error) {
+    db.ref().update(dataToDelete, function (error) {
       if (error) {
         console.log('Error deleting data: ', error)
       }
@@ -246,126 +246,130 @@ export default class extends React.Component {
     const colorArray = ['#6CC2BD', '#5A809E', '#7C79A2', '#F57D7C', '#FFC1A6', '#ffd7a6', '#bcbbb9', '#9E898F', '#667762', '#35464D', '#386174', '#6B96C9']
     return (
       <div id='mockup-container'>
-      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
-        <div className='container-fluid'>
-          <h1 style={{color:this.state.color.hex}}><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
-          <div className='row'>
-            <div className='col-xs-6'>
-              <h3 style={{color:this.state.color.hex}}>Goal Information</h3>
-              <div className='form-group'>
-                <TextField
-                  hintText='Your goal name'
-                  floatingLabelText='Name'
-                  value={this.state.name}
-                  onChange={this.writeName}
-                  id='name'
+        <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
+          <div className='container-fluid'>
+            <h1 style={{ color: this.state.color.hex }}><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
+            <div className='row'>
+              <div className='col-xs-6'>
+                <h3 style={{ color: this.state.color.hex }}>Goal Information</h3>
+                <div className='form-group'>
+                  <TextField
+                    hintText='Your goal name'
+                    floatingLabelText='Name'
+                    value={this.state.name}
+                    onChange={this.writeName}
+                    id='name'
+                  />
+                </div>
+                <div className='form-group'>
+                  <TextField
+                    hintText='What do you want to do?'
+                    floatingLabelText='Description'
+                    value={this.state.description}
+                    onChange={this.writeDescription}
+                    multiLine={true}
+                    id='description'
+                  />
+                </div>
+                <div className='form-group'>
+                  <SelectField
+                    floatingLabelText='Is this goal achieved?'
+                    value={this.state.isOpen}
+                    onChange={this.writeIsOpen}
+                  >
+                    <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
+                    <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
+                  </SelectField>
+                </div>
+                <div className='form-group'>
+                  <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start your goal?' />
+                </div>
+                <div className='form-group'>
+                  <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this goal?' : 'When did you achieve this goal?'} />
+                </div>
+                <div>
+                  <h3 style={{ color: this.state.color.hex }}>Choose Color</h3>
+                  <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
+                </div>
+              </div>
+              <div className='col-xs-6'>
+                <div>
+                  <h3 style={{ color: this.state.color.hex }}>Milestones</h3>
+                  <List>
+                    {
+                      this.state.milestones && this.state.milestones.map((milestone, index) => {
+                        let milestonePath = `/milestone/${this.props.id}/${milestone[0]}`
+                        return (
+                          <ListItem key={index} primaryText={milestone[1].name} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} ></ListItem>
+                        )
+                      })
+                    }
+                    <ListItem leftIcon={<Add />} onTouchTap={this.createNewMilestone} >Add new</ListItem>
+                  </List>
+                </div>
+                <div>
+                  <h3 style={{ color: this.state.color.hex }}>Check Ins</h3>
+                  <List>
+                    {
+                      this.state.checkIns && this.state.checkIns.map((checkin, index) => {
+                        let checkinPath = `/checkin/${this.props.id}/${checkin[0]}`
+                        return (
+                          <ListItem key={index} primaryText={checkin[1].name} leftIcon={<Edit />} containerElement={<Link to={checkinPath} />} ></ListItem>
+                        )
+                      })
+                    }
+                    <ListItem leftIcon={<Add />} onTouchTap={this.createNewCheckIn} >Add new</ListItem>
+                  </List>
+                </div>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col-xs-6'>
+                <h3 style={{ color: this.state.color.hex }}>Resources</h3>
+                <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
+                <div className='flexy-columns'>
+                  {this.state.resources && this.state.resources.map((resourceID, index) => {
+                    return (
+                      <div key={resourceID}>
+                        <ResourceContainer resourceID={resourceID} />
+                      </div>
+                    )
+                  })
+                  }
+                </div>
+              </div>
+              <div className='col-xs-6 upload-container'>
+                <h3 style={{ color: this.state.color.hex }}>Uploads</h3>
+                <UploadForm goalRef={uploadsRef} />
+                <div className='flexy-columns'>
+                  {this.state.uploads && this.state.uploads.map((upload, index) => {
+                    const uploadId = upload[0]
+                    const uploadInfo = upload[1]
+                    return (
+                        <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
+                    )
+                  })
+                  }
+                </div>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col-xs-12'>
+                <h3 style={{ color: this.state.color.hex }}>Notes</h3>
+                <ReactQuill
+                  value={this.state.notes}
+                  onChange={this.writeNotes}
                 />
               </div>
-              <div className='form-group'>
-                <TextField
-                  hintText='What do you want to do?'
-                  floatingLabelText='Description'
-                  value={this.state.description}
-                  onChange={this.writeDescription}
-                  multiLine={true}
-                  id='description'
-                />
-              </div>
-              <div className='form-group'>
-                <SelectField
-                  floatingLabelText='Is this goal achieved?'
-                  value={this.state.isOpen}
-                  onChange={this.writeIsOpen}
-                >
-                  <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
-                  <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
-                </SelectField>
-              </div>
-              <div className='form-group'>
-                <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start your goal?' />
-              </div>
-              <div className='form-group'>
-                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this goal?' : 'When did you achieve this goal?'} />
-              </div>
-              <div>
-                <h3 style={{color:this.state.color.hex}}>Choose Color</h3>
-                <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
-              </div>
             </div>
-            <div className='col-xs-6'>
-              <div>
-                <h3 style={{color:this.state.color.hex}}>Milestones</h3>
-                <List>
-                  {
-                    this.state.milestones && this.state.milestones.map((milestone, index) => {
-                      let milestonePath = `/milestone/${this.props.id}/${milestone[0]}`
-                      return (
-                        <ListItem key={index} primaryText={milestone[1].name} leftIcon={<Edit />} containerElement={<Link to={milestonePath} />} ></ListItem>
-                      )
-                    })
-                  }
-                  <ListItem leftIcon={<Add />} onTouchTap={this.createNewMilestone} >Add new</ListItem>
-                </List>
-              </div>
-              <div>
-                <h3 style={{color:this.state.color.hex}}>Check Ins</h3>
-                <List>
-                  {
-                    this.state.checkIns && this.state.checkIns.map((checkin, index) => {
-                      let checkinPath = `/checkin/${this.props.id}/${checkin[0]}`
-                      return (
-                        <ListItem key={index} primaryText={checkin[1].name} leftIcon={<Edit />} containerElement={<Link to={checkinPath} />} ></ListItem>
-                      )
-                    })
-                  }
-                  <ListItem leftIcon={<Add />} onTouchTap={this.createNewCheckIn} >Add new</ListItem>
-                </List>
+            <div className='row'>
+              <div className='col-xs-6' id='bottom-buttons'>
+                <div id="button-container"><RaisedButton label="Save Goal" primary={true} onClick={() => browserHistory.push('/')} /></div>
+                <div><RaisedButton label='Delete this goal?' secondary={true} onClick={this.deleteGoal} /></div>
               </div>
             </div>
           </div>
-          <div className='row'>
-            <div className='col-xs-6'>
-              <h3 style={{color:this.state.color.hex}}>Resources</h3>
-              <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
-              { this.state.resources && this.state.resources.map((resourceID, index) => {
-                return (
-                  <div key={resourceID} className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-                    <ResourceContainer resourceID={resourceID} />
-                  </div>
-                )
-              })
-              }
-            </div>
-            <div className='col-xs-6 upload-container'>
-              <h3 style={{color:this.state.color.hex}}>Uploads</h3>
-              <UploadForm goalRef={uploadsRef} />
-              { this.state.uploads && this.state.uploads.map((upload, index) => {
-                const uploadId = upload[0]
-                const uploadInfo = upload[1]
-                return (
-                  <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
-                )
-              })
-              }
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col-xs-12'>
-              <h3 style={{color:this.state.color.hex}}>Notes</h3>
-              <ReactQuill
-                value={this.state.notes}
-                onChange={this.writeNotes}
-              />
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col-xs-6' id='bottom-buttons'>
-              <div id="button-container"><RaisedButton label="Save Goal" primary={true} onClick={()=>browserHistory.push('/')} /></div>
-              <div><RaisedButton label='Delete this goal?' secondary={true} onClick={this.deleteGoal} /></div>
-            </div>
-          </div>
-        </div>
-      </MuiThemeProvider>
+        </MuiThemeProvider>
       </div>
     )
   }
