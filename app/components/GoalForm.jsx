@@ -327,10 +327,10 @@ export default class extends React.Component {
             <div className='col-xs-6'>
               <h3 style={{color:this.state.color.hex}}>Resources</h3>
               <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
-              { this.state.resources && this.state.resources.map((resourceID, index) => {
+              { this.state.resources && this.state.resources.map((resourceId, index) => {
                 return (
-                  <div key={resourceID} className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-                    <ResourceContainer resourceID={resourceID} />
+                  <div key={resourceId} className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
+                    <ResourceContainer resourceId={resourceId} goalId={this.props.id} />
                   </div>
                 )
               })
