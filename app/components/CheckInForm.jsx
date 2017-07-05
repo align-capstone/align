@@ -4,7 +4,7 @@ import { Link, browserHistory } from 'react-router'
 import firebase from 'APP/fire'
 const db = firebase.database()
 const goalsRef = db.ref('goals')
-let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef, resourcesRef, notesRef
+let nameRef, descriptionRef, dateRef, uploadsRef, parentRef, notesRef
 
 import ReactQuill from 'react-quill'
 
@@ -17,13 +17,9 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import RaisedButton from 'material-ui/RaisedButton'
-import {GridList, GridTile} from 'material-ui/GridList'
 import Close from 'material-ui/svg-icons/navigation/close'
 import UploadForm from './Upload'
 import UploadCard from './UploadCard'
-import ResourceCard from './ResourceCard'
-import ResourceForm from './ResourceForm'
-import ResourceContainer from './ResourceContainer'
 
 export default class extends React.Component {
   constructor(props) {
@@ -58,20 +54,16 @@ export default class extends React.Component {
     // If we're already listening to a ref, stop listening there.
     if (this.unsubscribe) this.unsubscribe()
 
+    // Set up aliases for our Firebase references:
     nameRef = fireRef.nameRef
     descriptionRef = fireRef.descriptionRef
-    isOpenRef = fireRef.isOpenRef
     dateRef = fireRef.dateRef
     uploadsRef = fireRef.uploadsRef
     parentRef = fireRef.parentRef
-    resourcesRef = fireRef.resourcesRef
     notesRef = fireRef.notesRef
 
-    // Whenever our ref's value changes, set {value} on our state.
-    // const listener = fireRef.on('value', snapshot =>
-    //   this.setState({value: snapshot.val()}))
+    // Whenever a ref's value changes, set {value} on our state:
 
-    // HEY ALL let's refactor to just listen to parent element
     const nameListener = nameRef.on('value', snapshot =>
       this.setState({ name: snapshot.val() || '' }))
 
@@ -79,18 +71,9 @@ export default class extends React.Component {
       this.setState({ description: snapshot.val() || '' })
     })
 
-    const isOpenListener = isOpenRef.on('value', snapshot => {
-      this.setState({ isOpen: snapshot.val() })
-      if (snapshot.val() === null) isOpenRef.set(true)
-    })
-
     const dateListener = dateRef.on('value', snapshot => {
       this.setState({ date: snapshot.val() })
       if (snapshot.val() === null) dateRef.set(new Date().getTime())
-    })
-
-    const resourcesListener = resourcesRef.on('value', snapshot => {
-      if (snapshot.val()) this.setState({ resources: Object.keys(snapshot.val()) })
     })
 
     const uploadsListener = uploadsRef.on('value', snapshot => {
@@ -105,9 +88,7 @@ export default class extends React.Component {
     this.unsubscribe = () => {
       nameRef.off('value', nameListener)
       descriptionRef.off('value', descriptionListener)
-      isOpenRef.off('value', isOpenListener)
       dateRef.off('value', dateListener)
-      resourcesRef.off('value', resourcesListener)
       uploadsRef.off('value', uploadsListener)
       notesRef.off('value', notesListener)
     }
@@ -134,6 +115,7 @@ export default class extends React.Component {
 
   writeIsOpen = (event, id) => {
     // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
+    // the id is the index of the select option clicked
     if (id === 0) {
       isOpenRef.set(false)
     }
@@ -143,14 +125,15 @@ export default class extends React.Component {
   }
 
   writeDate = (event, date) => {
+    // get time converts regular date format to timestamp
     dateRef.set(date.getTime())
   }
 
-  deleteMilestone = () => {
+  deleteCheckIn = () => {
     let goalId = this.props.goalId
-    let milestoneId = this.props.milestoneId
+    let checkInId = this.props.checkInId
     this.unsubscribe()
-    goalsRef.child(goalId).child('milestones').child(milestoneId).set(null)
+    goalsRef.child(goalId).child('checkIns').child(checkInId).set(null)
     browserHistory.push('/')
   }
 
@@ -163,17 +146,17 @@ export default class extends React.Component {
           <div id='faux-modal-header'>
               <div className='row faux-header'>
                 <div className='col-xs-12'>
-                  <h1><span id='milestoneName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
+                  <h1 id='checkInName'>{this.state.name}<span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
                 </div>
             </div>
           </div>
           <div id='faux-modal-body'>
             <div className="row">
               <div className="col-xs-6">
-                <h3>Milestone Information</h3>
+                <h3>Check-In Information</h3>
                 <div className='form-group'>
                   <TextField
-                    hintText='Your milestone name'
+                    hintText='Your check-in name'
                     floatingLabelText='Name'
                     value={this.state.name}
                     onChange={this.writeName}
@@ -191,49 +174,23 @@ export default class extends React.Component {
                   />
                 </div>
                 <div className='form-group'>
-                  <SelectField
-                    floatingLabelText='Is this milestone achieved?'
-                    value={this.state.isOpen}
-                    onChange={this.writeIsOpen}
-                  >
-                    <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
-                    <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
-                  </SelectField>
+                  <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check-in' />
                 </div>
-                <div className='form-group'>
-                  <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this milestone?' : 'When did you achieve this milestone?'} />
-                </div>
+              </div>
+              <div className="flexy-columns" className='upload-container'>
+                <h3>Uploads:</h3>
+                <UploadForm goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
+                { this.state.uploads && this.state.uploads.map((upload, index) => {
+                  let uploadId = upload[0]
+                  let uploadInfo = upload[1]
+                  return (
+                    <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
+                  )
+                })
+                }
               </div>
             </div>
             <div className="row">
-              <div className="col-xs-6">
-                <h3>Resources</h3>
-                <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
-                { this.state.resources && this.state.resources.map((resourceID, index) => {
-                    return (
-                      <div key={resourceID} className='flexy-columns'>
-                        <ResourceContainer resourceID={resourceID} />
-                      </div>
-                    )
-                  })
-                }
-              </div>
-              <div className="col-xs-6" className='upload-container'>
-                <h3>Uploads</h3>
-                <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-                  { this.state.uploads && this.state.uploads.map((upload, index) => {
-                    const uploadId = upload[0]
-                    const uploadInfo = upload[1]
-                    return (
-                      <div key={index} className='flexy-columns'>
-                        <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-                      </div>
-                    )
-                  })
-                  }
-              </div>
-          </div>
-          <div className="row">
               <div className="col-xs-12">
                 <h3>Notes</h3>
                 <ReactQuill
@@ -242,14 +199,14 @@ export default class extends React.Component {
                 />
               </div>
             </div>
-          <div className="row">
-            <div className="col-xs-6" id="bottom-buttons">
-              <div id="button-container"><RaisedButton label="Save Milestone" primary={true} onClick={browserHistory.goBack} /></div>
-              <div><RaisedButton label="Delete this milestone?" secondary={true} onClick={this.deleteMilestone} /></div>
+            <div className="row">
+              <div className="col-xs-6" id="bottom-buttons">
+                <div id="button-container"><RaisedButton label="Save Check-In" primary={true} onClick={browserHistory.goBack} /></div>
+                <div><RaisedButton label="Delete this check-in?" secondary={true} onClick={this.deleteCheckIn} /></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </MuiThemeProvider>
       </div>
     )
