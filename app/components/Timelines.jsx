@@ -17,6 +17,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
+import Loader from './Loader'
 
 import Empty from './Empty'
 
@@ -26,6 +27,7 @@ export default class extends Component {
   constructor(props) {
     super()
     this.state = {
+      ready: false,
       menuOpen: false,
       goals: [], // the actual goals that happen to belong to the user
       openGoal: {}
@@ -218,15 +220,17 @@ export default class extends Component {
     this.unsubscribeGoals()
 
     goalsListener = fireRef.on('value', (snapshot) => {
-
       const goals = {}
       let userGoalIds = Object.keys(snapshot.val())
+      if (!userGoalIds.length) {
+        this.setState({ready: true})
+      }
       this.userGoalUnsubscribers =
         userGoalIds.map(goalId => {
           const ref = goalsRef.child(goalId)
           let listener = ref.on('value', (goalSnapshot) => {
             goals[goalId] = goalSnapshot.val()
-            this.setState({ goals: Object.entries(goals) })
+            this.setState({ goals: Object.entries(goals), ready: true })
           })
           return () => ref.off('value', listener)
         })
@@ -243,6 +247,8 @@ export default class extends Component {
     const chartStyle = { parent: { width: '100%', padding: '0', margin: '0'} }
     const sansSerif = `'Roboto', 'Helvetica Neue', Helvetica, sans-serif`
     const { goals } = this.state
+    if (!this.state.ready) return <Loader />
+
     return (
       <div className='timeline-container container-fluid'>
         <div className='container chart1'>

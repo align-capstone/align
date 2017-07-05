@@ -109,7 +109,7 @@ export default class extends React.Component {
     })
 
     const colorListener = colorRef.on('value', snapshot => {
-      if (snapshot.val() === null) colorRef.set({
+      if (snapshot.val() === null) return this.setState({
         hex: '#bcbbb9',
         hsl: {
           a: 1,

@@ -22,6 +22,7 @@ import MilestoneFormContainer from './components/MilestoneFormContainer'
 import CheckInFormContainer from './components/CheckInFormContainer'
 import Timelines from './components/Timelines'
 import Landing from './components/Landing'
+import Loader from './components/Loader'
 import Navbar from './components/Navbar'
 import Doorslam from './components/Doorslam'
 
@@ -62,7 +63,7 @@ const App = ({ children }) =>
       <Navbar />
       {/* In theory you can use MUI components in this and its children? http://www.material-ui.com/#/components */}
       {/* Render our children (whatever the router gives us) */}
-      <Doorslam auth={auth} Landing={Landing}>{children}</Doorslam>
+      <Doorslam auth={auth} Loader={Loader} Landing={Landing}>{children}</Doorslam>
     </div>
   </MuiThemeProvider>
 
