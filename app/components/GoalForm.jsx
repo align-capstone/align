@@ -87,10 +87,10 @@ export default class extends React.Component {
     // Whenever a ref's value changes in Firebase, set {value} on our state.
 
     const nameListener = nameRef.on('value', snapshot =>
-      this.setState({ name: snapshot.val() }))
+      this.setState({ name: snapshot.val() || '' }))
 
     const descriptionListener = descriptionRef.on('value', snapshot => {
-      this.setState({ description: snapshot.val() })
+      this.setState({ description: snapshot.val() || '' })
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {

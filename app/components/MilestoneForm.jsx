@@ -71,11 +71,12 @@ export default class extends React.Component {
     // const listener = fireRef.on('value', snapshot =>
     //   this.setState({value: snapshot.val()}))
 
+    // HEY ALL let's refactor to just listen to parent element
     const nameListener = nameRef.on('value', snapshot =>
-      this.setState({ name: snapshot.val() }))
+      this.setState({ name: snapshot.val() || '' }))
 
     const descriptionListener = descriptionRef.on('value', snapshot => {
-      this.setState({ description: snapshot.val() })
+      this.setState({ description: snapshot.val() || '' })
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {

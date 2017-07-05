@@ -147,16 +147,16 @@ export default class extends Component {
     event.preventDefault()
     let goalId = this.state.openGoal[0]
     let userId = this.state.userId
-
-    // dataToDelete[`/goals/${goalId}`] = null
-    // dataToDelete[`/users/${userId}/goals/${goalId}`] = null
-    // db.update(dataToDelete, function(error) {
-    //   if (error) {
-    //     console.log('Error deleting data: ', error)
-    //   }
-    // })
-    goalsRef.child(goalId).set(null)
-    usersRef.child(userId).child('goals').child(goalId).set(null)
+    let dataToDelete = {}
+    dataToDelete[`/goals/${goalId}`] = null
+    dataToDelete[`/users/${userId}/goals/${goalId}`] = null
+    firebase.database().ref().update(dataToDelete, function(error) {
+      if (error) {
+        console.log('Error deleting data: ', error)
+      }
+    })
+    // goalsRef.child(goalId).set(null)
+    // usersRef.child(userId).child('goals').child(goalId).set(null)
   }
 
   // FIREBASE FUNCTIONS:
