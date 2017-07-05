@@ -146,10 +146,10 @@ export default class extends React.Component {
           <h1 id='checkInName'>{this.state.name}<span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
           <div className="row">
             <div className="col-xs-6">
-              <h3>Check In Information</h3>
+              <h3>Check-In Information</h3>
               <div className='form-group'>
                 <TextField
-                  hintText='Your check in name'
+                  hintText='Your check-in name'
                   floatingLabelText='Name'
                   value={this.state.name}
                   onChange={this.writeName}
@@ -194,8 +194,8 @@ export default class extends React.Component {
           </div>
           <div className="row">
             <div className="col-xs-6" id="bottom-buttons">
-              <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Back to goal" primary={true} /></Link></div>
-              <div><RaisedButton label="Delete this check in?" secondary={true} onClick={this.deleteCheckIn} /></div>
+              <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Check-in" primary={true} /></Link></div>
+              <div><RaisedButton label="Delete this check-in?" secondary={true} onClick={this.deleteCheckIn} /></div>
             </div>
           </div>
         </div>

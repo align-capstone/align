@@ -276,17 +276,16 @@ export default class extends React.Component {
                   floatingLabelText='Is this goal achieved?'
                   value={this.state.isOpen}
                   onChange={this.writeIsOpen}
-                  primary={true}
                 >
                   <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
                   <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
                 </SelectField>
               </div>
               <div className='form-group'>
-                <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} primary={true} floatingLabelText='When will you start your goal?' />
+                <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start your goal?' />
               </div>
               <div className='form-group'>
-                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} primary={true} floatingLabelText={this.state.isOpen ? 'When will you achieve this goal?' : 'When did you achieve this goal?'} />
+                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this goal?' : 'When did you achieve this goal?'} />
               </div>
               <div>
                 <h3 style={{color:this.state.color.hex}}>Choose Color</h3>

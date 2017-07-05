@@ -415,7 +415,7 @@ export default class extends Component {
           </VictoryChart>
         </div> : null }
         <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
-          <FloatingActionButton primary={true} onTouchTap={this.createNewGoal} style={{ position: 'fixed', top: '87%', right: '2%' }} >
+          <FloatingActionButton onTouchTap={this.createNewGoal} style={{ position: 'fixed', top: '87%', right: '2%' }} >
             <ContentAdd />
           </FloatingActionButton>
         </MuiThemeProvider>
