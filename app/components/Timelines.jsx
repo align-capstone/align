@@ -184,7 +184,7 @@ export default class extends Component {
 
   componentWillUnmount() {
     // When we unmount, stop listening.
-    this.unsubscribe()
+    this.unsubscribe && this.unsubscribe()
     this.unsubscribeAuth()
   }
 

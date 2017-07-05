@@ -1,6 +1,12 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
 import { Grid, Col } from 'react-bootstrap'
+
+import firebase from 'APP/fire'
+const db = firebase.database()
+const auth = firebase.auth()
+const usersRef = db.ref('users')
+const goalsRef = db.ref('goals')
 let nameRef, descriptionRef, isOpenRef, startRef, endRef, colorRef, milestonesRef, checkInsRef, resourcesRef, uploadsRef, notesRef
 let newMilestonePath, newCheckInPath
 
@@ -218,6 +224,14 @@ export default class extends React.Component {
     browserHistory.push(newCheckInPath)
   }
 
+  deleteGoal = () => {
+    let goalId = this.props.id
+    let userId = auth.currentUser.uid
+    goalsRef.child(goalId).set(null)
+    usersRef.child(userId).child('goals').child(goalId).set(null)
+    browserHistory.push('/')
+  }
+
   render() {
     const colorArray = ["#6CC2BD", "#5A809E", "#7C79A2", "#F57D7C", "#FFC1A6", "#ffd7a6", "#bcbbb9", "#9E898F", "#667762", "#35464D", "#386174", "#6B96C9"]
     return (
@@ -337,7 +351,7 @@ export default class extends React.Component {
           </div>
           <div className="row">
             <div className="col-xs-6" id="bottom-buttons">
-              <div><RaisedButton label="Delete this goal?" secondary={true} /></div>
+              <div><RaisedButton label="Delete this goal?" secondary={true} onClick={this.deleteGoal} /></div>
             </div>
           </div>
         </div>
