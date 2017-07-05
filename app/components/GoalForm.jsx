@@ -335,10 +335,10 @@ export default class extends React.Component {
                 <h3 style={{ color: this.state.color.hex }}>Resources</h3>
                 <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
                 <div className='flexy-columns'>
-                  {this.state.resources && this.state.resources.map((resourceID, index) => {
+                  {this.state.resources && this.state.resources.map((resourceId, index) => {
                     return (
-                      <div key={resourceID}>
-                        <ResourceContainer resourceID={resourceID} />
+                      <div key={resourceId}>
+                        <ResourceContainer resourceId={resourceId} goalId={this.props.id} />
                       </div>
                     )
                   })

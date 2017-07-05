@@ -7,9 +7,10 @@ let resourceRefs
 import ResourceCard from './ResourceCard'
 
 export default function(props) {
-  const id = props.resourceID
-  const resourceRefs = getResourceRefs(id)
+  const id = props.resourceId
+  const goalId = props.goalId
+  const resourceRefs = getResourceRefs(id, goalId)
   return (
-    <ResourceCard fireRef={resourceRefs} id={id} />
+    <ResourceCard fireRef={resourceRefs} id={id} goalId={props.goalId} />
   )
 }

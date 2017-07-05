@@ -38,10 +38,11 @@ exports.getCheckInRefs = (goalId, checkId) => ({
   notesRef: db.ref('goals').child(goalId).child('checkIns').child(checkId).child('notes')
 })
 
-exports.getResourceRefs = id => ({
+exports.getResourceRefs = (id, goalId) => ({
   resourceRef: db.ref('resources').child(id),
   urlRef: db.ref('resources').child(id).child('url'),
   titleRef: db.ref('resources').child(id).child('title'),
   imageRef: db.ref('resources').child(id).child('image'),
-  descriptionRef: db.ref('resources').child(id).child('description')
+  descriptionRef: db.ref('resources').child(id).child('description'),
+  milestoneRef: db.ref('goals').child(goalId).child('resources').child(id).child('milestoneId')
 })
