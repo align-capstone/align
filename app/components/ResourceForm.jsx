@@ -63,6 +63,7 @@ export default class extends Component {
         resourcesRef.child(key).set(response)
       }
     })
+    this.setState({url: ''})
   }
 
   render() {
@@ -74,11 +75,14 @@ export default class extends Component {
               floatingLabelText='Add a new resource:'
               floatingLabelShrinkStyle={{'fontSize': 20}}
               onChange={this.handleChange}
+              value={this.state.url}
               id='url'
             />
+          {this.state.url &&
           <IconButton type="submit" tooltip="click to add" touch={true} tooltipPosition="top-center">
             <ContentAdd />
           </IconButton>
+          }
         </form>
       </MuiThemeProvider>
     )
