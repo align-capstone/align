@@ -8,6 +8,7 @@ import ReactQuill from 'react-quill'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import alignTheme from './AlignTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
@@ -18,6 +19,7 @@ import { CirclePicker } from 'react-color'
 import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
+import Close from 'material-ui/svg-icons/navigation/close'
 import ResourceContainer from './ResourceContainer'
 import ResourceCard from './ResourceCard'
 import ResourceForm from './ResourceForm'
@@ -219,11 +221,13 @@ export default class extends React.Component {
   render() {
     const colorArray = ["#6CC2BD", "#5A809E", "#7C79A2", "#F57D7C", "#FFC1A6", "#ffd7a6", "#bcbbb9", "#9E898F", "#667762", "#35464D", "#386174", "#6B96C9"]
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <div id='mockup-container'>
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <div className="container-fluid">
-          <h1><span id='goalName'>{this.state.name}</span></h1>
+          <h1 style={{color:this.state.color.hex}}><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
           <div className="row">
             <div className="col-xs-6">
+              <h3 style={{color:this.state.color.hex}}>Goal Information</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your goal name'
@@ -248,25 +252,26 @@ export default class extends React.Component {
                   floatingLabelText='Is this goal achieved?'
                   value={this.state.isOpen}
                   onChange={this.writeIsOpen}
+                  primary={true}
                 >
                   <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
                   <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
                 </SelectField>
               </div>
               <div className='form-group'>
-                <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start your goal?' />
+                <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} primary={true} floatingLabelText='When will you start your goal?' />
               </div>
               <div className='form-group'>
-                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText={this.state.isOpen ? 'By when do you hope to achieve this goal?' : 'When did you achieve this goal?'} />
+                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} primary={true} floatingLabelText={this.state.isOpen ? 'When will you achieve this goal?' : 'When did you achieve this goal?'} />
               </div>
               <div>
-                <h3>Choose Color</h3>
+                <h3 style={{color:this.state.color.hex}}>Choose Color</h3>
                 <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
               </div>
             </div>
             <div className="col-xs-6">
               <div>
-                <h3>Milestones</h3>
+                <h3 style={{color:this.state.color.hex}}>Milestones</h3>
                 <List>
                   {
                     this.state.milestones && this.state.milestones.map((milestone, index) => {
@@ -280,7 +285,7 @@ export default class extends React.Component {
                 </List>
               </div>
               <div>
-                <h3>Check Ins</h3>
+                <h3 style={{color:this.state.color.hex}}>Check Ins</h3>
                 <List>
                   {
                     this.state.checkIns && this.state.checkIns.map((checkin, index) => {
@@ -297,7 +302,7 @@ export default class extends React.Component {
           </div>
           <div className="row">
             <div className="col-xs-6">
-              <h3>Resources</h3>
+              <h3 style={{color:this.state.color.hex}}>Resources</h3>
               <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
               { this.state.resources && this.state.resources.map((resourceID, index) => {
                 return (
@@ -309,7 +314,7 @@ export default class extends React.Component {
               }
             </div>
             <div className="col-xs-6" className='upload-container'>
-              <h3>Uploads</h3>
+              <h3 style={{color:this.state.color.hex}}>Uploads</h3>
               <UploadForm goalRef={uploadsRef} />
               { this.state.uploads && this.state.uploads.map((upload, index) => {
                 const uploadId = upload[0]
@@ -323,7 +328,7 @@ export default class extends React.Component {
           </div>
           <div className="row">
             <div className="col-xs-12">
-              <h3>Notes</h3>
+              <h3 style={{color:this.state.color.hex}}>Notes</h3>
               <ReactQuill
                 value={this.state.notes}
                 onChange={this.writeNotes}
@@ -332,18 +337,12 @@ export default class extends React.Component {
           </div>
           <div className="row">
             <div className="col-xs-6" id="bottom-buttons">
-              <div id="button-container">
-                <RaisedButton
-                  label="Back to timeline"
-                  primary={true}
-                  onTouchTap={() => browserHistory.push('/')}
-                />
-              </div>
               <div><RaisedButton label="Delete this goal?" secondary={true} /></div>
             </div>
           </div>
         </div>
       </MuiThemeProvider>
+      </div>
     )
   }
 }

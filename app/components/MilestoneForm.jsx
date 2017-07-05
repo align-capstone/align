@@ -1,10 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef, resourcesRef, notesRef
 import ReactQuill from 'react-quill'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import alignTheme from './AlignTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
@@ -12,6 +13,7 @@ import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import RaisedButton from 'material-ui/RaisedButton'
 import {GridList, GridTile} from 'material-ui/GridList'
+import Close from 'material-ui/svg-icons/navigation/close'
 import UploadForm from './Upload'
 import UploadCard from './UploadCard'
 import ResourceCard from './ResourceCard'
@@ -141,11 +143,13 @@ export default class extends React.Component {
   render() {
     // Rendering form with material UI
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <div id='mockup-container'>
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <div className="container-fluid">
-          <h1><span id='milestoneName'>{this.state.name}</span></h1>
+          <h1><span id='milestoneName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
           <div className="row">
             <div className="col-xs-6">
+              <h3>Milestone Information</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your milestone name'
@@ -176,7 +180,7 @@ export default class extends React.Component {
                 </SelectField>
               </div>
               <div className='form-group'>
-                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'By when do you hope to achieve this milestone?' : 'When did you achieve this milestone?'} />
+                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this milestone?' : 'When did you achieve this milestone?'} />
               </div>
             </div>
           </div>
@@ -219,19 +223,13 @@ export default class extends React.Component {
           </div>
         <div className="row">
           <div className="col-xs-6" id="bottom-buttons">
-            <div id="button-container">
-              <RaisedButton
-                label="Back to timeline"
-                primary={true}
-                onTouchTap={() => browserHistory.push('/')}
-              />
-            </div>
             <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Back to goal" primary={true} /></Link></div>
             <div><RaisedButton label="Delete this milestone?" secondary={true} /></div>
           </div>
         </div>
       </div>
       </MuiThemeProvider>
+      </div>
     )
   }
 }

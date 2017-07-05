@@ -2,6 +2,9 @@ import React from 'react'
 import firebase from 'APP/fire'
 import {browserHistory} from 'react-router'
 import FlatButton from 'material-ui/FlatButton'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import alignTheme from './AlignTheme'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 const auth = firebase.auth()
 
 export const name = user => {
@@ -14,11 +17,13 @@ export const name = user => {
 export const WhoAmI = ({user, auth}) =>
   <div className="whoami">
     <span>{name(user)}</span>
-    <FlatButton label="Log Out" onTouchTap={() => {
-      auth.signOut()
-      .then(() => { //after logging out, redirect to login/landing page
-        browserHistory.push('/')})
-    }} primary={true} />
+    <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
+      <FlatButton label="Log Out" onTouchTap={() => {
+        auth.signOut()
+        .then(() => { //after logging out, redirect to login/landing page
+          browserHistory.push('/')})
+      }} primary={true} />
+    </MuiThemeProvider>
   </div>
 
 export default class extends React.Component {
