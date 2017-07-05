@@ -8,6 +8,7 @@ import ReactQuill from 'react-quill'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import alignTheme from './AlignTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
@@ -18,6 +19,7 @@ import { CirclePicker } from 'react-color'
 import {List, ListItem} from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
+import Close from 'material-ui/svg-icons/navigation/close'
 import ResourceContainer from './ResourceContainer'
 import ResourceCard from './ResourceCard'
 import ResourceForm from './ResourceForm'
@@ -219,9 +221,10 @@ export default class extends React.Component {
   render() {
     const colorArray = ["#6CC2BD", "#5A809E", "#7C79A2", "#F57D7C", "#FFC1A6", "#ffd7a6", "#bcbbb9", "#9E898F", "#667762", "#35464D", "#386174", "#6B96C9"]
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <div id='mockup-container'>
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <div className="container-fluid">
-          <h1><span id='goalName'>{this.state.name}</span></h1>
+          <h1><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
           <div className="row">
             <div className="col-xs-6">
               <div className='form-group'>
@@ -248,16 +251,17 @@ export default class extends React.Component {
                   floatingLabelText='Is this goal achieved?'
                   value={this.state.isOpen}
                   onChange={this.writeIsOpen}
+                  primary={true}
                 >
                   <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
                   <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
                 </SelectField>
               </div>
               <div className='form-group'>
-                <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} floatingLabelText='When will you start your goal?' />
+                <DatePicker id='startDate' value={new Date(this.state.startDate)} onChange={this.writeStartDate} primary={true} floatingLabelText='When will you start your goal?' />
               </div>
               <div className='form-group'>
-                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText={this.state.isOpen ? 'By when do you hope to achieve this goal?' : 'When did you achieve this goal?'} />
+                <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} primary={true} floatingLabelText={this.state.isOpen ? 'When will you achieve this goal?' : 'When did you achieve this goal?'} />
               </div>
               <div>
                 <h3>Choose Color</h3>
@@ -332,18 +336,12 @@ export default class extends React.Component {
           </div>
           <div className="row">
             <div className="col-xs-6" id="bottom-buttons">
-              <div id="button-container">
-                <RaisedButton
-                  label="Back to timeline"
-                  primary={true}
-                  onTouchTap={() => browserHistory.push('/')}
-                />
-              </div>
               <div><RaisedButton label="Delete this goal?" secondary={true} /></div>
             </div>
           </div>
         </div>
       </MuiThemeProvider>
+      </div>
     )
   }
 }

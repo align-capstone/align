@@ -10,6 +10,9 @@ let goalRefs = {}
 
 import { VictoryAxis, VictoryChart, VictoryLabel, VictoryLine, VictoryBrushContainer, VictoryZoomContainer, VictoryScatter, VictoryTooltip } from 'victory'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
+import alignTheme from './AlignTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
@@ -364,9 +367,11 @@ export default class extends Component {
             }
           </VictoryChart>
         </div> : null }
-        <FloatingActionButton secondary={true} onTouchTap={this.createNewGoal} style={{ position: 'fixed', top: '87%', right: '5%' }} >
-          <ContentAdd />
-        </FloatingActionButton>
+        <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
+          <FloatingActionButton primary={true} onTouchTap={this.createNewGoal} style={{ position: 'fixed', top: '87%', right: '2%' }} >
+            <ContentAdd />
+          </FloatingActionButton>
+        </MuiThemeProvider>
         <Popover
           open={this.state.menuOpen}
           anchorEl={this.state.anchorEl}
