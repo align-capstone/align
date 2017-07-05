@@ -5,18 +5,23 @@
 // a resource card should contain: title, thumbnail photo, and a description at the bottom, and it should link somewhere
 
 import React, { Component } from 'react'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
+
+import firebase from 'APP/fire'
+const db = firebase.database()
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import alignTheme from './AlignTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import FlatButton from 'material-ui/FlatButton'
 import IconButton from 'material-ui/IconButton'
 import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card'
 import ContentEdit from 'material-ui/svg-icons/content/create'
 import ContentLink from 'material-ui/svg-icons/content/link'
+import Delete from 'material-ui/svg-icons/content/clear'
 
-let urlRef, titleRef, imageRef, descriptionRef
+let urlRef, titleRef, imageRef, descriptionRef, milestoneRef
 
 export default class extends Component {
   constructor(props) {
@@ -53,6 +58,7 @@ export default class extends Component {
     urlRef = fireRef.urlRef
     imageRef = fireRef.imageRef
     descriptionRef = fireRef.descriptionRef
+    milestoneRef = fireRef.milestoneRef
 
     // Whenever our ref's value changes, set {value} on our state.
     // const listener = fireRef.on('value', snapshot =>
@@ -73,20 +79,50 @@ export default class extends Component {
       this.setState({ description: snapshot.val() })
     })
 
+    const milestoneListener = milestoneRef.on('value', snapshot => {
+      this.setState({ mileId: snapshot.val() })
+    })
+
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
       titleRef.off('value', titleListener)
       urlRef.off('value', urlListener)
       imageRef.off('value', imageListener)
       descriptionRef.off('value', descriptionListener)
+      milestoneRef.off('value', milestoneListener)
     }
+  }
+
+  deleteResource = () => {
+    // we want to delete resources from the goal they live on, as well as the milestone if one exists
+    // for now, though, don't delete resources from resources object itself (on same level as goals)
+    const resourceId = this.props.id
+    const goalId = this.props.goalId
+    const milestoneId = this.state.mileId
+    console.log('can we access milestone id??', milestoneId)
+
+    this.unsubscribe()
+
+    let dataToDelete = {}
+    // set resource to null on goals object
+    dataToDelete[`/goals/${goalId}/resources/${resourceId}`] = null
+    // if resources also exists on a milestone, set it to null too
+    if (this.state.mileId) {
+      dataToDelete[`/goals/${goalId}/milestones/${milestoneId}/resources/${resourceId}`] = null
+    }
+    console.log('data to delete??', dataToDelete)
+    db.ref().update(dataToDelete, function(error) {
+      if (error) {
+        console.log('Error deleting data: ', error)
+      }
+    })
   }
 
   render() {
     // Rendering form with material UI
     // do we maybe want a ternary that either renders a text preview or the full description????
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <Card className="resource-card" style={{width: 250}} initiallyExpanded={true}>
           <CardHeader
             title={this.state.title}
@@ -104,7 +140,6 @@ export default class extends Component {
               href={this.state.url}
               target="_blank"
               label="Link to resource"
-              primary={true}
               icon={<ContentLink />}
             />
             {/*
@@ -113,6 +148,12 @@ export default class extends Component {
               icon={<ContentEdit />}
             />
             */}
+            <FlatButton
+              label="Delete resource"
+              secondary={true}
+              icon={<Delete />}
+              onClick={this.deleteResource}
+            />
           </CardActions>
         </Card>
       </MuiThemeProvider>

@@ -353,14 +353,40 @@ export default class extends React.Component {
                 </div>
               </div>
             </div>
-            <div className='row'>
-              <div className='col-xs-12'>
-                <h3 style={{ color: this.state.color.hex }}>Notes</h3>
-                <ReactQuill
-                  value={this.state.notes}
-                  onChange={this.writeNotes}
-                />
-              </div>
+          </div>
+          <div className='row'>
+            <div className='col-xs-6'>
+              <h3 style={{color:this.state.color.hex}}>Resources</h3>
+              <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
+              { this.state.resources && this.state.resources.map((resourceId, index) => {
+                return (
+                  <div key={resourceId} className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
+                    <ResourceContainer resourceId={resourceId} goalId={this.props.id} />
+                  </div>
+                )
+              })
+              }
+            </div>
+            <div className='col-xs-6 upload-container'>
+              <h3 style={{color:this.state.color.hex}}>Uploads</h3>
+              <UploadForm goalRef={uploadsRef} />
+              { this.state.uploads && this.state.uploads.map((upload, index) => {
+                const uploadId = upload[0]
+                const uploadInfo = upload[1]
+                return (
+                  <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
+                )
+              })
+              }
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col-xs-12'>
+              <h3 style={{color:this.state.color.hex}}>Notes</h3>
+              <ReactQuill
+                value={this.state.notes}
+                onChange={this.writeNotes}
+              />
             </div>
             <div className='row'>
               <div className='col-xs-6' id='bottom-buttons'>
