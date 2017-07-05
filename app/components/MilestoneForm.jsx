@@ -204,13 +204,8 @@ export default class extends React.Component {
               <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
               { this.state.resources && this.state.resources.map((resourceId, index) => {
                   return (
-<<<<<<< HEAD
-                    <div key={resourceId} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                      <ResourceContainer resourceId={resourceId} goalId={this.props.goalId} milestoneId={this.props.milestoneId} />
-=======
                     <div key={resourceID} className='flexy-columns'>
-                      <ResourceContainer resourceID={resourceID} />
->>>>>>> master
+                      <ResourceContainer resourceID={resourceID} goalId={this.props.goalId} />
                     </div>
                   )
                 })
