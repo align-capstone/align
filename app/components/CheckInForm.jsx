@@ -170,7 +170,7 @@ export default class extends React.Component {
                 <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText='Date of check-in' />
               </div>
             </div>
-            <div className="col-xs-6" className='upload-container'>
+            <div className="flexy-columns" className='upload-container'>
               <h3>Uploads:</h3>
               <UploadForm goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
               { this.state.uploads && this.state.uploads.map((upload, index) => {
@@ -194,7 +194,7 @@ export default class extends React.Component {
           </div>
           <div className="row">
             <div className="col-xs-6" id="bottom-buttons">
-              <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Check-in" primary={true} /></Link></div>
+              <div id="button-container"><RaisedButton label="Save Check-In" primary={true} onClick={browserHistory.goBack} /></div>
               <div><RaisedButton label="Delete this check-in?" secondary={true} onClick={this.deleteCheckIn} /></div>
             </div>
           </div>

@@ -204,8 +204,13 @@ export default class extends React.Component {
               <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
               { this.state.resources && this.state.resources.map((resourceId, index) => {
                   return (
+<<<<<<< HEAD
                     <div key={resourceId} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                       <ResourceContainer resourceId={resourceId} goalId={this.props.goalId} milestoneId={this.props.milestoneId} />
+=======
+                    <div key={resourceID} className='flexy-columns'>
+                      <ResourceContainer resourceID={resourceID} />
+>>>>>>> master
                     </div>
                   )
                 })
@@ -218,7 +223,7 @@ export default class extends React.Component {
                   const uploadId = upload[0]
                   const uploadInfo = upload[1]
                   return (
-                    <div key={index} className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div key={index} className='flexy-columns'>
                       <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
                     </div>
                   )
@@ -237,7 +242,7 @@ export default class extends React.Component {
           </div>
         <div className="row">
           <div className="col-xs-6" id="bottom-buttons">
-            <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Milestone" primary={true} /></Link></div>
+            <div id="button-container"><RaisedButton label="Save Milestone" primary={true} onClick={browserHistory.goBack} /></div>
             <div><RaisedButton label="Delete this milestone?" secondary={true} onClick={this.deleteMilestone} /></div>
           </div>
         </div>
@@ -247,3 +252,5 @@ export default class extends React.Component {
     )
   }
 }
+
+            // <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Milestone" primary={true} /></Link></div>
