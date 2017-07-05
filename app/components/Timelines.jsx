@@ -143,6 +143,22 @@ export default class extends Component {
     browserHistory.push(newCheckinPath)
   }
 
+  deleteCurrentTimeline = () => {
+    event.preventDefault()
+    let goalId = this.state.openGoal[0]
+    let userId = this.state.userId
+
+    // dataToDelete[`/goals/${goalId}`] = null
+    // dataToDelete[`/users/${userId}/goals/${goalId}`] = null
+    // db.update(dataToDelete, function(error) {
+    //   if (error) {
+    //     console.log('Error deleting data: ', error)
+    //   }
+    // })
+    goalsRef.child(goalId).set(null)
+    usersRef.child(userId).child('goals').child(goalId).set(null)
+  }
+
   // FIREBASE FUNCTIONS:
 
   createNewGoal = (event) => {
@@ -159,6 +175,7 @@ export default class extends Component {
     this.unsubscribeAuth = auth.onAuthStateChanged(user => {
       if (user) {
         const userId = user.uid
+        this.setState({userId: userId})
         currentUserGoalsRef = usersRef.child(userId).child('goals')
         this.listenTo(currentUserGoalsRef)
       }
@@ -382,7 +399,7 @@ export default class extends Component {
             <MenuItem primaryText='Add check in' onTouchTap={this.addCheckinToCurrentTimeline} />
             <MenuItem primaryText='Add milestone' onTouchTap={this.addMilestoneToCurrentTimeline} />
             <MenuItem primaryText='Goal overview' onTouchTap={this.viewCurrentTimeline} />
-            <MenuItem primaryText='Delete goal' onTouchTap={this.viewCurrentTimeline} />
+            <MenuItem primaryText='Delete goal' onTouchTap={this.deleteCurrentTimeline} />
           </Menu>
         </Popover>
       </div>
