@@ -87,10 +87,10 @@ export default class extends React.Component {
     // Whenever a ref's value changes in Firebase, set {value} on our state.
 
     const nameListener = nameRef.on('value', snapshot =>
-      this.setState({ name: snapshot.val() }))
+      this.setState({ name: snapshot.val() || '' }))
 
     const descriptionListener = descriptionRef.on('value', snapshot => {
-      this.setState({ description: snapshot.val() })
+      this.setState({ description: snapshot.val() || '' })
     })
 
     const isOpenListener = isOpenRef.on('value', snapshot => {
@@ -228,8 +228,17 @@ export default class extends React.Component {
     let goalId = this.props.id
     let userId = auth.currentUser.uid
     this.unsubscribe()
-    goalsRef.child(goalId).set(null)
-    usersRef.child(userId).child('goals').child(goalId).set(null)
+
+    // to avoid multiple writes to firebase:
+    // make an object of data to delete and pass it to the top level
+    let dataToDelete = {}
+    dataToDelete[`/goals/${goalId}`] = null
+    dataToDelete[`/users/${userId}/goals/${goalId}`] = null
+    db.ref().update(dataToDelete, function(error) {
+      if (error) {
+        console.log('Error deleting data: ', error)
+      }
+    })
     browserHistory.push('/')
   }
 

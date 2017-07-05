@@ -104,11 +104,25 @@ export default class extends Component {
   // MUI FUNCTIONS:
 
   handleLineTap = (event, goal) => {
+    let ourTop = event.pageY + window.scrollY
+    let ourLeft = event.pageX + window.scrollX //just putting these scroll values in case for some reason it scrolls
+    const ourBbox = {
+      bottom: event.target.getBoundingClientRect().bottom,
+      right: event.target.getBoundingClientRect().right,
+      width: event.target.getBoundingClientRect().width,
+      left: ourLeft,
+      top: ourTop
+    }
+
     // This prevents ghost click.
     event.preventDefault()
     this.setState({
       menuOpen: true,
-      anchorEl: event.currentTarget,
+      anchorEl: {
+        getBoundingClientRect() {
+          return ourBbox
+        }
+      },
       openGoal: goal
     })
   }
@@ -148,15 +162,16 @@ export default class extends Component {
     let goalId = this.state.openGoal[0]
     let userId = this.state.userId
 
-    // dataToDelete[`/goals/${goalId}`] = null
-    // dataToDelete[`/users/${userId}/goals/${goalId}`] = null
-    // db.update(dataToDelete, function(error) {
-    //   if (error) {
-    //     console.log('Error deleting data: ', error)
-    //   }
-    // })
-    goalsRef.child(goalId).set(null)
-    usersRef.child(userId).child('goals').child(goalId).set(null)
+    // to avoid multiple writes to firebase:
+    // make an object of data to delete and pass it to the top level
+    let dataToDelete = {}
+    dataToDelete[`/goals/${goalId}`] = null
+    dataToDelete[`/users/${userId}/goals/${goalId}`] = null
+    db.ref().update(dataToDelete, function(error) {
+      if (error) {
+        console.log('Error deleting data: ', error)
+      }
+    })
   }
 
   // FIREBASE FUNCTIONS:
@@ -257,7 +272,8 @@ export default class extends Component {
                   angle: 0,
                   padding: 30,
                   border: 1,
-                  fontFamily: sansSerif
+                  fontFamily: sansSerif,
+                  stroke: '#888888'
                 }
               }}
             />
