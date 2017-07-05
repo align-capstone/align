@@ -104,22 +104,23 @@ export default class extends Component {
   // MUI FUNCTIONS:
 
   handleLineTap = (event, goal) => {
-    console.log('what is page x? ', event.pageX, 'what is pageY?', event.pageY)
-    let top = event.pageY + window.scrollY
-    let left = event.pageX + window.scrollX //just putting these scroll values in case for some reason it scrolls
-    const bbox = {
-            ...event.target.getBoundingClientRect(),
-            left
-          }
-    console.log('fake click bbox:', bbox)
-    console.log('real line rect:', event.target.getBoundingClientRect())
+    let ourTop = event.pageY + window.scrollY
+    let ourLeft = event.pageX + window.scrollX //just putting these scroll values in case for some reason it scrolls
+    const ourBbox = {
+      bottom: event.target.getBoundingClientRect().bottom,
+      right: event.target.getBoundingClientRect().right,
+      width: event.target.getBoundingClientRect().width,
+      left: ourLeft,
+      top: ourTop
+    }
+
     // This prevents ghost click.
     event.preventDefault()
     this.setState({
       menuOpen: true,
       anchorEl: {
         getBoundingClientRect() {
-          return bbox
+          return ourBbox
         }
       },
       openGoal: goal
