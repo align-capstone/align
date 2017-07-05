@@ -17,6 +17,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
+import Loader from './Loader'
 
 import Empty from './Empty'
 
@@ -26,6 +27,7 @@ export default class extends Component {
   constructor(props) {
     super()
     this.state = {
+      ready: false,
       menuOpen: false,
       goals: [], // the actual goals that happen to belong to the user
       openGoal: {}
@@ -37,10 +39,12 @@ export default class extends Component {
   getScatterData(goal, index, goalId) {
     var data = []
     var endSymbol = this.chooseEndSymbol(goal)
-
+    let color
+    if (goal.color) color = goal.color.hex
+    else color = '#888'
     // push start and end dates to data array
-    data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', strokeWidth: 7, fill: goal.color.hex })
-    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, strokeWidth: 7, fill: goal.color.hex })
+    data.push({ x: new Date(goal.startDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n start date: \n ${new Date(goal.startDate).toDateString()}`, symbol: 'circle', strokeWidth: 7, fill: color })
+    data.push({ x: new Date(goal.endDate), key: `/goal/${goalId}`, y: index, label: `${goal.name} \n end date: \n ${new Date(goal.endDate).toDateString()}`, symbol: endSymbol, strokeWidth: 7, fill: color })
     // then iterate over the milestones object and push each date to the array
     if (goal.milestones) {
       for (var id in goal.milestones) {
@@ -52,8 +56,7 @@ export default class extends Component {
     if (goal.checkIns) {
       for (var id in goal.checkIns) {
         var checkin = goal.checkIns[id]
-        data.push({ x: new Date(checkin.displayDate), key: `/checkin/${goalId}/${id}`, y: index, label: checkin.name, symbol: 'diamond', strokeWidth: 3, fill: goal.color.hex })
-
+        data.push({ x: new Date(checkin.displayDate), key: `/checkin/${goalId}/${id}`, y: index, label: checkin.name, symbol: 'diamond', strokeWidth: 3, fill: color })
       }
     }
     return data
@@ -218,15 +221,17 @@ export default class extends Component {
     this.unsubscribeGoals()
 
     goalsListener = fireRef.on('value', (snapshot) => {
-
       const goals = {}
       let userGoalIds = Object.keys(snapshot.val())
+      if (!userGoalIds.length) {
+        this.setState({ready: true})
+      }
       this.userGoalUnsubscribers =
         userGoalIds.map(goalId => {
           const ref = goalsRef.child(goalId)
           let listener = ref.on('value', (goalSnapshot) => {
             goals[goalId] = goalSnapshot.val()
-            this.setState({ goals: Object.entries(goals) })
+            this.setState({ goals: Object.entries(goals), ready: true })
           })
           return () => ref.off('value', listener)
         })
@@ -243,6 +248,8 @@ export default class extends Component {
     const chartStyle = { parent: { width: '100%', padding: '0', margin: '0'} }
     const sansSerif = `'Roboto', 'Helvetica Neue', Helvetica, sans-serif`
     const { goals } = this.state
+    if (!this.state.ready) return <Loader />
+
     return (
       <div className='timeline-container container-fluid'>
         <div className='container chart1'>
@@ -291,15 +298,19 @@ export default class extends Component {
             {
               this.state.goals && this.state.goals.map((goal, index) => {
                 // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
-                let goalInfo = goal[1]
                 let goalId = goal[0]
+                let goalInfo = goal[1]
+                let color
+                if (goalInfo.color) color = goalInfo.color.hex
+                else color = '#888' // this is making a default color in case user hasn't set it
+
                 return (
                   <VictoryLine
                     key={index}
                     animate={{duration: 500}}
                     style={{
                       data: {
-                        stroke: goalInfo.color.hex,
+                        stroke: color,
                         strokeWidth: 4,
                         cursor: 'pointer'
                       },
@@ -308,8 +319,7 @@ export default class extends Component {
                     events={[{
                       target: 'data',
                       eventHandlers: {
-                        onClick: (event) => { this.handleLineTap(event, goal)
-                        }
+                        onClick: (event) => { this.handleLineTap(event, goal) }
                       }
                     }]}
                     data={this.getLineData(goalInfo, index)}
@@ -319,16 +329,18 @@ export default class extends Component {
               })
             }{
               this.state.goals && this.state.goals.map((goal, index) => {
-                let goalInfo = goal[1]
                 let goalId = goal[0]
+                let goalInfo = goal[1]
+                let color
+                if (goalInfo.color) color = goalInfo.color.hex
+                else color = '#888'
+
                 return (
                   <VictoryScatter
                     key={index}
                     style={{
                       data: {
-                        stroke: goalInfo.color.hex,
-                        // strokeWidth: 3,
-                        // fill: 'white',
+                        stroke: color,
                         cursor: 'pointer'
                       },
                       labels: { fontFamily: sansSerif }
@@ -380,12 +392,16 @@ export default class extends Component {
             {
               this.state.goals && this.state.goals.map((goal, index) => {
                 let goalInfo = goal[1]
+                let color
+                if (goalInfo.color) color = goalInfo.color.hex
+                else color = '#888'
+
                 return (
                   <VictoryLine
                     key={index}
                     style={{
                       data: {
-                        stroke: goalInfo.color.hex,
+                        stroke: color,
                         strokeWidth: 3
                       }
                     }}
@@ -400,7 +416,7 @@ export default class extends Component {
           </VictoryChart>
         </div> : null }
         <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
-          <FloatingActionButton primary={true} onTouchTap={this.createNewGoal} style={{ position: 'fixed', top: '87%', right: '2%' }} >
+          <FloatingActionButton onTouchTap={this.createNewGoal} style={{ position: 'fixed', top: '87%', right: '2%' }} >
             <ContentAdd />
           </FloatingActionButton>
         </MuiThemeProvider>

@@ -35,6 +35,12 @@ h1, h2, h3, h4 {
   cursor: pointer;
 }
 
+#loader {
+  position: absolute !important;
+  top: 40% !important;
+  left: 50% !important;
+}
+
 #mockup-container {
   padding: 30px;
 }
@@ -105,18 +111,6 @@ h1, h2, h3, h4 {
 #empty-message h4 {
   font-weight: 300;
 }
-
-/*.resource-card {
-  padding: 5px;
-  margin: 15px 0;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, .5);
-}*/
-
-/*
-.resource-img {
-  padding: 10px;
-}
-*/
 
 .row {
   margin-top: 30px;
