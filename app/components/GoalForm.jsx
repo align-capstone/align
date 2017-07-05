@@ -228,8 +228,17 @@ export default class extends React.Component {
     let goalId = this.props.id
     let userId = auth.currentUser.uid
     this.unsubscribe()
-    goalsRef.child(goalId).set(null)
-    usersRef.child(userId).child('goals').child(goalId).set(null)
+
+    let dataToDelete = {}
+    dataToDelete[`/goals/${goalId}`] = null
+    dataToDelete[`/users/${userId}/goals/${goalId}`] = null
+    firebase.database().ref().update(dataToDelete, function(error) {
+      if (error) {
+        console.log('Error deleting data: ', error)
+      }
+    })
+    // goalsRef.child(goalId).set(null)
+    // usersRef.child(userId).child('goals').child(goalId).set(null)
     browserHistory.push('/')
   }
 
