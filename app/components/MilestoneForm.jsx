@@ -1,6 +1,11 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
+
+import firebase from 'APP/fire'
+const db = firebase.database()
+const goalsRef = db.ref('goals')
 let nameRef, descriptionRef, isOpenRef, dateRef, uploadsRef, parentRef, resourcesRef, notesRef
+
 import ReactQuill from 'react-quill'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -140,6 +145,14 @@ export default class extends React.Component {
     dateRef.set(date.getTime())
   }
 
+  deleteMilestone = () => {
+    let goalId = this.props.goalId
+    let milestoneId = this.props.milestoneId
+    this.unsubscribe()
+    goalsRef.child(goalId).child('milestones').child(milestoneId).set(null)
+    browserHistory.push('/')
+  }
+
   render() {
     // Rendering form with material UI
     return (
@@ -224,7 +237,7 @@ export default class extends React.Component {
         <div className="row">
           <div className="col-xs-6" id="bottom-buttons">
             <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Back to goal" primary={true} /></Link></div>
-            <div><RaisedButton label="Delete this milestone?" secondary={true} /></div>
+            <div><RaisedButton label="Delete this milestone?" secondary={true} onClick={this.deleteMilestone} /></div>
           </div>
         </div>
       </div>
