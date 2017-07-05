@@ -246,9 +246,16 @@ export default class extends React.Component {
     const colorArray = ['#6CC2BD', '#5A809E', '#7C79A2', '#F57D7C', '#FFC1A6', '#ffd7a6', '#bcbbb9', '#9E898F', '#667762', '#35464D', '#386174', '#6B96C9']
     return (
       <div id='mockup-container'>
-        <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
           <div className='container-fluid'>
-            <h1 style={{ color: this.state.color.hex }}><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
+            <div id='faux-modal-header'>
+              <div className='row faux-header'>
+                <div className='col-xs-12'>
+                  <h1 style={{ color: this.state.color.hex }}><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
+                </div>
+            </div>
+          </div>
+          <div id='faux-modal-body'>
             <div className='row'>
               <div className='col-xs-6'>
                 <h3 style={{ color: this.state.color.hex }}>Goal Information</h3>
@@ -308,7 +315,7 @@ export default class extends React.Component {
                   </List>
                 </div>
                 <div>
-                  <h3 style={{ color: this.state.color.hex }}>Check Ins</h3>
+                  <h3 style={{color:this.state.color.hex}}>Check Ins</h3>
                   <List>
                     {
                       this.state.checkIns && this.state.checkIns.map((checkin, index) => {
@@ -328,10 +335,10 @@ export default class extends React.Component {
                 <h3 style={{ color: this.state.color.hex }}>Resources</h3>
                 <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
                 <div className='flexy-columns'>
-                  {this.state.resources && this.state.resources.map((resourceID, index) => {
+                  {this.state.resources && this.state.resources.map((resourceId, index) => {
                     return (
-                      <div key={resourceID}>
-                        <ResourceContainer resourceID={resourceID} />
+                      <div key={resourceId}>
+                        <ResourceContainer resourceId={resourceId} goalId={this.props.id} />
                       </div>
                     )
                   })
@@ -353,40 +360,14 @@ export default class extends React.Component {
                 </div>
               </div>
             </div>
-          </div>
-          <div className='row'>
-            <div className='col-xs-6'>
-              <h3 style={{color:this.state.color.hex}}>Resources</h3>
-              <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
-              { this.state.resources && this.state.resources.map((resourceId, index) => {
-                return (
-                  <div key={resourceId} className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-                    <ResourceContainer resourceId={resourceId} goalId={this.props.id} />
-                  </div>
-                )
-              })
-              }
-            </div>
-            <div className='col-xs-6 upload-container'>
-              <h3 style={{color:this.state.color.hex}}>Uploads</h3>
-              <UploadForm goalRef={uploadsRef} />
-              { this.state.uploads && this.state.uploads.map((upload, index) => {
-                const uploadId = upload[0]
-                const uploadInfo = upload[1]
-                return (
-                  <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
-                )
-              })
-              }
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col-xs-12'>
-              <h3 style={{color:this.state.color.hex}}>Notes</h3>
-              <ReactQuill
-                value={this.state.notes}
-                onChange={this.writeNotes}
-              />
+            <div className='row'>
+              <div className='col-xs-12'>
+                <h3 style={{color:this.state.color.hex}}>Notes</h3>
+                <ReactQuill
+                  value={this.state.notes}
+                  onChange={this.writeNotes}
+                />
+              </div>
             </div>
             <div className='row'>
               <div className='col-xs-6' id='bottom-buttons'>
@@ -394,6 +375,7 @@ export default class extends React.Component {
                 <div><RaisedButton label='Delete this goal?' secondary={true} onClick={this.deleteGoal} /></div>
               </div>
             </div>
+          </div>
           </div>
         </MuiThemeProvider>
       </div>
