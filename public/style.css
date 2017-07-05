@@ -27,6 +27,10 @@ h1, h2, h3, h4 {
   color: #888;
 }
 
+#nav img {
+  opacity: 0.6;
+}
+
 #nav img:hover {
   cursor: pointer;
 }
@@ -40,6 +44,8 @@ h1, h2, h3, h4 {
   padding-bottom: 30px;
   box-shadow: 0 0 1em #888;
   border-radius: 6px;
+  height: 80vh;
+  overflow: scroll;
 }
 
 #close-icon {
