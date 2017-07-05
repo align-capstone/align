@@ -133,6 +133,7 @@ export default class extends React.Component {
           <h1 id='checkInName'>{this.state.name}<span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
           <div className="row">
             <div className="col-xs-6">
+              <h3>Check In Information</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your check in name'

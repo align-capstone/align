@@ -149,6 +149,7 @@ export default class extends React.Component {
           <h1><span id='milestoneName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
           <div className="row">
             <div className="col-xs-6">
+              <h3>Milestone Information</h3>
               <div className='form-group'>
                 <TextField
                   hintText='Your milestone name'
@@ -179,7 +180,7 @@ export default class extends React.Component {
                 </SelectField>
               </div>
               <div className='form-group'>
-                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'By when do you hope to achieve this milestone?' : 'When did you achieve this milestone?'} />
+                <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this milestone?' : 'When did you achieve this milestone?'} />
               </div>
             </div>
           </div>
