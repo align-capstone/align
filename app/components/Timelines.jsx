@@ -393,8 +393,9 @@ export default class extends Component {
               this.state.goals && this.state.goals.map((goal, index) => {
                 let goalInfo = goal[1]
                 let color
-                if (goal.color) color = goal.color.hex
+                if (goalInfo.color) color = goalInfo.color.hex
                 else color = '#888'
+
                 return (
                   <VictoryLine
                     key={index}
