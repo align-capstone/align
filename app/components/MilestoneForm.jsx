@@ -237,7 +237,7 @@ export default class extends React.Component {
           </div>
         <div className="row">
           <div className="col-xs-6" id="bottom-buttons">
-            <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Milestone" primary={true} /></Link></div>
+            <div id="button-container"><RaisedButton label="Save Milestone" primary={true} onClick={browserHistory.goBack} /></div>
             <div><RaisedButton label="Delete this milestone?" secondary={true} onClick={this.deleteMilestone} /></div>
           </div>
         </div>
@@ -247,3 +247,5 @@ export default class extends React.Component {
     )
   }
 }
+
+            // <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Milestone" primary={true} /></Link></div>

@@ -194,7 +194,7 @@ export default class extends React.Component {
           </div>
           <div className="row">
             <div className="col-xs-6" id="bottom-buttons">
-              <div id="button-container"><Link to={`/goal/${this.props.goalId}`}><RaisedButton label="Save Check-in" primary={true} /></Link></div>
+              <div id="button-container"><RaisedButton label="Save Check-In" primary={true} onClick={browserHistory.goBack} /></div>
               <div><RaisedButton label="Delete this check-in?" secondary={true} onClick={this.deleteCheckIn} /></div>
             </div>
           </div>

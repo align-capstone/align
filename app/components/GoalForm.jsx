@@ -360,6 +360,7 @@ export default class extends React.Component {
           </div>
           <div className='row'>
             <div className='col-xs-6' id='bottom-buttons'>
+              <div id="button-container"><RaisedButton label="Save Goal" primary={true} onClick={()=>browserHistory.push('/')} /></div>
               <div><RaisedButton label='Delete this goal?' secondary={true} onClick={this.deleteGoal} /></div>
             </div>
           </div>
