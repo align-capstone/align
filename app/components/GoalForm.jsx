@@ -353,7 +353,6 @@ export default class extends React.Component {
                 </div>
               </div>
             </div>
-<<<<<<< HEAD
           </div>
           <div className='row'>
             <div className='col-xs-6'>
