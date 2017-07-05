@@ -41,6 +41,10 @@ h1, h2, h3, h4 {
   left: 50% !important;
 }
 
+.flexy-columns {
+  columns: 2;
+}
+
 #mockup-container {
   padding: 30px;
 }

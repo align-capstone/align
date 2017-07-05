@@ -22,7 +22,7 @@ import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import RaisedButton from 'material-ui/RaisedButton'
 import { CirclePicker } from 'react-color'
-import {List, ListItem} from 'material-ui/List'
+import { List, ListItem } from 'material-ui/List'
 import Edit from 'material-ui/svg-icons/content/create'
 import Add from 'material-ui/svg-icons/content/add'
 import Close from 'material-ui/svg-icons/navigation/close'
@@ -115,7 +115,7 @@ export default class extends React.Component {
           a: 1,
           h: 39.99999999999962,
           l: 0.7313725490196079,
-          s:0.02189781021897823
+          s: 0.02189781021897823
         },
         hsv: {
           a: 1,
@@ -234,7 +234,7 @@ export default class extends React.Component {
     let dataToDelete = {}
     dataToDelete[`/goals/${goalId}`] = null
     dataToDelete[`/users/${userId}/goals/${goalId}`] = null
-    db.ref().update(dataToDelete, function(error) {
+    db.ref().update(dataToDelete, function (error) {
       if (error) {
         console.log('Error deleting data: ', error)
       }
@@ -247,18 +247,18 @@ export default class extends React.Component {
     return (
       <div id='mockup-container'>
       <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
-        <div className='container-fluid'>
-          <div id='faux-modal-header'>
-            <div className='row faux-header'>
-              <div className='col-xs-12'>
-                <h1 style={{color:this.state.color.hex}}><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
-              </div>
+          <div className='container-fluid'>
+            <div id='faux-modal-header'>
+              <div className='row faux-header'>
+                <div className='col-xs-12'>
+                  <h1 style={{ color: this.state.color.hex }}><span id='goalName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
+                </div>
             </div>
           </div>
           <div id='faux-modal-body'>
             <div className='row'>
               <div className='col-xs-6'>
-                <h3 style={{color:this.state.color.hex}}>Goal Information</h3>
+                <h3 style={{ color: this.state.color.hex }}>Goal Information</h3>
                 <div className='form-group'>
                   <TextField
                     hintText='Your goal name'
@@ -295,13 +295,13 @@ export default class extends React.Component {
                   <DatePicker id='endDate' value={new Date(this.state.endDate)} onChange={this.writeEndDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this goal?' : 'When did you achieve this goal?'} />
                 </div>
                 <div>
-                  <h3 style={{color:this.state.color.hex}}>Choose Color</h3>
+                  <h3 style={{ color: this.state.color.hex }}>Choose Color</h3>
                   <CirclePicker colors={colorArray} onChange={this.handleColorChange} />
                 </div>
               </div>
               <div className='col-xs-6'>
                 <div>
-                  <h3 style={{color:this.state.color.hex}}>Milestones</h3>
+                  <h3 style={{ color: this.state.color.hex }}>Milestones</h3>
                   <List>
                     {
                       this.state.milestones && this.state.milestones.map((milestone, index) => {
@@ -332,28 +332,32 @@ export default class extends React.Component {
             </div>
             <div className='row'>
               <div className='col-xs-6'>
-                <h3 style={{color:this.state.color.hex}}>Resources</h3>
+                <h3 style={{ color: this.state.color.hex }}>Resources</h3>
                 <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
-                { this.state.resources && this.state.resources.map((resourceID, index) => {
-                  return (
-                    <div key={resourceID} className='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-                      <ResourceContainer resourceID={resourceID} />
-                    </div>
-                  )
-                })
-                }
+                <div className='flexy-columns'>
+                  {this.state.resources && this.state.resources.map((resourceID, index) => {
+                    return (
+                      <div key={resourceID}>
+                        <ResourceContainer resourceID={resourceID} />
+                      </div>
+                    )
+                  })
+                  }
+                </div>
               </div>
               <div className='col-xs-6 upload-container'>
-                <h3 style={{color:this.state.color.hex}}>Uploads</h3>
+                <h3 style={{ color: this.state.color.hex }}>Uploads</h3>
                 <UploadForm goalRef={uploadsRef} />
-                { this.state.uploads && this.state.uploads.map((upload, index) => {
-                  const uploadId = upload[0]
-                  const uploadInfo = upload[1]
-                  return (
-                    <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
-                  )
-                })
-                }
+                <div className='flexy-columns'>
+                  {this.state.uploads && this.state.uploads.map((upload, index) => {
+                    const uploadId = upload[0]
+                    const uploadInfo = upload[1]
+                    return (
+                        <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={uploadsRef} />
+                    )
+                  })
+                  }
+                </div>
               </div>
             </div>
             <div className='row'>
@@ -367,12 +371,13 @@ export default class extends React.Component {
             </div>
             <div className='row'>
               <div className='col-xs-6' id='bottom-buttons'>
+                <div id="button-container"><RaisedButton label="Save Goal" primary={true} onClick={() => browserHistory.push('/')} /></div>
                 <div><RaisedButton label='Delete this goal?' secondary={true} onClick={this.deleteGoal} /></div>
               </div>
             </div>
           </div>
-        </div>
-      </MuiThemeProvider>
+          </div>
+        </MuiThemeProvider>
       </div>
     )
   }
