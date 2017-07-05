@@ -1,10 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router'
+import CircularProgress from 'material-ui/CircularProgress'
 
-const Loader = props => {
+const Loader = () => {
   return (
     <div>
-      <h1>hi loading</h1>
+      <CircularProgress size={80} thickness={10} />
     </div>
   )
 }
