@@ -96,7 +96,7 @@ export default class extends Component {
           <CardMedia style={{padding: 15}}>
             <img src={this.state.image ? this.state.image : '/default-placeholder.jpg'} className="resource-img" />
           </CardMedia>
-          <CardText expandable={true}>
+          <CardText expandable={true} expanded={true}>
             {this.state.description}
           </CardText>
           <CardActions expandable={true}>
