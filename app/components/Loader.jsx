@@ -3,8 +3,8 @@ import CircularProgress from 'material-ui/CircularProgress'
 
 const Loader = () => {
   return (
-    <div>
-      <CircularProgress size={80} thickness={10} />
+    <div id="loader">
+      <CircularProgress size={80} thickness={10} color="#888" />
     </div>
   )
 }
