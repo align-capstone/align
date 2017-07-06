@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import alignTheme from './AlignTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import TextField from 'material-ui/TextField'
 import {Card, CardMedia, CardText} from 'material-ui/Card'
@@ -92,7 +93,7 @@ export default class extends Component {
 
   render() {
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <Card className="upload-card" style={{width: 250}}>
           <CardMedia style={{padding: 15}}>
             <img src={this.props.url} className="upload-media" />
