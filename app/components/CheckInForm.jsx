@@ -180,7 +180,7 @@ export default class extends React.Component {
                 <div className='upload-container'>
                   <h3>Uploads:</h3>
                   <UploadForm goalRef={parentRef} checkInRef={uploadsRef} checkInId={this.props.checkInId} />
-                  <div className='uploads-container'>
+                  <div>
                     {this.state.uploads && this.state.uploads.map((upload, index) => {
                       let uploadId = upload[0]
                       let uploadInfo = upload[1]
