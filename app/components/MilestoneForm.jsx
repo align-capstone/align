@@ -17,7 +17,7 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import RaisedButton from 'material-ui/RaisedButton'
-import {GridList, GridTile} from 'material-ui/GridList'
+import { GridList, GridTile } from 'material-ui/GridList'
 import Close from 'material-ui/svg-icons/navigation/close'
 import UploadForm from './Upload'
 import UploadCard from './UploadCard'
@@ -159,99 +159,101 @@ export default class extends React.Component {
     // Rendering form with material UI
     return (
       <div id='mockup-container'>
-      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
-        <div className="container-fluid">
-          <div id='faux-modal-header'>
+        <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
+          <div className="container-fluid">
+            <div id='faux-modal-header'>
               <div className='row faux-header'>
                 <div className='col-xs-12'>
                   <h1><span id='milestoneName'>{this.state.name}</span><span id='close-icon'><Close onTouchTap={() => browserHistory.push('/')} /></span></h1>
                 </div>
-            </div>
-          </div>
-          <div id='faux-modal-body'>
-            <div className="row">
-              <div className="col-xs-6">
-                <h3>Milestone Information</h3>
-                <div className='form-group'>
-                  <TextField
-                    hintText='Your milestone name'
-                    floatingLabelText='Name'
-                    value={this.state.name}
-                    onChange={this.writeName}
-                    id='name'
-                  />
-                </div>
-                <div className='form-group'>
-                  <TextField
-                    hintText='What do you want to do?'
-                    floatingLabelText='Description'
-                    value={this.state.description}
-                    onChange={this.writeDescription}
-                    multiLine={true}
-                    id='description'
-                  />
-                </div>
-                <div className='form-group'>
-                  <SelectField
-                    floatingLabelText='Is this milestone achieved?'
-                    value={this.state.isOpen}
-                    onChange={this.writeIsOpen}
-                  >
-                    <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
-                    <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
-                  </SelectField>
-                </div>
-                <div className='form-group'>
-                  <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this milestone?' : 'When did you achieve this milestone?'} />
-                </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-xs-6">
-                <h3>Resources</h3>
-                <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
-                { this.state.resources && this.state.resources.map((resourceId, index) => {
-                    return (
-                      <div key={resourceId} className='flexy-columns'>
-                        <ResourceContainer resourceId={resourceId} goalId={this.props.goalId} />
-                      </div>
-                    )
-                  })
-                }
+            <div id='faux-modal-body'>
+              <div className="row">
+                <div className="col-xs-6">
+                  <h3>Milestone Information</h3>
+                  <div className='form-group'>
+                    <TextField
+                      hintText='Your milestone name'
+                      floatingLabelText='Name'
+                      value={this.state.name}
+                      onChange={this.writeName}
+                      id='name'
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <TextField
+                      hintText='What do you want to do?'
+                      floatingLabelText='Description'
+                      value={this.state.description}
+                      onChange={this.writeDescription}
+                      multiLine={true}
+                      id='description'
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <SelectField
+                      floatingLabelText='Is this milestone achieved?'
+                      value={this.state.isOpen}
+                      onChange={this.writeIsOpen}
+                    >
+                      <MenuItem value={false} id='isntOpen' primaryText='Yes!' />
+                      <MenuItem value={true} id='isOpen' primaryText='Not yet...' />
+                    </SelectField>
+                  </div>
+                  <div className='form-group'>
+                    <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this milestone?' : 'When did you achieve this milestone?'} />
+                  </div>
+                </div>
               </div>
-              <div className="col-xs-6" className='upload-container'>
-                <h3>Uploads</h3>
-                <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-                  { this.state.uploads && this.state.uploads.map((upload, index) => {
-                    const uploadId = upload[0]
-                    const uploadInfo = upload[1]
-                    return (
-                      <div key={index} className='flexy-columns'>
+              <div className="row">
+                <div className="col-xs-6">
+                  <h3>Resources</h3>
+                  <ResourceForm goalRef={parentRef} milestoneRef={resourcesRef} milestoneId={this.props.milestoneId} />
+                  <div className='resource-container'>
+                    {this.state.resources && this.state.resources.map((resourceId, index) => {
+                      return (
+                        <div key={resourceId}>
+                          <ResourceContainer resourceId={resourceId} goalId={this.props.goalId} />
+                        </div>
+                      )
+                    })
+                    }
+                  </div>
+                </div>
+                <div className="col-xs-6 upload-container">
+                  <h3>Uploads</h3>
+                  <UploadForm goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
+                  <div className='uploads-container'>
+                    {this.state.uploads && this.state.uploads.map((upload, index) => {
+                      const uploadId = upload[0]
+                      const uploadInfo = upload[1]
+                      return (
                         <UploadCard key={index} uploadId={uploadId} url={uploadInfo.imageURL} goalRef={parentRef} milestoneRef={uploadsRef} milestoneId={this.props.milestoneId} />
-                      </div>
-                    )
-                  })
-                  }
+                      )
+                    })
+                    }
+                  </div>
+                </div>
               </div>
-          </div>
-          <div className="row">
-              <div className="col-xs-12">
-                <h3>Notes</h3>
-                <ReactQuill
-                  value={this.state.notes}
-                  onChange={this.writeNotes}
-                />
+              <div className="row">
+                <div className="col-xs-12">
+                  <h3>Notes</h3>
+                  <ReactQuill
+                    value={this.state.notes}
+                    onChange={this.writeNotes}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-xs-6" id="bottom-buttons">
+                  <div id="button-container"><RaisedButton label="Save Milestone" primary={true} onClick={browserHistory.goBack} /></div>
+                  <div><RaisedButton label="Delete this milestone?" secondary={true} onClick={this.deleteMilestone} /></div>
+                </div>
               </div>
             </div>
-          <div className="row">
-            <div className="col-xs-6" id="bottom-buttons">
-              <div id="button-container"><RaisedButton label="Save Milestone" primary={true} onClick={browserHistory.goBack} /></div>
-              <div><RaisedButton label="Delete this milestone?" secondary={true} onClick={this.deleteMilestone} /></div>
-            </div>
           </div>
-        </div>
-      </div>
-      </MuiThemeProvider>
+        </MuiThemeProvider>
       </div>
     )
   }

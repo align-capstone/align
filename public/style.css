@@ -46,7 +46,25 @@ h1, h2, h3, h4 {
 }
 
 .flexy-columns {
+  display: flex;
+  flex-wrap: wrap;
+
   columns: 2;
+}
+
+/*come back to the following two classes. if too many
+images or resources uploaded, they spill out of their containers.*/
+.resource-container {
+  display: flex;
+  flex-flow: column wrap;
+  height: 1000px;
+  float: left;
+}
+
+.uploads-container {
+  display: flex;
+  flex-flow: column wrap;
+  height: 1000px;
 }
 
 #mockup-container {
@@ -65,6 +83,7 @@ h1, h2, h3, h4 {
 
 #faux-modal-body {
   overflow: scroll;
+  overflow-x: hidden;
   height: 90%;
 }
 
@@ -174,6 +193,7 @@ h1, h2, h3, h4 {
   position: absolute;
   z-index: -1;
 }
+
 
 /*tspan {
   text-anchor: start !important;
