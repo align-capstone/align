@@ -229,7 +229,7 @@ export default class extends Component {
       }
       this.userGoalUnsubscribers =
         userGoalIds.map(goalId => {
-          const ref = fireRef.child(goalId)
+          const ref = goalsRef.child(goalId)
           let listener = ref.on('value', (goalSnapshot) => {
             goals[goalId] = goalSnapshot.val()
             this.setState({ goals: Object.entries(goals), ready: true })
