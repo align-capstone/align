@@ -91,6 +91,7 @@ export default class extends React.Component {
 
     const resourcesListener = resourcesRef.on('value', snapshot => {
       if (snapshot.val()) this.setState({ resources: Object.keys(snapshot.val()) })
+      else this.setState({resources: []})
     })
 
     const uploadsListener = uploadsRef.on('value', snapshot => {
