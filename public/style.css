@@ -64,7 +64,7 @@ images or resources uploaded, they spill out of their containers.*/
 .uploads-container {
   display: flex;
   flex-flow: column wrap;
-  height: 1000px;
+  height: 890px;
 }
 
 #mockup-container {
@@ -171,6 +171,7 @@ images or resources uploaded, they spill out of their containers.*/
 .upload-card, .resource-card {
   margin: 10px;
   display: inline-block;
+  vertical-align: top;
 }
 
 .upload-card hr, .resource-card hr {

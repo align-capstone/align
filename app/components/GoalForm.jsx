@@ -335,12 +335,10 @@ export default class extends React.Component {
               <div className='col-xs-6'>
                 <h3 style={{ color: this.state.color.hex }}>Resources</h3>
                 <ResourceForm goalRef={resourcesRef} goal={this.props.id} />
-                <div className='resource-container'>
+                <div >
                   {this.state.resources && this.state.resources.map((resourceId, index) => {
                     return (
-                      <div key={resourceId}>
-                        <ResourceContainer resourceId={resourceId} goalId={this.props.id} />
-                      </div>
+                        <ResourceContainer key={resourceId} resourceId={resourceId} goalId={this.props.id} />
                     )
                   })
                   }
@@ -349,7 +347,7 @@ export default class extends React.Component {
               <div className='col-xs-6 upload-container'>
                 <h3 style={{ color: this.state.color.hex }}>Uploads</h3>
                 <UploadForm goalRef={uploadsRef} />
-                <div className='uploads-container'>
+                <div>
                   {this.state.uploads && this.state.uploads.map((upload, index) => {
                     const uploadId = upload[0]
                     const uploadInfo = upload[1]
