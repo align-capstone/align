@@ -92,6 +92,8 @@ export default class extends Component {
   }
 
   render() {
+    const textStyle = { width: 215 }
+
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <Card className="upload-card" style={{width: 250}}>
@@ -104,6 +106,8 @@ export default class extends Component {
               value={this.state.caption || ''}
               onChange={this.writeCaption}
               id='caption'
+              multiLine={true}
+              style={textStyle}
             />
           </CardText>
         </Card>
