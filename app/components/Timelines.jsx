@@ -219,10 +219,11 @@ export default class extends Component {
   listenTo(fireRef) {
     if (this.unsubscribe) this.unsubscribe()
     this.unsubscribeGoals()
-
     goalsListener = fireRef.on('value', (snapshot) => {
       const goals = {}
-      let userGoalIds = Object.keys(snapshot.val())
+      let userGoalIds
+      if (snapshot.val()) userGoalIds = Object.keys(snapshot.val())
+      else userGoalIds = []
       if (!userGoalIds.length) {
         this.setState({ready: true})
       }
