@@ -81,11 +81,21 @@ export default class LandingPage extends React.Component {
   // }
 
   componentDidMount() {
-    document.getElementsByTagName('body')[0].style.backgroundImage = 'url(https://s-media-cache-ak0.pinimg.com/736x/4f/5f/7d/4f5f7d794a8c075a2080528e9c0b0dbf--phone-backgrounds-wallpaper-backgrounds.jpg)'
+    let newImage = document.createElement('img')
+    newImage.setAttribute('src', './lines3.png')
+    newImage.setAttribute('id', 'login-image')
+    newImage.setAttribute('style', 'margin-top: -421px; width: 100vw;')
+    // document.body.insertBefore(newImage, document.getElementById('main'))
+    document.body.appendChild(newImage)
+    document.getElementById('main').setAttribute('style', 'position: relative;')
+    //document.getElementsByTagName('body')[0].style.backgroundImage = 'url(https://s-media-cache-ak0.pinimg.com/736x/4f/5f/7d/4f5f7d794a8c075a2080528e9c0b0dbf--phone-backgrounds-wallpaper-backgrounds.jpg)'
   }
 
   componentWillUnmount() {
-    document.getElementsByTagName('body')[0].style.backgroundImage = ''
+    let rmImage = document.getElementById('login-image')
+    document.body.removeChild(rmImage)
+    document.getElementById('main').setAttribute('style', 'position: initial;')
+    //document.getElementsByTagName('body')[0].style.backgroundImage = ''
   }
 
   render() {

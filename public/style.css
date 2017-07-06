@@ -35,6 +35,10 @@ h1, h2, h3, h4 {
   cursor: pointer;
 }
 
+.landing {
+  margin-top: 65px;
+}
+
 #loader {
   position: absolute !important;
   top: 40% !important;

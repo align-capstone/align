@@ -5,6 +5,7 @@ const resourcesRef = db.ref('resources')
 
 import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
+import alignTheme from './AlignTheme'
 import {TextField, IconButton, RaisedButton} from 'material-ui'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 
@@ -68,7 +69,7 @@ export default class extends Component {
 
   render() {
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
         <form onSubmit={this.handleSubmit}>
             <TextField
               hintText='Paste a URL here'
