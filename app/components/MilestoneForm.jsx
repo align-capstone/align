@@ -182,16 +182,6 @@ export default class extends React.Component {
                     />
                   </div>
                   <div className='form-group'>
-                    <TextField
-                      hintText='What do you want to do?'
-                      floatingLabelText='Description'
-                      value={this.state.description}
-                      onChange={this.writeDescription}
-                      multiLine={true}
-                      id='description'
-                    />
-                  </div>
-                  <div className='form-group'>
                     <SelectField
                       floatingLabelText='Is this milestone achieved?'
                       value={this.state.isOpen}
@@ -204,6 +194,14 @@ export default class extends React.Component {
                   <div className='form-group'>
                     <DatePicker id='date' value={new Date(this.state.date)} onChange={this.writeDate} floatingLabelText={this.state.isOpen ? 'When will you achieve this milestone?' : 'When did you achieve this milestone?'} />
                   </div>
+                </div>
+                <div className="col-xs-6">
+                  <h3>Notes</h3>
+                  <ReactQuill
+                    value={this.state.notes}
+                    onChange={this.writeNotes}
+                    style={{height: '20vh'}}
+                  />
                 </div>
               </div>
               <div className="row">
@@ -234,15 +232,6 @@ export default class extends React.Component {
                     })
                     }
                   </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-xs-12">
-                  <h3>Notes</h3>
-                  <ReactQuill
-                    value={this.state.notes}
-                    onChange={this.writeNotes}
-                  />
                 </div>
               </div>
               <div className="row">
