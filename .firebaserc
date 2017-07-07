@@ -1,5 +1,7 @@
 {
   "projects": {
-    "align-a0b08": "align-a0b08"
+    "align-a0b08": "align-a0b08",
+    "production": "align-a0b08",
+    "deploy": "align-a0b08"
   }
 }
