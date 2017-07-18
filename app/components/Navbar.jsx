@@ -13,26 +13,8 @@ import WhoAmI from './WhoAmI'
 import firebase from 'APP/fire'
 const auth = firebase.auth()
 
-// // Get the auth API from Firebase.
-// const auth = firebase.auth()
-// console.log('whats on auth???', auth)
-// console.log('auth.currentUser???,', auth.currentUser)
-
-
-// export default function Navbar(props) {
-//   return (
-//     <AppBar title='align' style={{backgroundColor: 'transparent', color: 'black', boxShadow: 'none'}} onTitleTouchTap={handleTitleTouchTap}>
-//       {auth.currentUser ? console.log('in yes user') : console.log('in null')}
-//       <WhoAmI auth={auth}/>
-//     </AppBar>
-//   )
-// }
-
-// // <WhoAmI auth={auth}/>
-
 export const Navbar = ({ user, auth }) =>
   <AppBar
-    // title="align"
     style={{ backgroundColor: 'transparent', color: 'black', boxShadow: 'none' }}
     onTitleTouchTap={() => browserHistory.push('/')}
     iconElementLeft={<img src="/logo.jpg" />}

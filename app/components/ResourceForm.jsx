@@ -27,7 +27,7 @@ export default class extends Component {
     // this.unsubscribe()
   }
 
-  // don't write URL to firebase yet... first, make the API call
+  // Don't write URL to firebase yet... first, make the API call
   // then write title, image, and description based on JSON we get back
 
   handleChange = (event) => {
@@ -44,20 +44,19 @@ export default class extends Component {
       dataType: 'jsonp',
       data: {q: target, key: '59546c0da716e80a54030151e45fe4e025d32430c753a'},
       success: response => {
-        console.log('in success handler...')
         let key = resourcesRef.push().key
         if (this.props.milestoneRef) {
-          // add resource URL to parent goal's uploads:
+          // Add resource URL to parent goal's uploads:
           this.props.goalRef.child('resources').child(key).set({
             resourceURL: response.url,
             milestoneId: this.props.milestoneId
           })
-          // add resource URL to milestone:
+          // Add resource URL to milestone:
           this.props.milestoneRef.child(key).set({
             resourceURL: response.url
           })
         } else {
-          // otherwise, just add resource directly to goal
+          // Otherwise, just add resource directly to goal
           this.props.goalRef.child(key).set({
             resourceURL: response.url
           })

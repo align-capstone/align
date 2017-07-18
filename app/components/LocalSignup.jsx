@@ -47,13 +47,6 @@ export default class extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-      //   .then((createdUser) => { //now that new user exists, put him under 'users' object in DB
-      //     console.log('newUser variable : ', newUser)
-      //     newUser = createdUser
-      //     let newUserId = newUser.uid
-      //     console.log('newUser ID: ', newUserId)
-      //     usersRef.child(newUserId).set()
-      //   })
       .then(() => firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           user.updateProfile({

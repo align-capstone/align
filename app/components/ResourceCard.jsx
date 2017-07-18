@@ -99,8 +99,6 @@ export default class extends Component {
     const resourceId = this.props.id
     const goalId = this.props.goalId
     const milestoneId = this.state.mileId
-    console.log('can we access milestone id??', milestoneId)
-
     this.unsubscribe()
 
     let dataToDelete = {}
@@ -110,7 +108,6 @@ export default class extends Component {
     if (this.state.mileId) {
       dataToDelete[`/goals/${goalId}/milestones/${milestoneId}/resources/${resourceId}`] = null
     }
-    console.log('data to delete??', dataToDelete)
     db.ref().update(dataToDelete, function(error) {
       if (error) {
         console.log('Error deleting data: ', error)
