@@ -40,10 +40,11 @@ export default class extends Component {
     event.preventDefault()
     const target = this.state.url
     $.ajax({
-      url: 'http://api.linkpreview.net',
+      url: 'https://api.linkpreview.net',
       dataType: 'jsonp',
       data: {q: target, key: '59546c0da716e80a54030151e45fe4e025d32430c753a'},
       success: response => {
+        console.log('in success handler...')
         let key = resourcesRef.push().key
         if (this.props.milestoneRef) {
           // add resource URL to parent goal's uploads:
