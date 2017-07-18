@@ -70,7 +70,6 @@ export default class extends React.Component {
     if (this.unsubscribe) this.unsubscribe()
 
     // Set up aliases for our Firebase references:
-    // MPM adding goal ref to send to upload??
     nameRef = fireRef.nameRef
     descriptionRef = fireRef.descriptionRef
     isOpenRef = fireRef.isOpenRef
@@ -83,7 +82,7 @@ export default class extends React.Component {
     uploadsRef = fireRef.uploadsRef
     notesRef = fireRef.notesRef
 
-    // LISTENERS TO DATEBASE:
+    // LISTENERS TO DATABASE:
     // Whenever a ref's value changes in Firebase, set {value} on our state.
 
     const nameListener = nameRef.on('value', snapshot =>
@@ -172,13 +171,6 @@ export default class extends React.Component {
     }
   }
 
-  // Write is defined using the class property syntax.
-  // This is roughly equivalent to saying,
-  //
-  //    this.write = event => (etc...)
-  //
-  // in the constructor. Incidentally, this means that write is always bound to this.
-
   writeName = (event) => {
     nameRef.set(event.target.value)
   }
@@ -192,7 +184,6 @@ export default class extends React.Component {
   }
 
   writeIsOpen = (event, id) => {
-    // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
     if (id === 0) {
       isOpenRef.set(false)
     }

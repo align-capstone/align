@@ -27,8 +27,8 @@ export default class extends React.Component {
     this.state = {
       name: '',
       description: '',
-      isOpen: true,
-      date: new Date().getTime(),
+      isOpen: true, // Default checkin status is open
+      date: new Date().getTime(), // Default date is today
       notes: ''
     }
   }
@@ -63,7 +63,6 @@ export default class extends React.Component {
     notesRef = fireRef.notesRef
 
     // Whenever a ref's value changes, set {value} on our state:
-
     const nameListener = nameRef.on('value', snapshot =>
       this.setState({ name: snapshot.val() || '' }))
 
@@ -94,13 +93,9 @@ export default class extends React.Component {
     }
   }
 
-  // Write is defined using the class property syntax.
-  // This is roughly equivalent to saying,
-  //
-  //    this.write = event => (etc...)
-  //
-  // in the constructor. Incidentally, this means that write
-  // is always bound to this.
+  // These 'write' functions are defined using class property syntax,
+  // which is like 'this.writeName = event => (etc.),
+  // which means they're always bound to 'this'.
   writeName = (event) => {
     nameRef.set(event.target.value)
   }
@@ -114,8 +109,8 @@ export default class extends React.Component {
   }
 
   writeIsOpen = (event, id) => {
-    // for 'isOpen', we're setting it to false if the user says they already achieved it, or true if they say they haven't
-    // the id is the index of the select option clicked
+    // For 'isOpen', we're setting it to false if the user says they already achieved it (first option, 0),
+    // or true if they say they haven't (second option, 1)
     if (id === 0) {
       isOpenRef.set(false)
     }
@@ -125,7 +120,7 @@ export default class extends React.Component {
   }
 
   writeDate = (event, date) => {
-    // get time converts regular date format to timestamp
+    // getTime converts regular date format to timestamp
     dateRef.set(date.getTime())
   }
 
