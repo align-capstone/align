@@ -40,7 +40,7 @@ export default class extends Component {
     event.preventDefault()
     const target = this.state.url
     $.ajax({
-      url: 'https://api.linkpreview.net',
+      url: 'http://api.linkpreview.net',
       dataType: 'jsonp',
       data: {q: target, key: '59546c0da716e80a54030151e45fe4e025d32430c753a'},
       success: response => {
