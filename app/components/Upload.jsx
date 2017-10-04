@@ -42,8 +42,8 @@ class Upload extends Component {
     }
   }
 
-  handleUploadStart = () => this.setState({isUploading: true, progress: 0});
-  handleProgress = (progress) => this.setState({progress});
+  handleUploadStart = () => this.setState({isUploading: true, progress: 0})
+  handleProgress = (progress) => this.setState({progress})
   handleUploadError = (error) => {
     this.setState({isUploading: false})
     console.error(error)
@@ -79,7 +79,7 @@ class Upload extends Component {
         })
       }
     })
-  };
+  }
 
   render() {
     return (

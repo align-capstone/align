@@ -55,7 +55,7 @@ export default class extends React.Component {
         }
       }))
       .catch(error => {
-        const errorMessage = error.message;
+        const errorMessage = error.message
         this.setState({
           errorMessage: errorMessage,
           showInvalidAlert: true,

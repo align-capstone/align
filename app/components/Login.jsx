@@ -3,8 +3,8 @@ import firebase from 'APP/fire'
 import { PanelGroup, Panel } from 'react-bootstrap'
 import RaisedButton from 'material-ui/RaisedButton'
 import FontIcon from 'material-ui/FontIcon'
-import { Tabs, Tab } from 'material-ui/Tabs';
-import SwipeableViews from 'react-swipeable-views';
+import { Tabs, Tab } from 'material-ui/Tabs'
+import SwipeableViews from 'react-swipeable-views'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import alignTheme from './AlignTheme'

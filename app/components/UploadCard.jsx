@@ -59,7 +59,7 @@ export default class extends Component {
     }
 
     /*
-    // here's an attempt to start doing this by child instead of by parent; requires adjusting what we pass down as goalRefs
+    // here's an attempt to start doing this by child instead of by parent. requires adjusting what we pass down as goalRefs
     const uploadId = this.props.uploadId
     const mileId = goalRef.child(uploadId).child('milestoneId') || null
     const checkInId = goalRef.child(uploadId).child('checkInId') || null
