@@ -64,32 +64,32 @@ export default class extends Component {
 
     const titleListener = titleRef.on("value", snapshot =>
       this.setState({ title: snapshot.val() })
-    );
+    )
 
     const urlListener = urlRef.on("value", snapshot => {
-      this.setState({ url: snapshot.val() });
-    });
+      this.setState({ url: snapshot.val() })
+    })
 
     const imageListener = imageRef.on("value", snapshot => {
-      this.setState({ image: snapshot.val() });
-    });
+      this.setState({ image: snapshot.val() })
+    })
 
     const descriptionListener = descriptionRef.on("value", snapshot => {
-      this.setState({ description: snapshot.val() });
-    });
+      this.setState({ description: snapshot.val() })
+    })
 
     const milestoneListener = milestoneRef.on("value", snapshot => {
-      this.setState({ mileId: snapshot.val() });
-    });
+      this.setState({ mileId: snapshot.val() })
+    })
 
     // Set unsubscribe to be a function that detaches the listener.
     this.unsubscribe = () => {
-      titleRef.off("value", titleListener);
-      urlRef.off("value", urlListener);
-      imageRef.off("value", imageListener);
-      descriptionRef.off("value", descriptionListener);
-      milestoneRef.off("value", milestoneListener);
-    };
+      titleRef.off("value", titleListener)
+      urlRef.off("value", urlListener)
+      imageRef.off("value", imageListener)
+      descriptionRef.off("value", descriptionListener)
+      milestoneRef.off("value", milestoneListener)
+    }
   }
 
   deleteResource = () => {
