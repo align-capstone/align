@@ -114,13 +114,6 @@ export default class extends React.Component {
     }
   }
 
-  // Write is defined using the class property syntax.
-  // This is roughly equivalent to saying,
-  //
-  //    this.write = event => (etc...)
-  //
-  // in the constructor. Incidentally, this means that write
-  // is always bound to this.
   writeName = (event) => {
     nameRef.set(event.target.value)
   }
@@ -156,7 +149,6 @@ export default class extends React.Component {
   }
 
   render() {
-    // Rendering form with material UI
     return (
       <div id='mockup-container'>
         <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>

@@ -18,10 +18,6 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-/*h1 {
-  font-family: 'Shadows Into Light Two', cursive;
-}*/
-
 h1, h2, h3, h4 {
   font-family: 'Roboto', sans-serif;
   color: #888;
@@ -194,11 +190,6 @@ images or resources uploaded, they spill out of their containers.*/
   position: absolute;
   z-index: -1;
 }
-
-
-/*tspan {
-  text-anchor: start !important;
-}*/
 
 #bottom-buttons div {
   display: inline-block;

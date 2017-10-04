@@ -1,7 +1,5 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
-import { Grid, Col } from 'react-bootstrap'
-
 import firebase from 'APP/fire'
 const db = firebase.database()
 const auth = firebase.auth()
@@ -82,7 +80,7 @@ export default class extends React.Component {
     uploadsRef = fireRef.uploadsRef
     notesRef = fireRef.notesRef
 
-    // LISTENERS TO DATABASE:
+    // DATABASE LISTENERS:
     // Whenever a ref's value changes in Firebase, set {value} on our state.
 
     const nameListener = nameRef.on('value', snapshot =>
