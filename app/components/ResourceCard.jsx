@@ -1,68 +1,66 @@
-import React, { Component } from "react";
-import { Link, browserHistory } from "react-router";
+import React, { Component } from "react"
+import { Link, browserHistory } from "react-router"
 
-import firebase from "APP/fire";
-const db = firebase.database();
+import firebase from "APP/fire"
+const db = firebase.database()
 
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import lightBaseTheme from "material-ui/styles/baseThemes/lightBaseTheme";
-import alignTheme from "./AlignTheme";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import FlatButton from "material-ui/FlatButton";
-import IconButton from "material-ui/IconButton";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
+import lightBaseTheme from "material-ui/styles/baseThemes/lightBaseTheme"
+import alignTheme from "./AlignTheme"
+import getMuiTheme from "material-ui/styles/getMuiTheme"
+import FlatButton from "material-ui/FlatButton"
+import IconButton from "material-ui/IconButton"
 import {
   Card,
   CardActions,
   CardHeader,
   CardMedia,
   CardText
-} from "material-ui/Card";
-import ContentEdit from "material-ui/svg-icons/content/create";
-import ContentLink from "material-ui/svg-icons/content/link";
-import Delete from "material-ui/svg-icons/content/clear";
+} from "material-ui/Card"
+import ContentEdit from "material-ui/svg-icons/content/create"
+import ContentLink from "material-ui/svg-icons/content/link"
+import Delete from "material-ui/svg-icons/content/clear"
 
-let urlRef, titleRef, imageRef, descriptionRef, milestoneRef;
+let urlRef, titleRef, imageRef, descriptionRef, milestoneRef
 
 export default class extends Component {
   constructor(props) {
-    super();
+    super()
     this.state = {
-      title: "",
-      url: "",
-      image: "",
-      description: ""
-    };
+      title: '',
+      url: '',
+      image: '',
+      description: ''
+    }
   }
 
   componentDidMount() {
     // When the component mounts, start listening to the fireRef we were given.
-    this.listenTo(this.props.fireRef);
+    this.listenTo(this.props.fireRef)
   }
 
   componentWillUnmount() {
     // When we unmount, stop listening.
-    this.unsubscribe();
+    this.unsubscribe()
   }
 
   componentWillReceiveProps(incoming, outgoing) {
     // When the props sent to us by our parent component change,
     // start listening to the new firebase reference.
-    this.listenTo(incoming.fireRef);
+    this.listenTo(incoming.fireRef)
   }
 
   listenTo(fireRef) {
     // If we're already listening to a ref, stop listening there.
-    if (this.unsubscribe) this.unsubscribe();
+    if (this.unsubscribe) this.unsubscribe()
 
-    titleRef = fireRef.titleRef;
-    urlRef = fireRef.urlRef;
-    imageRef = fireRef.imageRef;
-    descriptionRef = fireRef.descriptionRef;
-    milestoneRef = fireRef.milestoneRef;
+    titleRef = fireRef.titleRef
+    urlRef = fireRef.urlRef
+    imageRef = fireRef.imageRef
+    descriptionRef = fireRef.descriptionRef
+    milestoneRef = fireRef.milestoneRef
 
     // Whenever our ref's value changes, set {value} on our state.
-    // const listener = fireRef.on('value', snapshot =>
-    //   this.setState({value: snapshot.val()}))
 
     const titleListener = titleRef.on("value", snapshot =>
       this.setState({ title: snapshot.val() })
