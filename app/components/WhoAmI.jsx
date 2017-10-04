@@ -20,7 +20,7 @@ export const WhoAmI = ({user, auth}) =>
     <MuiThemeProvider muiTheme={getMuiTheme(alignTheme)}>
       <FlatButton label="Log Out" onTouchTap={() => {
         auth.signOut()
-        .then(() => { //after logging out, redirect to login/landing page
+        .then(() => { // After logging out, redirect to login/landing page
           browserHistory.push('/')})
       }} primary={true} />
     </MuiThemeProvider>

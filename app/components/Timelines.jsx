@@ -17,8 +17,8 @@ import ContentAdd from 'material-ui/svg-icons/content/add'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
-import Loader from './Loader'
 
+import Loader from './Loader'
 import Empty from './Empty'
 
 // eventually, we'll sort goals array by priority / activity level, so displaying by index will have more significance
@@ -29,12 +29,12 @@ export default class extends Component {
     this.state = {
       ready: false,
       menuOpen: false,
-      goals: [], // the actual goals that happen to belong to the user
+      goals: [], // The actual goals that happen to belong to the user
       openGoal: {}
     }
   }
 
-  // VICTORY FUNCTIONS:
+  /********* VICTORY FUNCTIONS: *********/
 
   getScatterData(goal, index, goalId) {
     var data = []
@@ -73,7 +73,6 @@ export default class extends Component {
   }
 
   getLineData(goal, index) {
-
     var data = []
     // push start and end dates to data array
     // maybe make end date of completed goals into a star??
@@ -90,7 +89,6 @@ export default class extends Component {
       for (var id in goal.checkIns) {
         var checkin = goal.checkIns[id]
         data.push({ x: new Date(checkin.displayDate), y: index })
-
       }
     }
     return data
@@ -104,11 +102,11 @@ export default class extends Component {
     this.setState({ zoomDomain: domain })
   }
 
-  // MUI FUNCTIONS:
+ /********* MATERIAL-UI FUNCTIONS: *********/
 
   handleLineTap = (event, goal) => {
     let ourTop = event.pageY + window.scrollY
-    let ourLeft = event.pageX + window.scrollX //just putting these scroll values in case for some reason it scrolls
+    let ourLeft = event.pageX + window.scrollX // Just putting these scroll values in case for some reason it scrolls
     const ourBbox = {
       bottom: event.target.getBoundingClientRect().bottom,
       right: event.target.getBoundingClientRect().right,
@@ -116,9 +114,7 @@ export default class extends Component {
       left: ourLeft,
       top: ourTop
     }
-
-    // This prevents ghost click.
-    event.preventDefault()
+    event.preventDefault() // Prevents ghost click
     this.setState({
       menuOpen: true,
       anchorEl: {
@@ -136,15 +132,15 @@ export default class extends Component {
     })
   }
 
-  // POPOVER OPTIONS
+ /********* MATERIAL-UI FUNCTIONS: *********/
 
-  viewCurrentTimeline = () => {
+  viewCurrentTimeline = (event) => {
     event.preventDefault()
     let openGoalUrl = `/goal/${this.state.openGoal[0]}`
     browserHistory.push(openGoalUrl)
   }
 
-  addMilestoneToCurrentTimeline = () => {
+  addMilestoneToCurrentTimeline = (event) => {
     event.preventDefault()
     let currentGoalId = this.state.openGoal[0]
     let newMilestoneRef = goalsRef.child(currentGoalId).child('milestones').push()
@@ -152,7 +148,7 @@ export default class extends Component {
     browserHistory.push(newMilestonePath)
   }
 
-  addCheckinToCurrentTimeline = () => {
+  addCheckinToCurrentTimeline = (event) => {
     event.preventDefault()
     let currentGoalId = this.state.openGoal[0]
     let newCheckinRef = goalsRef.child(currentGoalId).child('checkIns').push()
@@ -160,13 +156,13 @@ export default class extends Component {
     browserHistory.push(newCheckinPath)
   }
 
-  deleteCurrentTimeline = () => {
+  deleteCurrentTimeline = (event) => {
     event.preventDefault()
     let goalId = this.state.openGoal[0]
     let userId = this.state.userId
 
-    // to avoid multiple writes to firebase:
-    // make an object of data to delete and pass it to the top level
+    // To avoid multiple writes to firebase:
+    // Make an object of data to delete and pass it to the top level
     let dataToDelete = {}
     dataToDelete[`/goals/${goalId}`] = null
     dataToDelete[`/users/${userId}/goals/${goalId}`] = null
@@ -177,15 +173,15 @@ export default class extends Component {
     })
   }
 
-  // FIREBASE FUNCTIONS:
+ /********* FIREBASE FUNCTIONS: *********/
 
   createNewGoal = (event) => {
     event.preventDefault()
-    // check to see if the index of the menu item is the index of the add goal item aka 0
+    // Check to see if the index of the menu item is the index of the add goal item, aka 0
     let newGoalRef = goalsRef.push()
     let newGoalId = newGoalRef.key
     let newGoalPath = `/goal/${newGoalId}`
-    let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) //takes ID of the new Goal, and adds it as a key: true in user's goal object
+    let newUserGoalRelation = currentUserGoalsRef.child(newGoalId).set(true) // Takes ID of the new Goal, and adds it as a key: true in user's goal object
     browserHistory.push(newGoalPath)
   }
 
@@ -298,12 +294,12 @@ export default class extends Component {
 
             {
               this.state.goals && this.state.goals.map((goal, index) => {
-                // get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
+                // Get goal info out of goal array: index 0 is goal id and index 1 is object with all other data
                 let goalId = goal[0]
                 let goalInfo = goal[1]
                 let color
                 if (goalInfo.color) color = goalInfo.color.hex
-                else color = '#888' // this is making a default color in case user hasn't set it
+                else color = '#888' // Makes a default goal color, in case user didn't set one
 
                 return (
                   <VictoryLine

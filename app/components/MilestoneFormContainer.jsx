@@ -1,6 +1,5 @@
 import React from 'react'
 import {Route} from 'react-router'
-
 import {getMilestoneRefs} from 'APP/fire/refs'
 
 import MilestoneForm from './MilestoneForm'

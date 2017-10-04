@@ -3,9 +3,9 @@ import {
   pinkA200,
   grey100, grey300, grey400, grey500,
   white, darkBlack, fullBlack,
-} from 'material-ui/styles/colors';
-import {fade} from 'material-ui/utils/colorManipulator';
-import spacing from 'material-ui/styles/spacing';
+} from 'material-ui/styles/colors'
+import {fade} from 'material-ui/utils/colorManipulator'
+import spacing from 'material-ui/styles/spacing'
 
 export default {
   spacing: spacing,
@@ -27,4 +27,4 @@ export default {
     shadowColor: fullBlack,
   },
   flatButton: { primaryTextColor: '#888888'}
-};
+}

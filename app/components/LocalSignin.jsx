@@ -1,6 +1,7 @@
 import React from 'react'
 import firebase from 'APP/fire'
 import { browserHistory } from 'react-router'
+
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -14,7 +15,6 @@ const google = new firebase.auth.GoogleAuthProvider()
 const buttonStyle = {
   margin: 12,
 }
-
 
 export default class extends React.Component {
   constructor(props) {
@@ -31,20 +31,20 @@ export default class extends React.Component {
   }
 
   handleGoogleLogin() {
-    firebase.auth().signInWithPopup(google).then(function (result) {
+    firebase.auth().signInWithPopup(google).then(function(result) {
       // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = result.credential.accessToken;
+      var token = result.credential.accessToken
       // The signed-in user info.
-      var user = result.user;
+      var user = result.user
       // ...
-    }).catch(function (error) {
+    }).catch(function(error) {
       // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
+      var errorCode = error.code
+      var errorMessage = error.message
       // The email of the user's account used.
-      var email = error.email;
+      var email = error.email
       // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
+      var credential = error.credential
       // ...
     })
   }
@@ -57,18 +57,18 @@ export default class extends React.Component {
     )
   }
 
-  handleChange(e) {
+  handleChange(event) {
     this.setState({
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
       showInvalidAlert: false
     })
   }
 
-  handleSubmit(e) {
-    e.preventDefault()
+  handleSubmit(event) {
+    event.preventDefault()
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .catch(error => {
-        const errorMessage = error.message;
+        const errorMessage = error.message
         this.setState({
           errorMessage: errorMessage,
           showInvalidAlert: true,

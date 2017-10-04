@@ -14,7 +14,7 @@ class InputButton extends Component {
     }
   }
 
-  componentWillReceiveProps (newProps, oldProps) {
+  componentWillReceiveProps(newProps, oldProps) {
     this.setState({onChange: newProps.onChange})
   }
 

@@ -8,10 +8,6 @@ export default class extends React.Component {
     setTimeout(() => this.setState({ready: true}), 200)
   }
 
-  componentWillUnmount() {
-   // this.unsubscribe()
-  }
-
   render() {
     const {user, ready} = this.state || {}
     const {Landing, Loader, children} = this.props

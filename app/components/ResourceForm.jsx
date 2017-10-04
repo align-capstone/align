@@ -19,14 +19,6 @@ export default class extends Component {
     }
   }
 
-  componentDidMount() {
-    // this.listenTo(this.props.fireRef)
-  }
-
-  componentWillUnmount() {
-    // this.unsubscribe()
-  }
-
   // Don't write URL to firebase yet... first, make the API call
   // then write title, image, and description based on JSON we get back
 
