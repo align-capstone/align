@@ -10,10 +10,8 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import alignTheme from './AlignTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
-
 import LocalSignin from './LocalSignin'
 import LocalSignup from './LocalSignup'
-
 
 const google = new firebase.auth.GoogleAuthProvider()
 
@@ -29,7 +27,6 @@ const tabStyles = {
     fontSize: '125%'
   },
 }
-
 
 export default class LandingPage extends React.Component {
 

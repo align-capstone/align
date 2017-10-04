@@ -1,9 +1,3 @@
-// this is a presentational component that we'll call for each resource
-// basically just a render function that will return the resource 'card'
-// MPM okay LIES
-
-// a resource card should contain: title, thumbnail photo, and a description at the bottom, and it should link somewhere
-
 import React, { Component } from 'react'
 import { Link, browserHistory } from 'react-router'
 
