@@ -127,6 +127,7 @@ export default class extends Component {
             title={this.state.title}
             actAsExpander={true}
             showExpandableButton={true}
+            className="resource-card-header"
           />
           <CardMedia style={{ padding: 15 }}>
             <img
