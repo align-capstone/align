@@ -36,24 +36,34 @@ export default class extends Component {
       dataType: 'jsonp',
       data: {q: target, key: '59546c0da716e80a54030151e45fe4e025d32430c753a'},
       success: response => {
-        let key = resourcesRef.push().key
+        const key = resourcesRef.push().key
         if (this.props.milestoneRef) {
           // Add resource URL to parent goal's uploads:
           this.props.goalRef.child('resources').child(key).set({
-            resourceURL: response.url,
+            resourceURL: target,
             milestoneId: this.props.milestoneId
           })
           // Add resource URL to milestone:
           this.props.milestoneRef.child(key).set({
-            resourceURL: response.url
+            resourceURL: target
           })
         } else {
           // Otherwise, just add resource directly to goal
           this.props.goalRef.child(key).set({
-            resourceURL: response.url
+            resourceURL: target
           })
         }
-        resourcesRef.child(key).set(response)
+
+        if (!response.error) {
+          resourcesRef.child(key).set(response)
+        } else {
+          resourcesRef.child(key).set({
+            ...response,
+            url: response.url || target,
+            title: response.title || target,
+            description: '',
+          })
+        }
       }
     })
     this.setState({url: ''})

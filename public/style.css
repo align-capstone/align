@@ -41,6 +41,13 @@ h1, h2, h3, h4 {
   left: 50% !important;
 }
 
+/* Make resource titles with long words break the
+words rather than spill out */
+.resource-card-header > * {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
 .flexy-columns {
   display: flex;
   flex-wrap: wrap;
